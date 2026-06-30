@@ -19,7 +19,7 @@
             "check:ts": {},
             "build:tsdown": {},
             "build:ts": {},
-                    "build": {},
+            "build": {},
             "test": {},
             "test:watch": {},
             "lint": {},
