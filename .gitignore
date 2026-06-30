@@ -158,7 +158,6 @@ docs
 
 #Husky
 .husky/_
-# Allowed javascript source files
 
 # Scratch Files
 scratch
