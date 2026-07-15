@@ -1,10 +1,26 @@
 {
-    "extends": "@snailicid3/config/tsconfig.library",
-    "include": ["./src/**/*.ts", "./src/**/*.cts", "./src/**/*.mts"],
-    "exclude": ["**/*.test.ts", "**/*.test.mts", "**/*.test.cts"],
-    "compilerOptions": {
-        "types": ["node"],
-        //   "noEmit": true
-        "outDir": "./types"
-    }
+  "extends": "@snailicid3/config/tsconfig.library",
+  "compilerOptions": {
+      //   "noEmit": true
+      "jsxFactory": null,
+      "jsxFragmentFactory": null,
+      "jsx": "react-jsx",
+      "lib": ["ES2022", "DOM", "DOM.Iterable"],
+      "types": ["node"],
+      "allowImportingTsExtensions": true,
+      "emitDeclarationOnly": true
+  },
+  "include": [
+      "./src/**/*.ts",
+      "./src/**/*.cts",
+      "./src/**/*.mts",
+      "./src/**/*.tsx"
+  ],
+  "exclude": [
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "**/*.test.mts",
+      "**/*.test.cts",
+      "./src/**/*.stories.tsx"
+  ]
 }

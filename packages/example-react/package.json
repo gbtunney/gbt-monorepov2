@@ -31,6 +31,8 @@
     },
     "dependencies": {
         "@snailicid3/utils": "^0.0.5",
+        "@vitejs/plugin-react": "^6.0.3",
+        "@vitest/browser-playwright": "^4.1.10",
         "react": "^19.2.7",
         "react-dom": "^19.2.7"
     },
@@ -41,7 +43,8 @@
         "cross-var": "^1.1.0",
         "tsdown": "^0.22.3",
         "typescript": "^6.0.3",
-        "vitest": "^4.1.9"
+        "vitest": "^4.1.9",
+        "vitest-browser-react": "^2.2.0"
     },
     "type": "module",
     "author": {
@@ -63,14 +66,9 @@
     "keywords": [
         "boilerplate"
     ],
-    "main": "./dist/index.cjs",
-    "module": "./dist/index.mjs",
     "types": "./dist/index.d.cts",
     "exports": {
-        ".": {
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.cjs"
-        },
+        ".": "./dist/index.js",
         "./package.json": "./package.json"
     }
 }
