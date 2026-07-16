@@ -131,7 +131,10 @@ pnpm-lock.yaml
 
 # System
 .ssh
-.env
+
+# Env
+.env*
+!.env*.example
 
 #Husky
 .husky/_
