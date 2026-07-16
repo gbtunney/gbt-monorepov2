@@ -7,6 +7,10 @@ import {
     defaultGbtScopeMeshViewerProps,
     type GbtScopeMeshViewerProps,
 } from '../components/GbtScopeMeshViewer.tsx'
+import type {
+    GbtScopeAnimator,
+    GbtScopeAnimatorTarget,
+} from '../motion/animator.ts'
 /* eslint  perfectionist/sort-objects: "off" */
 
 /** Composed default args — single source of truth from the component defaults. */
@@ -16,6 +20,148 @@ export const flatDefaultArgs: GbtScopeFlatViewerProps = {
 
 export const meshDefaultArgs: GbtScopeMeshViewerProps = {
     ...defaultGbtScopeMeshViewerProps,
+}
+
+/**
+ * Flattened, slider-friendly motion controls for the Motion Playground stories. Each group maps to one animator;
+ * setting a group's `speed` to 0 disables it. Composed into the real `animators` array at render time via
+ * {@link buildPlaygroundAnimators}, so the sliders drive the running scene live.
+ */
+export type MotionPlaygroundArgs = {
+    /** Constant time-driven rotation speed (radians/sec). 0 = off. */
+    driftSpeed: number
+    mouseExponent: number
+    mouseMax: number
+    mouseMultiplier: number
+    /** Pointer-distance influence speed. 0 = off. */
+    mouseSpeed: number
+    mouseTarget: GbtScopeAnimatorTarget
+    scrollMax: number
+    scrollMultiplier: number
+    /** Scroll-wheel velocity influence speed. 0 = off. */
+    scrollSpeed: number
+    scrollTarget: GbtScopeAnimatorTarget
+}
+
+/** Default playground values — mirrors the preset stories' first-pass speeds. */
+export const defaultMotionPlaygroundArgs = {
+    driftSpeed: 0.3,
+    mouseExponent: 1.4,
+    mouseMax: 1,
+    mouseMultiplier: 0.6,
+    mouseSpeed: 0,
+    mouseTarget: 'rotation',
+    scrollMax: 0.3,
+    scrollMultiplier: 0.2,
+    scrollSpeed: 0,
+    scrollTarget: 'offset.x',
+} satisfies MotionPlaygroundArgs
+
+/** Composes the flattened playground args into a declarative `animators` array. Groups with speed 0 are skipped. */
+export const buildPlaygroundAnimators = ({
+    driftSpeed = 0,
+    mouseExponent = 1,
+    mouseMax = 1,
+    mouseMultiplier = 1,
+    mouseSpeed = 0,
+    mouseTarget = 'rotation',
+    scrollMax = 1,
+    scrollMultiplier = 1,
+    scrollSpeed = 0,
+    scrollTarget = 'offset.x',
+}: Partial<MotionPlaygroundArgs>): Array<GbtScopeAnimator> => {
+    const animators: Array<GbtScopeAnimator> = []
+    if (driftSpeed !== 0)
+        animators.push({
+            mode: 'add',
+            source: 'time',
+            speed: driftSpeed,
+            target: 'rotation',
+        })
+    if (mouseSpeed !== 0)
+        animators.push({
+            curve: {
+                exponent: mouseExponent,
+                max: mouseMax,
+                multiplier: mouseMultiplier,
+            },
+            mode: 'add',
+            source: 'mouseDistance',
+            speed: mouseSpeed,
+            target: mouseTarget,
+        })
+    if (scrollSpeed !== 0)
+        animators.push({
+            curve: { max: scrollMax, multiplier: scrollMultiplier },
+            mode: 'add',
+            source: 'scrollVelocity',
+            speed: scrollSpeed,
+            target: scrollTarget,
+        })
+    return animators
+}
+
+const animatorTargetOptions: Array<GbtScopeAnimatorTarget> = [
+    'rotation',
+    'offset.x',
+    'offset.y',
+    'scaleFactor',
+    'opacity',
+]
+
+/** Range/select controls for {@link MotionPlaygroundArgs}; also hides the derived raw `animators` control. */
+export const motionPlaygroundArgTypes: Meta['argTypes'] = {
+    animators: { table: { disable: true } },
+    driftSpeed: {
+        control: { max: 2, min: -2, step: 0.01, type: 'range' },
+        description: 'Constant rotation drift (rad/sec). 0 = off.',
+        table: { category: 'Motion Playground' },
+    },
+    mouseSpeed: {
+        control: { max: 5, min: -5, step: 0.1, type: 'range' },
+        description: 'Pointer-distance influence. 0 = off.',
+        table: { category: 'Motion Playground' },
+    },
+    mouseTarget: {
+        control: { type: 'select' },
+        options: animatorTargetOptions,
+        table: { category: 'Motion Playground' },
+    },
+    mouseMultiplier: {
+        control: { max: 2, min: 0, step: 0.05, type: 'range' },
+        description: 'Curve gain applied before the exponent.',
+        table: { category: 'Motion Playground' },
+    },
+    mouseExponent: {
+        control: { max: 4, min: 0.1, step: 0.1, type: 'range' },
+        description: 'Curve shaping (1 = linear, >1 = ease-in).',
+        table: { category: 'Motion Playground' },
+    },
+    mouseMax: {
+        control: { max: 2, min: 0, step: 0.05, type: 'range' },
+        description: 'Upper clamp on the curved value.',
+        table: { category: 'Motion Playground' },
+    },
+    scrollSpeed: {
+        control: { max: 5, min: -5, step: 0.1, type: 'range' },
+        description: 'Scroll-wheel velocity influence. 0 = off.',
+        table: { category: 'Motion Playground' },
+    },
+    scrollTarget: {
+        control: { type: 'select' },
+        options: animatorTargetOptions,
+        table: { category: 'Motion Playground' },
+    },
+    scrollMultiplier: {
+        control: { max: 2, min: 0, step: 0.05, type: 'range' },
+        description: 'Curve gain applied before the exponent.',
+        table: { category: 'Motion Playground' },
+    },
+    scrollMax: {
+        control: { max: 2, min: 0, step: 0.05, type: 'range' },
+        description: 'Upper clamp on the curved value.',
+        table: { category: 'Motion Playground' },
+    },
 }
 
 export const argTypes: Meta['argTypes'] = {

@@ -1,6 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { argTypes, meshDefaultArgs } from './GbtScopeShared.ts'
-import GbtScopeMeshViewer from '../components/GbtScopeMeshViewer.tsx'
+import { createElement, type ReactElement } from 'react'
+import {
+    argTypes,
+    buildPlaygroundAnimators,
+    defaultMotionPlaygroundArgs,
+    meshDefaultArgs,
+    type MotionPlaygroundArgs,
+    motionPlaygroundArgTypes,
+} from './GbtScopeShared.ts'
+import GbtScopeMeshViewer, {
+    type GbtScopeMeshViewerProps,
+} from '../components/GbtScopeMeshViewer.tsx'
 import type { GbtScopeAnimator } from '../motion/animator.ts'
 /* eslint  perfectionist/sort-objects: "off" */
 
@@ -55,4 +65,21 @@ export const mouseReactive: MeshStory = {
         animators: stillForChromatic(mouseAnimators),
         segments: 12,
     },
+}
+
+/**
+ * Motion Playground — every animator parameter as a live slider/select instead of the raw `animators` JSON. Speeds of 0
+ * disable a group; the sliders recompose the animators on every Controls change.
+ */
+export const motionPlayground: StoryObj<
+    GbtScopeMeshViewerProps & MotionPlaygroundArgs
+> = {
+    args: { ...meshDefaultArgs, ...defaultMotionPlaygroundArgs },
+    argTypes: motionPlaygroundArgTypes,
+    parameters: { chromatic: { disableSnapshot: true } },
+    render: (args): ReactElement =>
+        createElement(GbtScopeMeshViewer, {
+            ...args,
+            animators: buildPlaygroundAnimators(args),
+        }),
 }

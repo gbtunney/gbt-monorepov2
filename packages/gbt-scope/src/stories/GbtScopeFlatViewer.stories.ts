@@ -1,6 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { argTypes, flatDefaultArgs } from './GbtScopeShared.ts'
-import GbtScopeFlatViewer from '../components/GbtScopeFlatViewer.tsx'
+import { createElement, type ReactElement } from 'react'
+import {
+    argTypes,
+    buildPlaygroundAnimators,
+    defaultMotionPlaygroundArgs,
+    flatDefaultArgs,
+    type MotionPlaygroundArgs,
+    motionPlaygroundArgTypes,
+} from './GbtScopeShared.ts'
+import GbtScopeFlatViewer, {
+    type GbtScopeFlatViewerProps,
+} from '../components/GbtScopeFlatViewer.tsx'
 import type { GbtScopeAnimator } from '../motion/animator.ts'
 /* eslint  perfectionist/sort-objects: "off" */
 
@@ -65,4 +75,21 @@ export const scrollReactive: FlatStory = {
         animators: scrollAnimators,
         tileMode: 'mirror',
     },
+}
+
+/**
+ * Motion Playground — every animator parameter as a live slider/select instead of the raw `animators` JSON. Speeds of 0
+ * disable a group; the sliders recompose the animators on every Controls change.
+ */
+export const motionPlayground: StoryObj<
+    GbtScopeFlatViewerProps & MotionPlaygroundArgs
+> = {
+    args: { ...flatDefaultArgs, ...defaultMotionPlaygroundArgs },
+    argTypes: motionPlaygroundArgTypes,
+    parameters: { chromatic: { disableSnapshot: true } },
+    render: (args): ReactElement =>
+        createElement(GbtScopeFlatViewer, {
+            ...args,
+            animators: buildPlaygroundAnimators(args),
+        }),
 }
