@@ -21,8 +21,8 @@ export const getResolution = (dimensions: Dimensions): Vector4 => {
     const aB = _height / _width > 1 ? 1 : _height / _width
     return new Vector4(_width, _height, aA, aB)
 }
-export const distanceBetweenPoints = (a: Point, b: Point): number =>
-    Math.hypot(b.x - a.x, b.y - a.y)
+export const distanceBetweenPoints = (pointA: Point, pointB: Point): number =>
+    Math.hypot(pointB.x - pointA.x, pointB.y - pointA.y)
 
 export type RGBColor = ConstructorParameters<typeof Color3>
 export type Vector2Params = ConstructorParameters<typeof Vector2>
@@ -50,7 +50,7 @@ export const setOrthoCamera = (
     { enabled = true, ortho = true, target = [0, 0, 0] }: CameraOrthoConfig,
 ): FreeCamera => {
     camera.setTarget(new Vector3(...target))
-    if (ortho) camera.mode = Camera.ORTHOGRAPHIC_CAMERA
+    camera.mode = Camera.ORTHOGRAPHIC_CAMERA
 
     if (enabled) {
         camera.attachControl(scene.getEngine().getRenderingCanvas(), true)
