@@ -39,6 +39,7 @@ const mouseAnimators: Array<GbtScopeAnimator> = [
 
 /** Baseline 3D mesh viewer — kaleidoscope material on a rotatable box. */
 export const STATIC: MeshStory = {
+    name: 'Static',
     args: { ...meshDefaultArgs, animators: [] },
 }
 

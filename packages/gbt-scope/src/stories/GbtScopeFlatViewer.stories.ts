@@ -44,6 +44,7 @@ const scrollAnimators: Array<GbtScopeAnimator> = [
 
 /** Static kaleidoscope — no animators; every prop adjustable in Controls. */
 export const STATIC: FlatStory = {
+    name: 'Static',
     args: { ...flatDefaultArgs, animators: [] },
 }
 
