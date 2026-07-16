@@ -25,21 +25,10 @@
             "build": {},
             "build:storybook": {},
             "chromatic": {},
-            "test": {
-                "cache": true,
-                "dependsOn": [
-                    "build",
-                    "check:ts",
-                    "^test"
-                ],
-                "command": "vitest run --coverage --project unit",
-                "options": {
-                    "cwd": "{projectRoot}"
-                }
-            },
+            "test": {},
             "test:bk": {
                 "cache": false,
-                "command": "vitest run --project storybook",
+                "command": "vitest run --config vitest.storybook.config.ts",
                 "options": {
                     "cwd": "{projectRoot}"
                 }
