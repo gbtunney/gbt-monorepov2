@@ -53,6 +53,7 @@ jobs:
         uses: gbtunney/snailicid3-actions/.github/workflows/call-pipeline.yml@main
         secrets: inherit
         with:
+            run_chromatic: true
             checkout_ref: ${{ github.event_name == 'pull_request' && format('refs/pull/{0}/merge', github.event.pull_request.number) || github.ref }}
             mode: abort_on_error
             check_mode: check
@@ -71,6 +72,7 @@ jobs:
         uses: gbtunney/snailicid3-actions/.github/workflows/call-pipeline.yml@main
         secrets: inherit
         with:
+            run_chromatic: true
             checkout_ref: ${{ github.event_name == 'pull_request' && format('refs/pull/{0}/merge', github.event.pull_request.number) || github.ref }}
             mode: abort_on_error
             check_mode: check
@@ -89,6 +91,7 @@ jobs:
         uses: gbtunney/snailicid3-actions/.github/workflows/call-pipeline.yml@main
         secrets: inherit
         with:
+            run_chromatic: false
             checkout_ref: ${{ github.event_name == 'pull_request' && format('refs/pull/{0}/merge', github.event.pull_request.number) || github.ref }}
             mode: abort_on_error
             check_mode: check
