@@ -98,6 +98,27 @@
             "dependsOn": ["build:ts", "build:tsdown"],
             "inputs": ["production", "^production"]
         },
+        "build:storybook": {
+            "cache": true,
+            "dependsOn": ["build"],
+            "command": "pnpm exec storybook build",
+            "inputs": [
+                "{projectRoot}/src/**.tsx",
+                "{projectRoot}/.storybook/**/*"
+            ],
+            "outputs": ["{projectRoot}/storybook-static"],
+            "options": {
+                "cwd": "{projectRoot}"
+            }
+        },
+        "chromatic": {
+            "cache": false,
+            "dependsOn": ["build:ts", "check:ts", "build:storybook"],
+            "command": "pnpm exec chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --build-script-name build:storybook:nx",
+            "options": {
+                "cwd": "{projectRoot}"
+            }
+        },
         "test": {
             "cache": true,
             "dependsOn": ["build", "check:ts", "^test"],

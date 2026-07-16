@@ -1,0 +1,30 @@
+{
+    "extends": "@snailicid3/config/tsconfig.typecheck",
+    "compilerOptions": {
+        //   "noEmit": true
+        "jsxFactory": null,
+        "jsxFragmentFactory": null,
+        "jsx": "react-jsx",
+        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "allowImportingTsExtensions": true,
+        "noEmit": true
+    },
+    "exclude": ["./node_modules"],
+    "files": ["package.json"],
+    "include": [
+        "./*.ts",
+        "./*.cts",
+        "./*.mts",
+        "./src/**/*.tsx",
+        "./src/**/*.ts",
+        "./src/**/*.cts",
+        "./src/**/*.mts",
+        "./**/*.test.ts",
+        "./**/*.test.mts",
+        "./**/*.test.cts",
+        //specifc to this project
+        "./.storybook/**/*.ts",
+        "./.storybook/**/*.cts",
+        "./.storybook/**/*.mts"
+    ]
+}
