@@ -5,10 +5,14 @@
     "description": "Example child package in monorepo",
     "scripts": {
         "build:nx": "nx run $npm_package_name:build",
+        "build:storybook:nx": "nx run $npm_package_name:build:storybook",
+        "dev:nx": "nx run $npm_package_name:dev",
+        "dev:storybook": "pnpm check:nx && pnpm exec storybook dev -p 6006",
+        "check:nx": "pnpm exec nx run -p $npm_package_name -t build:ts check:ts",
         "test:nx": "nx run $npm_package_name:test",
         "clean:nx": "nx run $npm_package_name:clean",
-        "dev:nx": "nx run $npm_package_name:dev",
-        "test:coverage": "vitest run --coverage"
+        "chromatic": "pnpm check:nx && pnpm run build:storybook:nx && pnpm exec chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --build-script-name build:storybook:nx",
+        "test:chromatic": "pnpm exec dotenv -e .env.local -- pnpm run chromatic"
     },
     "nx": {
         "targets": {
@@ -20,6 +24,23 @@
             "build:tsdown": {},
             "build:ts": {},
             "build": {},
+            "build:storybook": {
+                "cache": true,
+                "dependsOn": [
+                    "build"
+                ],
+                "command": "pnpm exec storybook build",
+                "inputs": [
+                    "{projectRoot}/src/**.tsx",
+                    "{projectRoot}/.storybook/**/*"
+                ],
+                "outputs": [
+                    "{projectRoot}/storybook-static"
+                ],
+                "options": {
+                    "cwd": "{projectRoot}"
+                }
+            },
             "test": {},
             "test:watch": {},
             "lint": {},
@@ -31,14 +52,30 @@
     },
     "dependencies": {
         "@snailicid3/utils": "^0.0.5",
+        "@vitejs/plugin-react": "^6.0.3",
         "react": "^19.2.7",
         "react-dom": "^19.2.7"
     },
     "devDependencies": {
+        "@chromatic-com/storybook": "^5.2.1",
         "@snailicid3/build-config": "^0.0.8",
         "@snailicid3/config": "^0.1.3",
+        "@storybook/addon-a11y": "^10.5.0",
+        "@storybook/addon-docs": "^10.5.0",
+        "@storybook/addon-vitest": "^10.5.0",
+        "@storybook/react-vite": "^10.5.0",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.2",
+        "@tsdown/css": "^0.22.8",
         "@types/node": "^26.0.1",
+        "@types/react": "^19.2.17",
+        "@types/react-dom": "^19.2.3",
+        "@vitest/coverage-v8": "4.1.10",
+        "chromatic": "^18.0.1",
         "cross-var": "^1.1.0",
+        "dotenv-cli": "^11.0.0",
+        "jsdom": "^29.1.1",
+        "storybook": "^10.5.0",
         "tsdown": "^0.22.3",
         "typescript": "^6.0.3",
         "vitest": "^4.1.9"
@@ -63,14 +100,10 @@
     "keywords": [
         "boilerplate"
     ],
-    "main": "./dist/index.cjs",
-    "module": "./dist/index.mjs",
     "types": "./dist/index.d.cts",
     "exports": {
-        ".": {
-            "import": "./dist/index.mjs",
-            "require": "./dist/index.cjs"
-        },
-        "./package.json": "./package.json"
+        ".": "./dist/index.js",
+        "./package.json": "./package.json",
+        "./style.css": "./dist/style.css"
     }
 }

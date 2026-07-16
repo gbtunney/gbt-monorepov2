@@ -70,9 +70,6 @@ types/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env.test
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
@@ -128,7 +125,13 @@ npm-shrinkwrap.json
 
 # System
 .ssh
-.env
+
+# System
+.ssh
+
+# Env
+.env*
+!.env*.example
 
 # Build files
 dist
