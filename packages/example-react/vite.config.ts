@@ -5,14 +5,5 @@ import { defineConfig } from 'vite'
 
 export default defineConfig({
   root: './playground',
-  plugins: [react()],
-  test: {
-    root: '.',
-    browser: {
-      enabled: true,
-      provider: playwright(),
-      instances: [{ browser: 'chromium' }],
-      headless: true,
-    },
-  },
+  plugins: [react()]
 })
