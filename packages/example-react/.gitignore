@@ -133,6 +133,9 @@ pnpm-lock.yaml
 .ssh
 .env
 
+#Husky
+.husky/_
+
 # Build files
 dist
 
@@ -151,9 +154,19 @@ dist
 *.d.cts.map
 *.map
 
-# Allowed javascript source files
-!eslint.config.js
+# Storybook
+storybook-static
+
+# Un-ignore the @snailicid3/types source package
+!packages/types/
+# Un-ignore src/types/ subdirectories (source code, not declarations)
+!packages/*/src/types/
+
+!src/global.d.ts
 
 # Scratch Files
 scratch
+temp
+tmp
 examples
+!/notes/scratch

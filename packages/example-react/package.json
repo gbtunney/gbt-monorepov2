@@ -5,10 +5,14 @@
     "description": "Example child package in monorepo",
     "scripts": {
         "build:nx": "nx run $npm_package_name:build",
+        "build:storybook:nx": "nx run $npm_package_name:build:storybook",
+        "dev:nx": "nx run $npm_package_name:dev",
+        "dev:storybook": "pnpm build:storybook && pnpm exec storybook dev -p 6006",
         "test:nx": "nx run $npm_package_name:test",
         "clean:nx": "nx run $npm_package_name:clean",
-        "dev:nx": "nx run $npm_package_name:dev",
-        "test:coverage": "vitest run --coverage"
+        "build:storybook": "pnpm exec storybook build",
+        "chromatic": "pnpm run build:storybook:nx && pnpm exec chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --build-script-name build:storybook",
+        "test:chromatic": "pnpm exec dotenv -e .env.local -- pnpm run chromatic"
     },
     "nx": {
         "targets": {
@@ -20,6 +24,19 @@
             "build:tsdown": {},
             "build:ts": {},
             "build": {},
+            "build:storybook": {
+                "cache": true,
+                "dependsOn": [
+                    "build"
+                ],
+                "inputs": [
+                    "{projectRoot}/src/**.tsx",
+                    "{projectRoot}/.storybook/**/*"
+                ],
+                "outputs": [
+                    "{projectRoot}/storybook-static"
+                ]
+            },
             "test": {},
             "test:watch": {},
             "lint": {},
@@ -47,7 +64,14 @@
         "jsdom": "^29.1.1",
         "tsdown": "^0.22.3",
         "typescript": "^6.0.3",
-        "vitest": "^4.1.9"
+        "vitest": "^4.1.9",
+        "storybook": "^10.5.0",
+        "@storybook/react-vite": "^10.5.0",
+        "@chromatic-com/storybook": "^5.2.1",
+        "@storybook/addon-vitest": "^10.5.0",
+        "@storybook/addon-a11y": "^10.5.0",
+        "@storybook/addon-docs": "^10.5.0",
+        "@vitest/coverage-v8": "4.1.10"
     },
     "type": "module",
     "author": {
