@@ -57,6 +57,7 @@ const GbtScopeMeshViewer = ({
         vRotation: Math.PI / 4,
     },
     imageAspect = defaultGbtScopeMaterialProps.imageAspect,
+    inputOverrides,
     name = 'gbt-scope-mesh',
     offset = defaultGbtScopeMaterialProps.offset,
     offsetScale = defaultGbtScopeMaterialProps.offsetScale,
@@ -148,6 +149,7 @@ const GbtScopeMeshViewer = ({
                         animators={animators}
                         dimensions={dimensions}
                         imageAspect={imageAspect}
+                        inputOverrides={inputOverrides}
                         mesh={box}
                         name={`material_${name}`}
                         offset={offset}

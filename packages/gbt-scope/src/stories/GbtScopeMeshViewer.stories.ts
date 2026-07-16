@@ -3,6 +3,7 @@ import { createElement, type ReactElement } from 'react'
 import {
     argTypes,
     buildPlaygroundAnimators,
+    buildPlaygroundInputOverrides,
     defaultMotionPlaygroundArgs,
     meshDefaultArgs,
     type MotionPlaygroundArgs,
@@ -81,5 +82,6 @@ export const motionPlayground: StoryObj<
         createElement(GbtScopeMeshViewer, {
             ...args,
             animators: buildPlaygroundAnimators(args),
+            inputOverrides: buildPlaygroundInputOverrides(args),
         }),
 }

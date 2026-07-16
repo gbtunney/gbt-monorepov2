@@ -2,6 +2,7 @@ import { type Scene, type ShaderMaterial, Vector2 } from '@babylonjs/core'
 import {
     applyAnimators,
     type GbtScopeAnimator,
+    type GbtScopeInputOverrides,
     type GbtScopeState,
 } from './animator.ts'
 import { type PointerStateHandle } from './pointer.ts'
@@ -10,6 +11,8 @@ import { type ScrollStateHandle } from './scroll.ts'
 export type GbtScopeDriverOptions = {
     /** Live list of animators (read every frame). */
     animatorsRef: MutableRef<Array<GbtScopeAnimator>>
+    /** Optional live overrides that replace the pointer/scroll signals (read every frame). */
+    overridesRef?: MutableRef<GbtScopeInputOverrides | undefined>
     pointer: PointerStateHandle
     scroll: ScrollStateHandle
     /**
@@ -41,7 +44,7 @@ const writeState = (material: ShaderMaterial, state: GbtScopeState): void => {
 export const createGbtScopeDriver = (
     scene: Scene,
     material: ShaderMaterial,
-    { animatorsRef, pointer, scroll, stateRef }: GbtScopeDriverOptions,
+    { animatorsRef, overridesRef, pointer, scroll, stateRef }: GbtScopeDriverOptions,
 ): (() => void) => {
     let time = 0
 
@@ -49,11 +52,14 @@ export const createGbtScopeDriver = (
         const delta = scene.getEngine().getDeltaTime() / 1000
         time += delta
 
+        const overrides = overridesRef?.current
         const inputs = {
             delta,
-            mouseDistance: Math.hypot(pointer.state.x, pointer.state.y),
-            scrollProgress: scroll.state.progress,
-            scrollVelocity: scroll.state.velocity,
+            mouseDistance:
+                overrides?.mouseDistance ??
+                Math.hypot(pointer.state.x, pointer.state.y),
+            scrollProgress: overrides?.scrollProgress ?? scroll.state.progress,
+            scrollVelocity: overrides?.scrollVelocity ?? scroll.state.velocity,
             time,
         }
 

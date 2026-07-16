@@ -21,6 +21,14 @@ export type GbtScopeAnimatorSource =
 export type GbtScopeAnimatorTarget =
     'offset.x' | 'offset.y' | 'opacity' | 'rotation' | 'scaleFactor'
 
+/**
+ * Fixed values that replace the live pointer/scroll signals in the driver — for mocking motion input (device-free
+ * testing, deterministic demos). A defined field wins over the real input; `undefined` fields fall through.
+ */
+export type GbtScopeInputOverrides = Partial<
+    Pick<GbtScopeInputs, 'mouseDistance' | 'scrollProgress' | 'scrollVelocity'>
+>
+
 /** Per-frame inputs fed to the animators. */
 export type GbtScopeInputs = {
     delta: number

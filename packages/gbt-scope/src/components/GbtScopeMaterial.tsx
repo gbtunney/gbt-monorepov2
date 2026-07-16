@@ -7,6 +7,7 @@ import {
 } from '../materials/shader-radial-symmetry.ts'
 import {
     type GbtScopeAnimator,
+    type GbtScopeInputOverrides,
     type GbtScopeState,
 } from '../motion/animator.ts'
 import { createGbtScopeDriver } from '../motion/driver.ts'
@@ -21,6 +22,8 @@ import {
 export type GbtScopeMaterialComponentProps = GbtScopeMaterialProps & {
     /** Declarative motion rules driven each frame. */
     animators?: Array<GbtScopeAnimator>
+    /** Fixed values replacing the live pointer/scroll inputs (mock/testing). */
+    inputOverrides?: GbtScopeInputOverrides
     /** Mesh the material is applied to. */
     mesh: Mesh | null
     name?: string
@@ -62,6 +65,7 @@ const GbtScopeMaterial = ({
     animators = [],
     dimensions = DEFAULT_DIMENSIONS,
     imageAspect = defaultGbtScopeMaterialProps.imageAspect,
+    inputOverrides,
     mesh,
     name = 'kaleidoscope',
     offset = defaultGbtScopeMaterialProps.offset,
@@ -83,6 +87,9 @@ const GbtScopeMaterial = ({
 
     // Live refs read by the render-loop driver.
     const animatorsRef = useRef<Array<GbtScopeAnimator>>(animators)
+    const overridesRef = useRef<GbtScopeInputOverrides | undefined>(
+        inputOverrides,
+    )
     const stateRef = useRef<GbtScopeState>({
         offset: [offset[0], offset[1]],
         opacity,
@@ -109,6 +116,7 @@ const GbtScopeMaterial = ({
 
         const disposeDriver = createGbtScopeDriver(scene, material, {
             animatorsRef,
+            overridesRef,
             pointer,
             scroll,
             stateRef,
@@ -129,6 +137,11 @@ const GbtScopeMaterial = ({
     useEffect(() => {
         animatorsRef.current = animators
     }, [animators])
+
+    // Keep input overrides live.
+    useEffect(() => {
+        overridesRef.current = inputOverrides
+    }, [inputOverrides])
 
     // Re-seed the runtime base state when resting values change (live controls).
     useEffect(() => {

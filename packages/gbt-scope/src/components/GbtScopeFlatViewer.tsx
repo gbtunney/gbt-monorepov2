@@ -53,6 +53,7 @@ const GbtScopeFlatViewer = ({
     bg_color = 'black',
     cameraSettings = { enabled: false, ortho: true, target: [0, 0, 0] },
     imageAspect = defaultGbtScopeMaterialProps.imageAspect,
+    inputOverrides,
     name = 'gbt-scope-flat',
     offset = defaultGbtScopeMaterialProps.offset,
     offsetScale = defaultGbtScopeMaterialProps.offsetScale,
@@ -143,6 +144,7 @@ const GbtScopeFlatViewer = ({
                         animators={animators}
                         dimensions={dimensions}
                         imageAspect={imageAspect}
+                        inputOverrides={inputOverrides}
                         mesh={plane}
                         name={`material_${name}`}
                         offset={offset}

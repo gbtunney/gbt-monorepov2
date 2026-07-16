@@ -10,6 +10,7 @@ import {
 import type {
     GbtScopeAnimator,
     GbtScopeAnimatorTarget,
+    GbtScopeInputOverrides,
 } from '../motion/animator.ts'
 /* eslint  perfectionist/sort-objects: "off" */
 
@@ -30,6 +31,14 @@ export const meshDefaultArgs: GbtScopeMeshViewerProps = {
 export type MotionPlaygroundArgs = {
     /** Constant time-driven rotation speed (radians/sec). 0 = off. */
     driftSpeed: number
+    /** When true, the mock sliders below replace the real pointer/scroll inputs. */
+    mockInputs: boolean
+    /** Mocked pointer distance from canvas center (0 = center, ~1.4 = corner). */
+    mockMouseDistance: number
+    /** Mocked page scroll progress [0, 1]. */
+    mockScrollProgress: number
+    /** Mocked scroll-wheel velocity. */
+    mockScrollVelocity: number
     mouseExponent: number
     mouseMax: number
     mouseMultiplier: number
@@ -46,6 +55,10 @@ export type MotionPlaygroundArgs = {
 /** Default playground values — mirrors the preset stories' first-pass speeds. */
 export const defaultMotionPlaygroundArgs = {
     driftSpeed: 0.3,
+    mockInputs: false,
+    mockMouseDistance: 0.5,
+    mockScrollProgress: 0,
+    mockScrollVelocity: 0,
     mouseExponent: 1.4,
     mouseMax: 1,
     mouseMultiplier: 0.6,
@@ -56,6 +69,24 @@ export const defaultMotionPlaygroundArgs = {
     scrollSpeed: 0,
     scrollTarget: 'offset.x',
 } satisfies MotionPlaygroundArgs
+
+/**
+ * Builds the viewer `inputOverrides` from the mock controls, or `undefined` when mocking is off (real pointer/scroll
+ * drive the motion).
+ */
+export const buildPlaygroundInputOverrides = ({
+    mockInputs = false,
+    mockMouseDistance = 0,
+    mockScrollProgress = 0,
+    mockScrollVelocity = 0,
+}: Partial<MotionPlaygroundArgs>): GbtScopeInputOverrides | undefined =>
+    mockInputs
+        ? {
+              mouseDistance: mockMouseDistance,
+              scrollProgress: mockScrollProgress,
+              scrollVelocity: mockScrollVelocity,
+          }
+        : undefined
 
 /** Composes the flattened playground args into a declarative `animators` array. Groups with speed 0 are skipped. */
 export const buildPlaygroundAnimators = ({
@@ -109,16 +140,20 @@ const animatorTargetOptions: Array<GbtScopeAnimatorTarget> = [
     'opacity',
 ]
 
-/** Range/select controls for {@link MotionPlaygroundArgs}; also hides the derived raw `animators` control. */
+/**
+ * Controls for {@link MotionPlaygroundArgs}; also hides the derived raw `animators`/`inputOverrides` controls. Speeds
+ * are number inputs (exact entry, 0 = off); curve shapes are sliders; mock inputs live in their own category.
+ */
 export const motionPlaygroundArgTypes: Meta['argTypes'] = {
     animators: { table: { disable: true } },
+    inputOverrides: { table: { disable: true } },
     driftSpeed: {
-        control: { max: 2, min: -2, step: 0.01, type: 'range' },
+        control: { step: 0.01, type: 'number' },
         description: 'Constant rotation drift (rad/sec). 0 = off.',
         table: { category: 'Motion Playground' },
     },
     mouseSpeed: {
-        control: { max: 5, min: -5, step: 0.1, type: 'range' },
+        control: { step: 0.01, type: 'number' },
         description: 'Pointer-distance influence. 0 = off.',
         table: { category: 'Motion Playground' },
     },
@@ -143,7 +178,7 @@ export const motionPlaygroundArgTypes: Meta['argTypes'] = {
         table: { category: 'Motion Playground' },
     },
     scrollSpeed: {
-        control: { max: 5, min: -5, step: 0.1, type: 'range' },
+        control: { step: 0.01, type: 'number' },
         description: 'Scroll-wheel velocity influence. 0 = off.',
         table: { category: 'Motion Playground' },
     },
@@ -161,6 +196,28 @@ export const motionPlaygroundArgTypes: Meta['argTypes'] = {
         control: { max: 2, min: 0, step: 0.05, type: 'range' },
         description: 'Upper clamp on the curved value.',
         table: { category: 'Motion Playground' },
+    },
+    mockInputs: {
+        control: { type: 'boolean' },
+        description:
+            'Replace real pointer/scroll input with the mock sliders below — device-independent testing with exact values.',
+        table: { category: 'Mock Inputs' },
+    },
+    mockMouseDistance: {
+        control: { max: 1.5, min: 0, step: 0.01, type: 'range' },
+        description:
+            'Mocked pointer distance from center (0 = center, ~1.4 = corner).',
+        table: { category: 'Mock Inputs' },
+    },
+    mockScrollProgress: {
+        control: { max: 1, min: 0, step: 0.01, type: 'range' },
+        description: 'Mocked page scroll progress.',
+        table: { category: 'Mock Inputs' },
+    },
+    mockScrollVelocity: {
+        control: { max: 2, min: -2, step: 0.01, type: 'range' },
+        description: 'Mocked scroll-wheel velocity.',
+        table: { category: 'Mock Inputs' },
     },
 }
 
