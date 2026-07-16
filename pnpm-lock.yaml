@@ -153,9 +153,15 @@ importers:
             '@vitest/coverage-v8':
                 specifier: 4.1.10
                 version: 4.1.10(@vitest/browser@4.1.10)(vitest@4.1.10)
+            chromatic:
+                specifier: ^18.0.1
+                version: 18.0.1
             cross-var:
                 specifier: ^1.1.0
                 version: 1.1.0
+            dotenv:
+                specifier: ^17.4.2
+                version: 17.4.2
             jsdom:
                 specifier: ^29.1.1
                 version: 29.1.1
@@ -5359,6 +5365,25 @@ packages:
             '@chromatic-com/vitest':
                 optional: true
 
+    chromatic@18.0.1:
+        resolution:
+            {
+                integrity: sha512-GlTYrZ4ui5ZW8Jzut6SAo5bMH3sIugYZ37Nq2DyVHBfPINeEzGA8eG5xNo4N/I2aRdM9Xnqw0SCls7wgf2llvA==,
+            }
+        engines: { node: '>=22.0.0' }
+        hasBin: true
+        peerDependencies:
+            '@chromatic-com/cypress': ^0.*.* || ^1.0.0
+            '@chromatic-com/playwright': ^0.*.* || ^1.0.0
+            '@chromatic-com/vitest': ^0.*.* || ^1.0.0
+        peerDependenciesMeta:
+            '@chromatic-com/cypress':
+                optional: true
+            '@chromatic-com/playwright':
+                optional: true
+            '@chromatic-com/vitest':
+                optional: true
+
     ci-info@4.4.0:
         resolution:
             {
@@ -5991,6 +6016,13 @@ packages:
         resolution:
             {
                 integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==,
+            }
+        engines: { node: '>=12' }
+
+    dotenv@17.4.2:
+        resolution:
+            {
+                integrity: sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==,
             }
         engines: { node: '>=12' }
 
@@ -15252,6 +15284,10 @@ snapshots:
         dependencies:
             semver: 7.8.5
 
+    chromatic@18.0.1:
+        dependencies:
+            semver: 7.8.5
+
     ci-info@4.4.0: {}
 
     cjs-module-lexer@1.4.3: {}
@@ -15584,6 +15620,8 @@ snapshots:
             dotenv: 16.4.7
 
     dotenv@16.4.7: {}
+
+    dotenv@17.4.2: {}
 
     dts-resolver@3.0.0(oxc-resolver@11.24.2):
         optionalDependencies:
