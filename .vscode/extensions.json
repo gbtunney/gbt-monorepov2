@@ -24,6 +24,7 @@
         "anseki.vscode-color",
         "openai.chatgpt",
         "esbenp.prettier-vscode",
-        "ms-vscode.vscode-chat-customizations-evaluations"
+        "ms-vscode.vscode-chat-customizations-evaluations",
+        "unifiedjs.vscode-mdx"
     ]
 }
