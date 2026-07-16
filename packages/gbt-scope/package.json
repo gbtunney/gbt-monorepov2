@@ -32,7 +32,17 @@
                     "check:ts",
                     "^test"
                 ],
-                "command": "echo 'TODO: add actual test';"
+                "command": "vitest run --coverage --project unit",
+                "options": {
+                    "cwd": "{projectRoot}"
+                }
+            },
+            "test:bk": {
+                "cache": false,
+                "command": "vitest run --project storybook",
+                "options": {
+                    "cwd": "{projectRoot}"
+                }
             },
             "test:watch": {},
             "lint": {},
