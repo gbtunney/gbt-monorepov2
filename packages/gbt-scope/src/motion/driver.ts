@@ -7,20 +7,20 @@ import {
 import { type PointerStateHandle } from './pointer.ts'
 import { type ScrollStateHandle } from './scroll.ts'
 
-/** Minimal mutable-ref shape (compatible with React's useRef result). */
-export type MutableRef<T> = { current: T }
-
 export type GbtScopeDriverOptions = {
     /** Live list of animators (read every frame). */
-    animatorsRef: MutableRef<GbtScopeAnimator[]>
+    animatorsRef: MutableRef<Array<GbtScopeAnimator>>
+    pointer: PointerStateHandle
+    scroll: ScrollStateHandle
     /**
      * Persistent runtime state. The driver accumulates into it each frame; the owner re-seeds `current` from base props
      * to make changes live.
      */
     stateRef: MutableRef<GbtScopeState>
-    pointer: PointerStateHandle
-    scroll: ScrollStateHandle
 }
+
+/** Minimal mutable-ref shape (compatible with React's useRef result). */
+export type MutableRef<Type> = { current: Type }
 
 /** Pushes a {@link GbtScopeState} onto the shader material's uniforms. */
 const writeState = (material: ShaderMaterial, state: GbtScopeState): void => {
@@ -41,7 +41,7 @@ const writeState = (material: ShaderMaterial, state: GbtScopeState): void => {
 export const createGbtScopeDriver = (
     scene: Scene,
     material: ShaderMaterial,
-    { animatorsRef, stateRef, pointer, scroll }: GbtScopeDriverOptions,
+    { animatorsRef, pointer, scroll, stateRef }: GbtScopeDriverOptions,
 ): (() => void) => {
     let time = 0
 
@@ -51,10 +51,10 @@ export const createGbtScopeDriver = (
 
         const inputs = {
             delta,
-            time,
             mouseDistance: Math.hypot(pointer.state.x, pointer.state.y),
             scrollProgress: scroll.state.progress,
             scrollVelocity: scroll.state.velocity,
+            time,
         }
 
         stateRef.current = applyAnimators(

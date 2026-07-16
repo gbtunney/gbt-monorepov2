@@ -1,19 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { argTypes, meshDefaultArgs } from './GbtScopeShared.ts'
 import GbtScopeMeshViewer from '../components/GbtScopeMeshViewer.tsx'
 import type { GbtScopeAnimator } from '../motion/animator.ts'
-import { argTypes, meshDefaultArgs } from './GbtScopeShared.ts'
-/* eslint  sort/object-properties: "off" */
+/* eslint  perfectionist/sort-objects: "off" */
 
 /** Chromatic runs deterministic snapshots — drop time-based animators under CHROMATIC so frames are stable. */
 const stillForChromatic = (
-    animators: GbtScopeAnimator[],
-): GbtScopeAnimator[] => (process.env['CHROMATIC'] === 'true' ? [] : animators)
+    animators: Array<GbtScopeAnimator>,
+): Array<GbtScopeAnimator> =>
+    process.env['CHROMATIC'] === 'true' ? [] : animators
 
 const meta: Meta<typeof GbtScopeMeshViewer> = {
+    args: { ...meshDefaultArgs },
     argTypes,
     component: GbtScopeMeshViewer,
     parameters: { layout: 'centered' },
-    args: { ...meshDefaultArgs },
     tags: ['autodocs'],
     title: 'GbtScope/Mesh Viewer',
 } satisfies Meta<typeof GbtScopeMeshViewer>
@@ -22,35 +23,35 @@ export default meta
 
 type MeshStory = StoryObj<typeof meta>
 
-const driftAnimators: GbtScopeAnimator[] = [
-    { target: 'rotation', source: 'time', mode: 'add', speed: 0.3 },
+const driftAnimators: Array<GbtScopeAnimator> = [
+    { mode: 'add', source: 'time', speed: 0.3, target: 'rotation' },
 ]
 
-const mouseAnimators: GbtScopeAnimator[] = [
+const mouseAnimators: Array<GbtScopeAnimator> = [
     {
-        target: 'rotation',
-        source: 'mouseDistance',
+        curve: { exponent: 1.4, max: 1, multiplier: 0.6 },
         mode: 'add',
+        source: 'mouseDistance',
         speed: 2,
-        curve: { multiplier: 0.6, max: 1, exponent: 1.4 },
+        target: 'rotation',
     },
 ]
 
 /** Baseline 3D mesh viewer — kaleidoscope material on a rotatable box. */
-export const Static: MeshStory = {
+export const STATIC: MeshStory = {
     args: { ...meshDefaultArgs, animators: [] },
 }
 
 /** Constant rotation drift. */
-export const SlowDrift: MeshStory = {
+export const slowDrift: MeshStory = {
     args: { ...meshDefaultArgs, animators: stillForChromatic(driftAnimators) },
 }
 
 /** Rotation reacts to pointer distance from center. */
-export const MouseReactive: MeshStory = {
+export const mouseReactive: MeshStory = {
     args: {
         ...meshDefaultArgs,
-        segments: 12,
         animators: stillForChromatic(mouseAnimators),
+        segments: 12,
     },
 }

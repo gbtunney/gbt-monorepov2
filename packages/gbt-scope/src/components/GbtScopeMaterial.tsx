@@ -1,4 +1,4 @@
-import { type Mesh, ShaderMaterial, Texture, Vector2 } from '@babylonjs/core'
+import { type Mesh, ShaderMaterial, Texture } from '@babylonjs/core'
 import { type ReactElement, useEffect, useRef } from 'react'
 import { type Dimensions, getResolution } from '../helpers.ts'
 import {
@@ -19,16 +19,16 @@ import {
 } from '../types.ts'
 
 export type GbtScopeMaterialComponentProps = GbtScopeMaterialProps & {
-    name?: string
+    /** Declarative motion rules driven each frame. */
+    animators?: Array<GbtScopeAnimator>
     /** Mesh the material is applied to. */
     mesh: Mesh | null
-    /** Declarative motion rules driven each frame. */
-    animators?: GbtScopeAnimator[]
+    name?: string
+    onInit?: (material: ShaderMaterial) => void
+    onUpdate?: (material: ShaderMaterial) => void
     /** Live pointer + scroll inputs (created by the viewer). */
     pointer: PointerStateHandle
     scroll: ScrollStateHandle
-    onInit?: (material: ShaderMaterial) => void
-    onUpdate?: (material: ShaderMaterial) => void
 }
 
 const DEFAULT_DIMENSIONS: Dimensions = { height: 1200, width: 1200 }
@@ -76,16 +76,16 @@ const GbtScopeMaterial = ({
     scroll,
     segments = defaultGbtScopeMaterialProps.segments,
     src,
-    tiling = defaultGbtScopeMaterialProps.tiling,
     tileMode = defaultGbtScopeMaterialProps.tileMode,
-}: GbtScopeMaterialComponentProps): ReactElement | null => {
-    const materialRef = useRef<ShaderMaterial | null>(null)
+    tiling = defaultGbtScopeMaterialProps.tiling,
+}: GbtScopeMaterialComponentProps): null | ReactElement => {
+    const materialRef = useRef<null | ShaderMaterial>(null)
 
     // Live refs read by the render-loop driver.
-    const animatorsRef = useRef<GbtScopeAnimator[]>(animators)
+    const animatorsRef = useRef<Array<GbtScopeAnimator>>(animators)
     const stateRef = useRef<GbtScopeState>({
-        opacity,
         offset: [offset[0], offset[1]],
+        opacity,
         rotation,
         scaleFactor,
     })
@@ -119,7 +119,7 @@ const GbtScopeMaterial = ({
             material.dispose()
             materialRef.current = null
         }
-        // pointer/scroll are stable handles from the viewer; animators/state via refs.
+        // Pointer/scroll are stable handles from the viewer; animators/state via refs.
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mesh, src, name])
 
@@ -131,8 +131,8 @@ const GbtScopeMaterial = ({
     // Re-seed the runtime base state when resting values change (live controls).
     useEffect(() => {
         stateRef.current = {
-            opacity,
             offset: [offset[0], offset[1]],
+            opacity,
             rotation,
             scaleFactor,
         }

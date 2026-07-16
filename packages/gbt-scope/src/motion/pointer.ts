@@ -5,12 +5,12 @@ export type PointerState = {
 }
 
 export type PointerStateHandle = {
-    /** Live pointer position. Mutated internally; read it inside a render loop. */
-    state: PointerState
     /** Attach mousemove/mouseleave listeners to a canvas. */
     attach: (canvas: HTMLCanvasElement) => void
     /** Remove the listeners. Call from the scene's onDisposeObservable. */
     detach: (canvas: HTMLCanvasElement) => void
+    /** Live pointer position. Mutated internally; read it inside a render loop. */
+    state: PointerState
 }
 
 /**
@@ -37,7 +37,6 @@ export const createPointerState = (): PointerStateHandle => {
     }
 
     return {
-        state: _state,
         attach: (canvas: HTMLCanvasElement): void => {
             canvas.addEventListener('mousemove', handleMouseMove)
             canvas.addEventListener('mouseleave', handleMouseLeave)
@@ -46,5 +45,6 @@ export const createPointerState = (): PointerStateHandle => {
             canvas.removeEventListener('mousemove', handleMouseMove)
             canvas.removeEventListener('mouseleave', handleMouseLeave)
         },
+        state: _state,
     }
 }

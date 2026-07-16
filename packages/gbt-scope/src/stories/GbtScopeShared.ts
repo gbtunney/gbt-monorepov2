@@ -7,8 +7,7 @@ import {
     defaultGbtScopeMeshViewerProps,
     type GbtScopeMeshViewerProps,
 } from '../components/GbtScopeMeshViewer.tsx'
-/* eslint  sort/object-properties: "off" */
-/* eslint filenames-simple/naming-convention: 'off'*/
+/* eslint  perfectionist/sort-objects: "off" */
 
 /** Composed default args — single source of truth from the component defaults. */
 export const flatDefaultArgs: GbtScopeFlatViewerProps = {
@@ -20,14 +19,12 @@ export const meshDefaultArgs: GbtScopeMeshViewerProps = {
 }
 
 export const argTypes: Meta['argTypes'] = {
-    bg_color: { control: 'color' },
-    resolution: { control: 'object' },
-
-    //  General Settings
-    src: {
-        control: { type: 'select' },
-        options: ['uv-checker.png', 'gradient4-3.png', 'eel.jpg'],
-        table: { category: 'General Settings' },
+    //  Motion — declarative animators
+    animators: {
+        control: { type: 'object' },
+        description:
+            'Declarative motion rules: { target, source, mode, speed, curve }[]',
+        table: { category: 'Motion' },
     },
     aspect_ratio: {
         control: { type: 'select' },
@@ -41,36 +38,27 @@ export const argTypes: Meta['argTypes'] = {
         },
         table: { category: 'General Settings' },
     },
+
+    bg_color: { control: 'color' },
     imageAspect: {
-        description: 'Src image aspect ratio',
         control: { max: 4, min: 0.01, step: 0.1, type: 'number' },
+        description: 'Src image aspect ratio',
         table: { category: 'General Settings' },
     },
+    offset: {
+        control: { type: 'object' },
+        table: { category: 'Transform' },
+    },
 
-    //  Graphic Settings
-    tiling: {
-        control: { max: 20, min: 1, step: 1, type: 'number' },
-        table: { category: 'Graphic Settings' },
-    },
-    tileMode: {
-        description: 'Tiling strategy applied after the radial fold',
-        control: { type: 'select' },
-        options: ['none', 'repeat', 'mirror'],
-        table: { category: 'Graphic Settings' },
-    },
-    scaleFactor: {
-        control: { max: 3, min: 0.01, step: 0.1, type: 'number' },
-        table: { category: 'Graphic Settings' },
-    },
-    segments: {
-        control: { max: 30, min: 1, step: 1, type: 'number' },
-        table: { category: 'Graphic Settings' },
+    offsetScale: {
+        control: { max: 4, min: 0.001, step: 0.01, type: 'number' },
+        table: { category: 'Transform' },
     },
     opacity: {
         control: { max: 1, min: 0, step: 0.01, type: 'number' },
         table: { category: 'Graphic Settings' },
     },
-
+    resolution: { control: 'object' },
     //  Rotation / Offset base values
     rotation: {
         control: { max: 360, min: 0, step: 0.1, type: 'number' },
@@ -80,20 +68,31 @@ export const argTypes: Meta['argTypes'] = {
         control: { max: 4, min: 0.001, step: 0.001, type: 'number' },
         table: { category: 'Transform' },
     },
-    offset: {
-        control: { type: 'object' },
-        table: { category: 'Transform' },
+
+    scaleFactor: {
+        control: { max: 3, min: 0.01, step: 0.1, type: 'number' },
+        table: { category: 'Graphic Settings' },
     },
-    offsetScale: {
-        control: { max: 4, min: 0.001, step: 0.01, type: 'number' },
-        table: { category: 'Transform' },
+    segments: {
+        control: { max: 30, min: 1, step: 1, type: 'number' },
+        table: { category: 'Graphic Settings' },
+    },
+    //  General Settings
+    src: {
+        control: { type: 'select' },
+        options: ['uv-checker.png', 'gradient4-3.png', 'eel.jpg'],
+        table: { category: 'General Settings' },
+    },
+    tileMode: {
+        control: { type: 'select' },
+        description: 'Tiling strategy applied after the radial fold',
+        options: ['none', 'repeat', 'mirror'],
+        table: { category: 'Graphic Settings' },
     },
 
-    //  Motion — declarative animators
-    animators: {
-        description:
-            'Declarative motion rules: { target, source, mode, speed, curve }[]',
-        control: { type: 'object' },
-        table: { category: 'Motion' },
+    //  Graphic Settings
+    tiling: {
+        control: { max: 20, min: 1, step: 1, type: 'number' },
+        table: { category: 'Graphic Settings' },
     },
 }

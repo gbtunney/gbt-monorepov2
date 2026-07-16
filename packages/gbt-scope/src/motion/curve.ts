@@ -9,12 +9,12 @@ export const applyCurve = (
     curve: GbtScopeCurve = {},
 ): number => {
     const {
-        min = 0,
-        max = 1,
-        multiplier = 1,
-        exponent = 1,
         deadzone = 0,
+        exponent = 1,
         invert = false,
+        max = 1,
+        min = 0,
+        multiplier = 1,
     } = curve
     const normalized = Math.max(0, Math.abs(value) - deadzone)
     const curved = Math.pow(normalized * multiplier, exponent)
@@ -43,7 +43,7 @@ export const tupleToGbtScopeCurve = (
     tuple: [number, number],
     multiplier = 1,
 ): GbtScopeCurve => ({
-    min: tuple[0],
     max: tuple[1],
+    min: tuple[0],
     multiplier,
 })

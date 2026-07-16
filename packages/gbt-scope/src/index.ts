@@ -1,33 +1,27 @@
 /** Public API barrel for @snailicid3/gbt-scope */
 
+// Flat (non-3D) viewer
+export {
+    defaultGbtScopeFlatViewerProps,
+    default as GbtScopeFlatViewer,
+    type GbtScopeFlatViewerProps,
+} from './components/GbtScopeFlatViewer.tsx'
+
 // Core shader material
 export {
     default as GbtScopeMaterial,
     type GbtScopeMaterialComponentProps,
 } from './components/GbtScopeMaterial.tsx'
 
-// Flat (non-3D) viewer
-export {
-    default as GbtScopeFlatViewer,
-    defaultGbtScopeFlatViewerProps,
-    type GbtScopeFlatViewerProps,
-} from './components/GbtScopeFlatViewer.tsx'
-
 // 3D mesh viewer
 export {
-    default as GbtScopeMeshViewer,
     defaultGbtScopeMeshViewerProps,
+    default as GbtScopeMeshViewer,
     type GbtScopeMeshViewerProps,
 } from './components/GbtScopeMeshViewer.tsx'
 
-// Shared types + material defaults
-export {
-    type GbtScopeCurve,
-    type GbtScopeMaterialProps,
-    type GbtScopeTileMode,
-    type GbtScopeViewerBaseProps,
-    defaultGbtScopeMaterialProps,
-} from './types.ts'
+// Helpers
+export { type Dimensions, type Point, type XY } from './helpers.ts'
 
 // Motion: animator system
 export {
@@ -56,5 +50,11 @@ export {
     type ScrollStateHandle,
 } from './motion/scroll.ts'
 
-// Helpers
-export { type Dimensions, type Point, type XY } from './helpers.ts'
+// Shared types + material defaults
+export {
+    defaultGbtScopeMaterialProps,
+    type GbtScopeCurve,
+    type GbtScopeMaterialProps,
+    type GbtScopeTileMode,
+    type GbtScopeViewerBaseProps,
+} from './types.ts'

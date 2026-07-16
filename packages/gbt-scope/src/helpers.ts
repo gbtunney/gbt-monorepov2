@@ -10,8 +10,8 @@ import {
 } from '@babylonjs/core'
 
 export type Dimensions = {
-    width: number
     height: number
+    width: number
 }
 export type Point = { x: number; y: number }
 export type XY = [number, number]
@@ -25,25 +25,25 @@ export const distanceBetweenPoints = (a: Point, b: Point): number =>
     Math.hypot(b.x - a.x, b.y - a.y)
 
 export type RGBColor = ConstructorParameters<typeof Color3>
-export type Vector3Params = ConstructorParameters<typeof Vector3>
 export type Vector2Params = ConstructorParameters<typeof Vector2>
+export type Vector3Params = ConstructorParameters<typeof Vector3>
 export type Vector4Params = ConstructorParameters<typeof Vector4>
 const { x, y, z } = Vector3.Zero()
 
 export type CameraConfigPosition = Partial<{
+    enabled: boolean
     hRotation: number /** Alpha Math.PI / 2, // Alpha (horizontal rotation) */
-    vRotation: number /** Beta Math.PI / 4, // Beta (vertical rotation) */
-    radius: number
-    position: Vector3Params
-    target: Vector3Params
     /** Slow down the zoom speed */
     mouseWheelSpeed: number
-    enabled: boolean
+    position: Vector3Params
+    radius: number
+    target: Vector3Params
+    vRotation: number /** Beta Math.PI / 4, // Beta (vertical rotation) */
 }>
-export type CameraOrthoConfig = { ortho?: true } & Pick<
+export type CameraOrthoConfig = Pick<
     CameraConfigPosition,
-    'target' | 'enabled'
->
+    'enabled' | 'target'
+> & { ortho?: true }
 export const setOrthoCamera = (
     scene: Scene,
     camera: FreeCamera,

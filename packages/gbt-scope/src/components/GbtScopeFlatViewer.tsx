@@ -7,11 +7,7 @@ import {
     type Scene,
     Vector3,
 } from '@babylonjs/core'
-import {
-    parseColorJS,
-    isValidColor,
-    parseColorToHexStrict,
-} from '@snailicid3/color'
+import { isValidColor, parseColorToHexStrict } from '@snailicid3/color'
 import SceneComponent from 'babylonjs-hook'
 import {
     type CSSProperties,
@@ -36,15 +32,15 @@ import {
 
 export type GbtScopeFlatViewerProps = GbtScopeViewerBaseProps &
     Omit<GbtScopeMaterialProps, 'dimensions'> & {
-        name?: string
         cameraSettings?: CameraOrthoConfig
+        name?: string
     }
 
 /** Default props for the flat viewer — single source of truth for Storybook args. */
 export const defaultGbtScopeFlatViewerProps = {
     ...defaultGbtScopeMaterialProps,
     animators: [],
-    aspect_ratio: 1 as number | 'parent',
+    aspect_ratio: 1 as 'parent' | number,
     bg_color: 'black',
     cameraSettings: {
         enabled: false,
@@ -71,11 +67,11 @@ const GbtScopeFlatViewer = ({
     rotationScale = defaultGbtScopeMaterialProps.rotationScale,
     scaleFactor = defaultGbtScopeMaterialProps.scaleFactor,
     segments = defaultGbtScopeMaterialProps.segments,
-    src = 'uv-checker.png',
-    tiling = defaultGbtScopeMaterialProps.tiling,
+    src,
     tileMode = defaultGbtScopeMaterialProps.tileMode,
+    tiling = defaultGbtScopeMaterialProps.tiling,
 }: GbtScopeFlatViewerProps): ReactElement => {
-    const [scene, setScene] = useState<Scene | null>(null)
+    const [scene, setScene] = useState<null | Scene>(null)
     const [plane, setPlane] = useState<Mesh | null>(null)
     const [_dimensions, setDimensions] = useState<Dimensions | undefined>(
         undefined,
@@ -153,8 +149,8 @@ const GbtScopeFlatViewer = ({
         <div style={customStyle}>
             <SceneComponent
                 antialias
-                onSceneReady={onSceneReady}
                 id="my-canvas"
+                onSceneReady={onSceneReady}
                 style={{ height: '100%', width: '100%' }}>
                 {scene && plane && (
                     <GbtScopeMaterial
@@ -173,8 +169,8 @@ const GbtScopeFlatViewer = ({
                         scroll={scrollRef.current}
                         segments={segments}
                         src={src}
-                        tiling={tiling}
                         tileMode={tileMode}
+                        tiling={tiling}
                     />
                 )}
             </SceneComponent>
