@@ -28,11 +28,16 @@ export const applyCurve = (
  */
 export const isTupleCurve = (
     value: [number, number] | GbtScopeCurve,
-): value is [number, number] =>
-    Array.isArray(value) &&
-    value.length === 2 &&
-    typeof value[0] === 'number' &&
-    typeof value[1] === 'number'
+): value is [number, number] => {
+    if (!Array.isArray(value)) return false
+    // Widen so the runtime length/type checks aren't "always true" for the tuple type.
+    const items: ReadonlyArray<unknown> = value
+    return (
+        items.length === 2 &&
+        typeof items[0] === 'number' &&
+        typeof items[1] === 'number'
+    )
+}
 
 /**
  * Bridges the legacy `[min, max]` tuple (plus a separate `mouse_multiplier`) into an equivalent {@link GbtScopeCurve}.

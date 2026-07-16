@@ -9,13 +9,7 @@ import {
 } from '@babylonjs/core'
 import { isValidColor, parseColorToHexStrict } from '@snailicid3/color'
 import SceneComponent from 'babylonjs-hook'
-import {
-    type CSSProperties,
-    type ReactElement,
-    useEffect,
-    useRef,
-    useState,
-} from 'react'
+import { type CSSProperties, type ReactElement, useState } from 'react'
 import GbtScopeMaterial from './GbtScopeMaterial.tsx'
 import {
     type CameraConfigPosition,
@@ -37,6 +31,7 @@ export type GbtScopeMeshViewerProps = GbtScopeViewerBaseProps &
     }
 
 /** Default props for the 3D mesh viewer — single source of truth for Storybook args. */
+// eslint-disable-next-line react-refresh/only-export-components -- Storybook args belong beside the component; costs only HMR granularity.
 export const defaultGbtScopeMeshViewerProps = {
     ...defaultGbtScopeMaterialProps,
     animators: [],
@@ -77,12 +72,10 @@ const GbtScopeMeshViewer = ({
 }: GbtScopeMeshViewerProps): ReactElement => {
     const [scene, setScene] = useState<null | Scene>(null)
     const [box, setBox] = useState<Mesh | null>(null)
-    const [_dimensions, setDimensions] = useState<Dimensions | undefined>(
-        undefined,
-    )
 
-    const pointerRef = useRef(createPointerState())
-    const scrollRef = useRef(createScrollState())
+    // Stable input handles read by the material's render-loop driver.
+    const [pointerState] = useState(createPointerState)
+    const [scrollState] = useState(createScrollState)
 
     const customStyle: CSSProperties = {
         backgroundColor: isValidColor(bg_color)
@@ -92,22 +85,16 @@ const GbtScopeMeshViewer = ({
         ...(aspect_ratio !== 'parent' ? { aspectRatio: aspect_ratio } : {}),
     }
 
-    useEffect(() => {
-        if (resolution === 'screen' && scene !== null) {
-            setDimensions({
-                height: scene.getEngine().getRenderHeight(),
-                width: scene.getEngine().getRenderWidth(),
-            })
-        } else if (
-            resolution !== 'screen' &&
-            resolution !== undefined &&
-            resolution !== null
-        ) {
-            setDimensions(resolution)
-        } else {
-            setDimensions(undefined)
-        }
-    }, [resolution, scene])
+    // Derived from resolution + scene; no state needed.
+    const dimensions: Dimensions | undefined =
+        resolution === 'screen'
+            ? scene !== null
+                ? {
+                      height: scene.getEngine().getRenderHeight(),
+                      width: scene.getEngine().getRenderWidth(),
+                  }
+                : undefined
+            : (resolution ?? undefined)
 
     const onSceneReady = (_scene: Scene): void => {
         _scene.clearColor = new Color4(0, 0, 0, 0)
@@ -140,11 +127,11 @@ const GbtScopeMeshViewer = ({
                 if (event.key === 'Escape')
                     setRotateCameraPosition(camera, _scene, cameraSettings)
             })
-            pointerRef.current.attach(canvas)
-            scrollRef.current.attach()
+            pointerState.attach(canvas)
+            scrollState.attach()
             _scene.onDisposeObservable.add(() => {
-                pointerRef.current.detach(canvas)
-                scrollRef.current.detach()
+                pointerState.detach(canvas)
+                scrollState.detach()
             })
         }
     }
@@ -159,18 +146,18 @@ const GbtScopeMeshViewer = ({
                 {scene && box && (
                     <GbtScopeMaterial
                         animators={animators}
-                        dimensions={_dimensions}
+                        dimensions={dimensions}
                         imageAspect={imageAspect}
                         mesh={box}
                         name={`material_${name}`}
                         offset={offset}
                         offsetScale={offsetScale}
                         opacity={opacity}
-                        pointer={pointerRef.current}
+                        pointer={pointerState}
                         rotation={rotation}
                         rotationScale={rotationScale}
                         scaleFactor={scaleFactor}
-                        scroll={scrollRef.current}
+                        scroll={scrollState}
                         segments={segments}
                         src={src}
                         tileMode={tileMode}

@@ -91,6 +91,7 @@ const GbtScopeMaterial = ({
     })
 
     // Create the material + driver once per mesh/src.
+    // eslint-disable-next-line react-hooks/immutability -- Babylon meshes are imperative; assigning mesh.material inside the effect is the API.
     useEffect(() => {
         if (!src || !mesh) return undefined
 
@@ -102,6 +103,7 @@ const GbtScopeMaterial = ({
             { attributes: ['position', 'uv'], uniforms: UNIFORMS },
         )
         material.setTexture('uTexture', new Texture(src, scene, true, false))
+        // eslint-disable-next-line react-hooks/immutability -- see above; Babylon mutation, not React state.
         mesh.material = material
         materialRef.current = material
 
