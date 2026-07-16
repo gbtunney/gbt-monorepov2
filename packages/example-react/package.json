@@ -11,7 +11,7 @@
         "check:nx": "pnpm exec nx run -p $npm_package_name -t build:ts check:ts",
         "test:nx": "nx run $npm_package_name:test",
         "clean:nx": "nx run $npm_package_name:clean",
-        "chromatic": "pnpm check:nx && pnpm run build:storybook:nx && pnpm exec chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --build-script-name build:storybook",
+        "chromatic": "pnpm check:nx && pnpm run build:storybook:nx && pnpm exec chromatic --project-token=$CHROMATIC_PROJECT_TOKEN --build-script-name build:storybook:nx",
         "test:chromatic": "pnpm exec dotenv -e .env.local -- pnpm run chromatic"
     },
     "nx": {
