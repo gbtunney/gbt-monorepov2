@@ -5,8 +5,8 @@ import { defineConfig } from 'vitest/config'
 import { join } from 'node:path'
 
 /**
- * Storybook browser tests (playwright/chromium) — opt-in via the nx `test:bk` target; too heavy for the default
- * CI/dev test run. Unit tests live in `vitest.config.ts`.
+ * Storybook browser tests (playwright/chromium) — opt-in via the nx `test:bk` target; too heavy for the default CI/dev
+ * test run. Unit tests live in `vitest.config.ts`.
  */
 export default defineConfig({
     plugins: [

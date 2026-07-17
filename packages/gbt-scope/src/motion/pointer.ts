@@ -19,8 +19,8 @@ export type PointerStateHandle = {
  * observable. The returned `state` object is mutated in place and is safe to read every frame.
  *
  * Position is normalized to [-1, 1] on both axes (canvas-relative). Uses pointer events so mouse and touch behave
- * uniformly: a mouse resets to [0, 0] on leaving the canvas, while a touch latches at the last tap/drag position
- * (tap center to zero it) — hover-less devices would otherwise never produce input.
+ * uniformly: a mouse resets to [0, 0] on leaving the canvas, while a touch latches at the last tap/drag position (tap
+ * center to zero it) — hover-less devices would otherwise never produce input.
  */
 export const createPointerState = (): PointerStateHandle => {
     const _state = { x: 0, y: 0 }

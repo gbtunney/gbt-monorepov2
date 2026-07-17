@@ -73,9 +73,7 @@ describe('tupleToGbtScopeCurve', () => {
     })
 
     it('reproduces the legacy inline clamp exactly', () => {
-        /**
-         * Legacy: Math.min(Math.max(dist * mult, min), max)
-         */
+        /** Legacy: Math.min(Math.max(dist * mult, min), max) */
         const legacy = (dist: number, mult: number, min: number, max: number) =>
             Math.min(Math.max(dist * mult, min), max)
         const curve = tupleToGbtScopeCurve([0, 0.015], 0.01)

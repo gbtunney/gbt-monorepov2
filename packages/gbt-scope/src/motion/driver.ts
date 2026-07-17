@@ -44,7 +44,13 @@ const writeState = (material: ShaderMaterial, state: GbtScopeState): void => {
 export const createGbtScopeDriver = (
     scene: Scene,
     material: ShaderMaterial,
-    { animatorsRef, overridesRef, pointer, scroll, stateRef }: GbtScopeDriverOptions,
+    {
+        animatorsRef,
+        overridesRef,
+        pointer,
+        scroll,
+        stateRef,
+    }: GbtScopeDriverOptions,
 ): (() => void) => {
     let time = 0
 

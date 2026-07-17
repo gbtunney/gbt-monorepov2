@@ -12,7 +12,9 @@ const baseState = (): GbtScopeState => ({
     scaleFactor: 1,
 })
 
-const baseInputs = (overrides: Partial<GbtScopeInputs> = {}): GbtScopeInputs => ({
+const baseInputs = (
+    overrides: Partial<GbtScopeInputs> = {},
+): GbtScopeInputs => ({
     delta: 0.5,
     mouseDistance: 0.5,
     scrollProgress: 0.25,
