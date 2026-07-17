@@ -29,6 +29,7 @@ export {
     type GbtScopeAnimator,
     type GbtScopeAnimatorSource,
     type GbtScopeAnimatorTarget,
+    type GbtScopeInputOverrides,
     type GbtScopeInputs,
     type GbtScopeState,
 } from './motion/animator.ts'

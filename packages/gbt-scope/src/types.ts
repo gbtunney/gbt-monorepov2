@@ -1,5 +1,8 @@
 import { type Dimensions } from './helpers.ts'
-import { type GbtScopeAnimator } from './motion/animator.ts'
+import {
+    type GbtScopeAnimator,
+    type GbtScopeInputOverrides,
+} from './motion/animator.ts'
 
 /**
  * Curve parameters controlling how an input value (eg. pointer distance from center, scroll velocity) maps to an effect
@@ -81,6 +84,8 @@ export type GbtScopeViewerBaseProps = {
     /** Aspect ratio of the host canvas. */
     aspect_ratio?: 'parent' | number
     bg_color?: string
+    /** Fixed values replacing the live pointer/scroll inputs (mock/testing). */
+    inputOverrides?: GbtScopeInputOverrides
     /** Canvas background; `'screen'` resolution matches the viewport. */
     resolution?: 'screen' | Dimensions | null
 }

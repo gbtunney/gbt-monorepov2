@@ -25,14 +25,13 @@
             "build": {},
             "build:storybook": {},
             "chromatic": {},
-            "test": {
-                "cache": true,
-                "dependsOn": [
-                    "build",
-                    "check:ts",
-                    "^test"
-                ],
-                "command": "echo 'TODO: add actual test';"
+            "test": {},
+            "test:bk": {
+                "cache": false,
+                "command": "vitest run --config vitest.storybook.config.ts",
+                "options": {
+                    "cwd": "{projectRoot}"
+                }
             },
             "test:watch": {},
             "lint": {},

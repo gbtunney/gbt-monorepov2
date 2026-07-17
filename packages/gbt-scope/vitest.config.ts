@@ -1,35 +1,13 @@
-import { getDirname } from '@snailicid3/config'
-import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
-import react from '@vitejs/plugin-react'
-import { playwright } from '@vitest/browser-playwright'
 import { defineConfig } from 'vitest/config'
 
+/**
+ * Plain node unit tests for the pure motion/util functions — no DOM, no browser — so the inherited nx `test` target
+ * (`vitest run --coverage`) just works. The storybook browser tests live in `vitest.storybook.config.ts` (nx
+ * `test:bk`).
+ */
 export default defineConfig({
-    plugins: [react()],
     test: {
-        projects: [
-            {
-                extends: true,
-                plugins: [
-                    storybookTest({
-                        configDir: getDirname(import.meta, '.storybook'),
-                    }),
-                ],
-                test: {
-                    browser: {
-                        enabled: true,
-                        headless: true,
-                        instances: [
-                            {
-                                browser: 'chromium',
-                            },
-                        ],
-                        provider: playwright({}),
-                    },
-                    name: 'storybook',
-                    setupFiles: ['.storybook/vitest.setup.ts'],
-                },
-            },
-        ],
+        environment: 'node',
+        include: ['src/**/*.test.ts'],
     },
 })
