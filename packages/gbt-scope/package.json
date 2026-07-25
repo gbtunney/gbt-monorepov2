@@ -22,7 +22,12 @@
             "check:ts": {},
             "build:tsdown": {},
             "build:ts": {},
-            "build": {},
+            "build": {
+                "dependsOn": [
+                    "build:ts",
+                    "build:tsdown"
+                ]
+            },
             "build:storybook": {},
             "chromatic": {},
             "test": {},

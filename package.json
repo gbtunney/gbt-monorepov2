@@ -16,8 +16,8 @@
         "commit:direct": "pnpm build:self && pnpm exec scope-commit --checked-commit --skip-lint-staged",
         "\n========== BUILD >> ==========": "",
         "build": "pnpm nx:build",
-        "build:self": "pnpm exec nx run $npm_package_name:build",
-        "nx:build": "pnpm exec nx run-many -t build",
+        "build:self": "pnpm exec nx run $npm_package_name:root:build",
+        "nx:build": "pnpm exec nx run-many -t build root:build",
         "\n========== TEST >> ==========": "",
         "test": "pnpm nx:test",
         "nx:test": "pnpm exec nx run-many --target=test",
@@ -50,21 +50,21 @@
         "nx:affected": "nx affected --target=build",
         "nx:reset": "pnpm exec nx reset",
         "\n========== CHECK >> ==========": "",
-        "check": "pnpm exec nx run-many -t lint",
+        "check": "pnpm exec nx run-many -t lint root:lint",
         "check:md": "pnpm exec nx run $npm_package_name:lint:md",
         "\n========== FIX >> ==========": "",
-        "fix": "pnpm exec nx run-many -t fix",
+        "fix": "pnpm exec nx run-many -t fix root:fix",
         "fix:md": "pnpm exec nx run $npm_package_name:fix:md",
         "\n========== CLEAN >> ==========": "",
-        "clean": "pnpm exec nx run-many -t clean",
-        "clean:self": "pnpm exec nx run $npm_package_name:clean"
+        "clean": "pnpm exec nx run-many -t clean root:clean",
+        "clean:self": "pnpm exec nx run $npm_package_name:root:clean"
     },
     "devDependencies": {
         "@changesets/cli": "^2.31.0",
         "@commitlint/cli": "^21.0.2",
         "@eslint/config-inspector": "^3.0.4",
         "@snailicid3/build-config": "^0.0.8",
-        "@snailicid3/config": "^0.1.3",
+        "@snailicid3/config": "^0.2.0",
         "@types/node": "^26.0.0",
         "@vitest/coverage-v8": "^4.1.9",
         "@vitest/ui": "^4.1.9",
@@ -82,7 +82,17 @@
         "verdaccio": "^6.7.4"
     },
     "nx": {
-        "includedScripts": []
+        "includedScripts": [],
+        "targets": {
+            "root:build": {},
+            "root:build:ts": {},
+            "root:clean": {},
+            "root:clean:ts": {},
+            "root:lint": {},
+            "root:fix": {},
+            "lint:md": {},
+            "fix:md": {}
+        }
     },
     "license": "MIT",
     "repository": {
