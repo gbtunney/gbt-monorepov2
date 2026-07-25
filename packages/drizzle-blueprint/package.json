@@ -18,7 +18,12 @@
             "check:ts": {},
             "build:tsdown": {},
             "build:ts": {},
-            "build": {},
+            "build": {
+                "dependsOn": [
+                    "build:ts",
+                    "build:tsdown"
+                ]
+            },
             "test": {},
             "test:watch": {},
             "lint": {},
