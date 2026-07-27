@@ -1,0 +1,124 @@
+{
+    "name": "@snailicid3/video-intelligence-viewer",
+    "version": "0.0.0",
+    "private": true,
+    "description": "React components for visualising Google Cloud Video Intelligence API annotations.",
+    "scripts": {
+        "build:nx": "nx run $npm_package_name:build",
+        "build:storybook:nx": "nx run $npm_package_name:build:storybook",
+        "dev:nx": "nx run $npm_package_name:dev",
+        "dev:storybook": "pnpm exec nx run -p $npm_package_name -t build:ts check:ts && pnpm exec storybook dev -p 6006",
+        "test:nx": "nx run $npm_package_name:test",
+        "clean:nx": "nx run $npm_package_name:clean",
+        "chromatic:nx": "nx run $npm_package_name:chromatic",
+        "test:chromatic": "pnpm exec dotenv -e .env.local -- pnpm chromatic:nx"
+    },
+    "nx": {
+        "targets": {
+            "dev": {},
+            "dev:ts": {},
+            "dev:tsdown": {},
+            "dev:vite": {},
+            "check:ts": {},
+            "build:tsdown": {},
+            "build:ts": {},
+            "build": {
+                "dependsOn": [
+                    "build:ts",
+                    "build:tsdown"
+                ]
+            },
+            "build:storybook": {},
+            "chromatic": {},
+            "test": {},
+            "test:bk": {
+                "cache": false,
+                "command": "vitest run --config vitest.storybook.config.ts",
+                "options": {
+                    "cwd": "{projectRoot}"
+                }
+            },
+            "test:watch": {},
+            "lint": {},
+            "fix": {},
+            "clean": {},
+            "clean:ts": {},
+            "clean:build": {}
+        }
+    },
+    "dependencies": {
+        "@emotion/react": "^11.14.0",
+        "@emotion/styled": "^11.14.0",
+        "@mui/material": "^7.0.0",
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7",
+        "type-fest": "^5.7.0",
+        "zod": "^4.3.6"
+    },
+    "devDependencies": {
+        "@chromatic-com/storybook": "^5.0.1",
+        "@snailicid3/build-config": "^0.0.8",
+        "@snailicid3/config": "^0.1.3",
+        "@storybook/addon-a11y": "^10.4.3",
+        "@storybook/addon-docs": "^10.4.3",
+        "@storybook/addon-onboarding": "^10.4.3",
+        "@storybook/addon-vitest": "^10.4.3",
+        "@storybook/react": "^10.4.3",
+        "@storybook/react-vite": "^10.4.3",
+        "@storybook/test": "^8.6.15",
+        "@types/node": "^26.0.1",
+        "@types/react": "^19.2.17",
+        "@types/react-dom": "^19.2.3",
+        "@vitejs/plugin-react": "^6.0.2",
+        "@vitest/browser-playwright": "^4.1.8",
+        "@vitest/coverage-v8": "^4.1.8",
+        "chromatic": "^17.7.1",
+        "dotenv-cli": "^11.0.0",
+        "playwright": "^1.58.2",
+        "storybook": "^10.4.3",
+        "tsdown": "^0.22.3",
+        "typescript": "~6.0.3",
+        "vitest": "^4.1.9"
+    },
+    "type": "module",
+    "exports": {
+        ".": {
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        },
+        "./package.json": "./package.json"
+    },
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.cts",
+    "author": {
+        "name": "Gillian Tunney",
+        "email": "gbtunney@mac.com"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gbtunney/gbt-boilerplate",
+        "directory": "packages/video-intelligence-viewer"
+    },
+    "homepage": "https://github.com/gbtunney/gbt-boilerplate",
+    "packageManager": "pnpm@10.29.1+sha512.48dae233635a645768a3028d19545cacc1688639eeb1f3734e42d6d6b971afbf22aa1ac9af52a173d9c3a20c15857cfa400f19994d79a2f626fcc73fccda9bbc",
+    "engines": {
+        "node": ">=20.x"
+    },
+    "files": [
+        "CHANGELOG.md",
+        "dist",
+        "types"
+    ],
+    "keywords": [
+        "video-intelligence",
+        "google-cloud",
+        "react",
+        "visualiser"
+    ],
+    "peerDependencies": {
+        "react": "^19.2.0",
+        "react-dom": "^19.2.0"
+    }
+}
