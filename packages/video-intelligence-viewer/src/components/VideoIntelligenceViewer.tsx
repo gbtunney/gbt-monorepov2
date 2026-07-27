@@ -10,14 +10,18 @@ import AnnotationCanvas from './AnnotationCanvas.tsx'
 import ConfidenceSlider from './ConfidenceSlider.tsx'
 import FileLoader from './FileLoader.tsx'
 import LabelTimeline from './LabelTimeline.tsx'
+import ObjectPanel from './ObjectPanel.tsx'
 import ShotTimeline from './ShotTimeline.tsx'
 import SpeechTranscription from './SpeechTranscription.tsx'
+import TextPanel from './TextPanel.tsx'
 import { useVideoCurrentTime, useVideoInfo } from '../hooks/useVideoElement.ts'
 import {
     selectLabels,
+    selectObjectTracks,
     selectPersonTracks,
     selectShots,
     selectSpeech,
+    selectText,
 } from '../select.ts'
 import { type VideoAnnotations } from '../types.ts'
 
@@ -59,6 +63,11 @@ const VideoIntelligenceViewer = ({
     const shots = useMemo(() => selectShots(annotations), [annotations])
     const labels = useMemo(() => selectLabels(annotations), [annotations])
     const speech = useMemo(() => selectSpeech(annotations), [annotations])
+    const objects = useMemo(
+        () => selectObjectTracks(annotations),
+        [annotations],
+    )
+    const texts = useMemo(() => selectText(annotations), [annotations])
 
     const handleSeek = useCallback(
         (seconds: number): void => {
@@ -102,6 +111,8 @@ const VideoIntelligenceViewer = ({
                             style={{ display: 'block', maxWidth: '100%' }}
                         />
                         <AnnotationCanvas
+                            objectTracks={objects}
+                            textItems={texts}
                             threshold={threshold}
                             tracks={tracks}
                             video={video}
@@ -127,6 +138,18 @@ const VideoIntelligenceViewer = ({
                 onSeek={handleSeek}
                 threshold={threshold}
                 videoLength={videoLength}
+            />
+
+            <ObjectPanel
+                currentTime={currentTime}
+                objectTracks={objects}
+                threshold={threshold}
+            />
+
+            <TextPanel
+                currentTime={currentTime}
+                textItems={texts}
+                threshold={threshold}
             />
 
             <SpeechTranscription

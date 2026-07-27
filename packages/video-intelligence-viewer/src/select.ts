@@ -5,8 +5,10 @@
 
 import {
     type LabelAnnotation,
+    type ObjectTrackingAnnotation,
     type PersonTrack,
     type ShotAnnotation,
+    type TextAnnotation,
     type VideoAnnotations,
 } from './types.ts'
 import { timeOffsetToSeconds } from './utils/time.ts'
@@ -27,6 +29,22 @@ export const selectShots = (
 ): Array<ShotAnnotation> =>
     annotations.annotation_results.flatMap(
         (result) => result.shot_annotations ?? [],
+    )
+
+/** Every object-tracking annotation across all annotation results. */
+export const selectObjectTracks = (
+    annotations: VideoAnnotations,
+): Array<ObjectTrackingAnnotation> =>
+    annotations.annotation_results.flatMap(
+        (result) => result.object_annotations ?? [],
+    )
+
+/** Every text-detection annotation across all annotation results. */
+export const selectText = (
+    annotations: VideoAnnotations,
+): Array<TextAnnotation> =>
+    annotations.annotation_results.flatMap(
+        (result) => result.text_annotations ?? [],
     )
 
 /**
