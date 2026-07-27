@@ -8,6 +8,7 @@ import { Box, Divider, Stack, Typography } from '@mui/material'
 import { type ReactElement, useCallback, useMemo, useState } from 'react'
 import AnnotationCanvas from './AnnotationCanvas.tsx'
 import ConfidenceSlider from './ConfidenceSlider.tsx'
+import ExplicitContentPanel from './ExplicitContentPanel.tsx'
 import FileLoader from './FileLoader.tsx'
 import LabelTimeline from './LabelTimeline.tsx'
 import ObjectPanel from './ObjectPanel.tsx'
@@ -16,6 +17,7 @@ import SpeechTranscription from './SpeechTranscription.tsx'
 import TextPanel from './TextPanel.tsx'
 import { useVideoCurrentTime, useVideoInfo } from '../hooks/useVideoElement.ts'
 import {
+    selectExplicitFrames,
     selectLabels,
     selectObjectTracks,
     selectPersonTracks,
@@ -68,6 +70,10 @@ const VideoIntelligenceViewer = ({
         [annotations],
     )
     const texts = useMemo(() => selectText(annotations), [annotations])
+    const explicit = useMemo(
+        () => selectExplicitFrames(annotations),
+        [annotations],
+    )
 
     const handleSeek = useCallback(
         (seconds: number): void => {
@@ -150,6 +156,13 @@ const VideoIntelligenceViewer = ({
                 currentTime={currentTime}
                 textItems={texts}
                 threshold={threshold}
+            />
+
+            <ExplicitContentPanel
+                currentTime={currentTime}
+                frames={explicit}
+                onSeek={handleSeek}
+                videoLength={videoLength}
             />
 
             <SpeechTranscription

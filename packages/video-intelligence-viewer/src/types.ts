@@ -183,8 +183,26 @@ export const textAnnotationSchema = z.object({
 })
 export type TextAnnotation = z.infer<typeof textAnnotationSchema>
 
+/**
+ * One sampled frame of explicit-content detection: a whole-frame likelihood rating at `time_offset`.
+ * `pornography_likelihood` is one of the `Likelihood` enum strings (kept as a plain string so unknown values
+ * validate).
+ */
+export const explicitFrameSchema = z.object({
+    pornography_likelihood: z.string().optional(),
+    time_offset: timeOffsetSchema.optional(),
+})
+export type ExplicitFrame = z.infer<typeof explicitFrameSchema>
+
+/** Explicit content detection: a single object (not an array) with per-frame likelihood ratings. */
+export const explicitAnnotationSchema = z.object({
+    frames: z.array(explicitFrameSchema).default([]),
+})
+export type ExplicitAnnotation = z.infer<typeof explicitAnnotationSchema>
+
 /** One `annotation_results` entry. Every feature list is optional; unknown keys are stripped. */
 export const annotationResultSchema = z.object({
+    explicit_annotation: explicitAnnotationSchema.optional(),
     input_uri: z.string().optional(),
     object_annotations: z.array(objectTrackingAnnotationSchema).optional(),
     person_detection_annotations: z

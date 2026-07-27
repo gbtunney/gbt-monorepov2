@@ -13,6 +13,12 @@ import {
 } from './types.ts'
 import { timeOffsetToSeconds } from './utils/time.ts'
 
+/** An explicit-content frame with its time resolved to seconds. */
+export type ExplicitFrameTiming = {
+    likelihood: string
+    time: number
+}
+
 /** Every person track across all annotation results. */
 export const selectPersonTracks = (
     annotations: VideoAnnotations,
@@ -46,6 +52,22 @@ export const selectText = (
     annotations.annotation_results.flatMap(
         (result) => result.text_annotations ?? [],
     )
+
+/**
+ * Explicit-content frames (whole-frame likelihood ratings) across all results, times resolved to seconds and sorted
+ * ascending so consumers can treat them as a step function.
+ */
+export const selectExplicitFrames = (
+    annotations: VideoAnnotations,
+): Array<ExplicitFrameTiming> =>
+    annotations.annotation_results
+        .flatMap((result) => result.explicit_annotation?.frames ?? [])
+        .map((frame) => ({
+            likelihood:
+                frame.pornography_likelihood ?? 'LIKELIHOOD_UNSPECIFIED',
+            time: timeOffsetToSeconds(frame.time_offset),
+        }))
+        .sort((first, second) => first.time - second.time)
 
 /**
  * Label annotations, preferring shot-level labels and falling back to segment-level (matching the original visualiser's

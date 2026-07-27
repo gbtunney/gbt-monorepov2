@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+    selectExplicitFrames,
     selectObjectTracks,
     selectShots,
     selectSpeech,
@@ -10,6 +11,18 @@ import { type VideoAnnotations } from './types.ts'
 const annotations: VideoAnnotations = {
     annotation_results: [
         {
+            explicit_annotation: {
+                frames: [
+                    {
+                        pornography_likelihood: 'POSSIBLE',
+                        time_offset: { seconds: 2 },
+                    },
+                    {
+                        pornography_likelihood: 'VERY_UNLIKELY',
+                        time_offset: { seconds: 0 },
+                    },
+                ],
+            },
             object_annotations: [
                 {
                     confidence: 0.8,
@@ -92,6 +105,16 @@ describe('selectText', () => {
         const texts = selectText(annotations)
         expect(texts).toHaveLength(1)
         expect(texts[0]?.text).toBe('STOP')
+    })
+})
+
+describe('selectExplicitFrames', () => {
+    it('flattens frames and sorts them ascending by time', () => {
+        const frames = selectExplicitFrames(annotations)
+        expect(frames).toEqual([
+            { likelihood: 'VERY_UNLIKELY', time: 0 },
+            { likelihood: 'POSSIBLE', time: 2 },
+        ])
     })
 })
 

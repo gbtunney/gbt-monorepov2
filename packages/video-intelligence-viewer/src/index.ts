@@ -11,6 +11,10 @@ export {
     type ConfidenceSliderProps,
 } from './components/ConfidenceSlider.tsx'
 export {
+    default as ExplicitContentPanel,
+    type ExplicitContentPanelProps,
+} from './components/ExplicitContentPanel.tsx'
+export {
     default as FileLoader,
     type FileLoaderProps,
 } from './components/FileLoader.tsx'
@@ -47,6 +51,8 @@ export { useVideoCurrentTime, useVideoInfo } from './hooks/useVideoElement.ts'
 /** Parsing + selectors */
 export { fetchAnnotations, parseAnnotations } from './parse.ts'
 export {
+    type ExplicitFrameTiming,
+    selectExplicitFrames,
     selectLabels,
     selectObjectTracks,
     selectPersonTracks,
@@ -65,6 +71,10 @@ export {
     detectedAttributeSchema,
     type Entity,
     entitySchema,
+    type ExplicitAnnotation,
+    explicitAnnotationSchema,
+    type ExplicitFrame,
+    explicitFrameSchema,
     type LabelAnnotation,
     labelAnnotationSchema,
     type LabelSegment,
@@ -109,6 +119,13 @@ export {
 } from './types.ts'
 /** Pure geometry + time helpers */
 export { boxAtTime } from './utils/box.ts'
+export {
+    type Likelihood,
+    likelihoodAtTime,
+    likelihoodColor,
+    likelihoodLevel,
+    LIKELIHOODS,
+} from './utils/likelihood.ts'
 export {
     type InterpolatedPose,
     type NormalizedBox,
