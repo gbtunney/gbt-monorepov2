@@ -1,0 +1,128 @@
+/**
+ * The top-level visualiser: a `<video>` with a person-detection canvas overlay, plus shot/label timelines, a shared
+ * confidence slider, and local file loaders. Everything is client-side — load a video and an annotation JSON with the
+ * buttons, or seed `initialAnnotations` / `videoSrc` up front (as the Storybook stories do).
+ */
+
+import { Box, Divider, Stack, Typography } from '@mui/material'
+import { type ReactElement, useCallback, useMemo, useState } from 'react'
+import AnnotationCanvas from './AnnotationCanvas.tsx'
+import ConfidenceSlider from './ConfidenceSlider.tsx'
+import FileLoader from './FileLoader.tsx'
+import LabelTimeline from './LabelTimeline.tsx'
+import ShotTimeline from './ShotTimeline.tsx'
+import { useVideoCurrentTime, useVideoInfo } from '../hooks/useVideoElement.ts'
+import { selectLabels, selectPersonTracks, selectShots } from '../select.ts'
+import { type VideoAnnotations } from '../types.ts'
+
+export type VideoIntelligenceViewerProps = {
+    /** Confidence threshold the shared slider starts at. */
+    defaultThreshold?: number
+    /** Pre-loaded annotations (skips needing a JSON upload). */
+    initialAnnotations?: null | VideoAnnotations
+    /** Pre-loaded video source (object URL or any playable URL). */
+    videoSrc?: null | string
+}
+
+/** Single source of truth for default props — mirrors gbt-scope's `defaultGbt...Props` pattern. */
+// eslint-disable-next-line react-refresh/only-export-components -- default args belong beside the component; costs only HMR granularity.
+export const defaultVideoIntelligenceViewerProps = {
+    defaultThreshold: 0.5,
+    initialAnnotations: null,
+    videoSrc: null,
+} satisfies VideoIntelligenceViewerProps
+
+const emptyAnnotations: VideoAnnotations = { annotation_results: [] }
+
+const VideoIntelligenceViewer = ({
+    defaultThreshold = defaultVideoIntelligenceViewerProps.defaultThreshold,
+    initialAnnotations = null,
+    videoSrc = null,
+}: VideoIntelligenceViewerProps): ReactElement => {
+    const [video, setVideo] = useState<HTMLVideoElement | null>(null)
+    const [videoUrl, setVideoUrl] = useState<null | string>(videoSrc)
+    const [annotations, setAnnotations] = useState<VideoAnnotations>(
+        initialAnnotations ?? emptyAnnotations,
+    )
+    const [threshold, setThreshold] = useState(defaultThreshold)
+
+    const currentTime = useVideoCurrentTime(video)
+    const videoInfo = useVideoInfo(video)
+
+    const tracks = useMemo(() => selectPersonTracks(annotations), [annotations])
+    const shots = useMemo(() => selectShots(annotations), [annotations])
+    const labels = useMemo(() => selectLabels(annotations), [annotations])
+
+    const handleSeek = useCallback(
+        (seconds: number): void => {
+            // eslint-disable-next-line react-hooks/immutability -- imperative DOM seek on the video element, not React state.
+            if (video !== null) video.currentTime = seconds
+        },
+        [video],
+    )
+
+    const videoLength = videoInfo?.length ?? 0
+
+    return (
+        <Stack spacing={2} sx={{ maxWidth: 900, width: '100%' }}>
+            <Typography variant="h6">Video Intelligence Viewer</Typography>
+
+            <FileLoader
+                onAnnotationsSelected={setAnnotations}
+                onVideoSelected={setVideoUrl}
+            />
+
+            <Box
+                sx={{
+                    bgcolor: 'black',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    width: '100%',
+                }}>
+                {videoUrl === null ? (
+                    <Box sx={{ color: 'grey.500', p: 6 }}>
+                        <Typography variant="body2">
+                            Load a video to begin.
+                        </Typography>
+                    </Box>
+                ) : (
+                    <Box sx={{ position: 'relative' }}>
+                        <video
+                            controls
+                            ref={setVideo}
+                            src={videoUrl}
+                            style={{ display: 'block', maxWidth: '100%' }}
+                        />
+                        <AnnotationCanvas
+                            threshold={threshold}
+                            tracks={tracks}
+                            video={video}
+                        />
+                    </Box>
+                )}
+            </Box>
+
+            <ConfidenceSlider onChange={setThreshold} value={threshold} />
+
+            <Divider />
+
+            <ShotTimeline
+                currentTime={currentTime}
+                onSeek={handleSeek}
+                shots={shots}
+                videoLength={videoLength}
+            />
+
+            <LabelTimeline
+                currentTime={currentTime}
+                labels={labels}
+                onSeek={handleSeek}
+                threshold={threshold}
+                videoLength={videoLength}
+            />
+        </Stack>
+    )
+}
+
+export default VideoIntelligenceViewer
