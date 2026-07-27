@@ -33,7 +33,7 @@ export {
 export { useVideoCurrentTime, useVideoInfo } from './hooks/useVideoElement.ts'
 
 /** Parsing + selectors */
-export { parseAnnotations } from './parse.ts'
+export { fetchAnnotations, parseAnnotations } from './parse.ts'
 export { selectLabels, selectPersonTracks, selectShots } from './select.ts'
 
 /** Types + schemas */
