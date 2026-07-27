@@ -14,9 +14,11 @@ Supported annotation features:
 - **Text detection** — rotated bounding boxes + the detected string on the canvas overlay.
 - **Speech transcription** — word-by-word transcript with the current word highlighted; click to
   seek.
+- **Explicit content** — a likelihood timeline (green = very unlikely → red = very likely) with the
+  current rating; click to seek.
 
 All overlay geometry is interpolated between sampled frames and driven by the video's `currentTime`;
-a shared confidence slider gates every feature.
+a shared confidence slider gates the box/label features.
 
 ## Usage
 
@@ -77,7 +79,6 @@ existing canvas-overlay / panel pattern):
 - **Face detection** (`face_detection_annotations`) — a possible future improvement; deferred for
   now.
 - **Logo recognition** (`logo_recognition_annotations`).
-- **Explicit content detection** (`explicit_annotation`).
 
 ## Development
 
