@@ -6,7 +6,7 @@
 
 import { Box, Divider, Stack, Typography } from '@mui/material'
 import { type ReactElement, useCallback, useMemo, useState } from 'react'
-import AnnotationCanvas from './AnnotationCanvas.tsx'
+import AnnotatedVideo from './AnnotatedVideo.tsx'
 import ConfidenceSlider from './ConfidenceSlider.tsx'
 import ExplicitContentPanel from './ExplicitContentPanel.tsx'
 import FileLoader from './FileLoader.tsx'
@@ -20,7 +20,6 @@ import {
     selectExplicitFrames,
     selectLabels,
     selectObjectTracks,
-    selectPersonTracks,
     selectShots,
     selectSpeech,
     selectText,
@@ -61,7 +60,6 @@ const VideoIntelligenceViewer = ({
     const currentTime = useVideoCurrentTime(video)
     const videoInfo = useVideoInfo(video)
 
-    const tracks = useMemo(() => selectPersonTracks(annotations), [annotations])
     const shots = useMemo(() => selectShots(annotations), [annotations])
     const labels = useMemo(() => selectLabels(annotations), [annotations])
     const speech = useMemo(() => selectSpeech(annotations), [annotations])
@@ -109,21 +107,12 @@ const VideoIntelligenceViewer = ({
                         </Typography>
                     </Box>
                 ) : (
-                    <Box sx={{ position: 'relative' }}>
-                        <video
-                            controls
-                            ref={setVideo}
-                            src={videoUrl}
-                            style={{ display: 'block', maxWidth: '100%' }}
-                        />
-                        <AnnotationCanvas
-                            objectTracks={objects}
-                            textItems={texts}
-                            threshold={threshold}
-                            tracks={tracks}
-                            video={video}
-                        />
-                    </Box>
+                    <AnnotatedVideo
+                        annotations={annotations}
+                        onVideoElement={setVideo}
+                        src={videoUrl}
+                        threshold={threshold}
+                    />
                 )}
             </Box>
 

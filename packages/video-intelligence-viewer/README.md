@@ -30,6 +30,22 @@ export const App = () => <VideoIntelligenceViewer />
 
 Everything runs client-side:
 
+### Just the video + overlays
+
+If you only want the video player with the detection overlays — no panels or controls — use
+`AnnotatedVideo`. It's a standalone, reusable primitive: give it a `src` and (optionally)
+`annotations`, and it renders a `<video>` with the person/object/text boxes tracking playback. With
+no `annotations` it's just a plain video. The underlying `<video>` element is surfaced via
+`onVideoElement` so you can drive your own timeline or seeking.
+
+```tsx
+import { AnnotatedVideo } from '@snailicid3/video-intelligence-viewer'
+
+;<AnnotatedVideo annotations={annotations} src="/clip.mp4" threshold={0.5} />
+```
+
+Back to the full viewer:
+
 - **Load video** — pick a local video file (kept in-browser via an object URL; nothing is uploaded).
 - **Load annotations (JSON)** — pick a Video Intelligence API output file; it's parsed and validated
   in the browser.
