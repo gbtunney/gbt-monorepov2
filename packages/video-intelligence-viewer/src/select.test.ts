@@ -1,10 +1,27 @@
 import { describe, expect, it } from 'vitest'
-import { selectShots, selectSpeech } from './select.ts'
+import {
+    selectObjectTracks,
+    selectShots,
+    selectSpeech,
+    selectText,
+} from './select.ts'
 import { type VideoAnnotations } from './types.ts'
 
 const annotations: VideoAnnotations = {
     annotation_results: [
         {
+            object_annotations: [
+                {
+                    confidence: 0.8,
+                    entity: { description: 'car' },
+                    frames: [
+                        {
+                            normalized_bounding_box: { left: 0.1, top: 0.1 },
+                            time_offset: { seconds: 0 },
+                        },
+                    ],
+                },
+            ],
             shot_annotations: [
                 {
                     end_time_offset: { seconds: 3 },
@@ -34,6 +51,24 @@ const annotations: VideoAnnotations = {
                 },
                 { alternatives: [] },
             ],
+            text_annotations: [
+                {
+                    segments: [
+                        {
+                            confidence: 0.7,
+                            frames: [
+                                {
+                                    rotated_bounding_box: {
+                                        vertices: [{ x: 0, y: 0 }],
+                                    },
+                                    time_offset: { seconds: 0 },
+                                },
+                            ],
+                        },
+                    ],
+                    text: 'STOP',
+                },
+            ],
         },
     ],
 }
@@ -41,6 +76,22 @@ const annotations: VideoAnnotations = {
 describe('selectShots', () => {
     it('flattens shots across results', () => {
         expect(selectShots(annotations)).toHaveLength(1)
+    })
+})
+
+describe('selectObjectTracks', () => {
+    it('flattens object annotations', () => {
+        const objects = selectObjectTracks(annotations)
+        expect(objects).toHaveLength(1)
+        expect(objects[0]?.entity.description).toBe('car')
+    })
+})
+
+describe('selectText', () => {
+    it('flattens text annotations', () => {
+        const texts = selectText(annotations)
+        expect(texts).toHaveLength(1)
+        expect(texts[0]?.text).toBe('STOP')
     })
 })
 
