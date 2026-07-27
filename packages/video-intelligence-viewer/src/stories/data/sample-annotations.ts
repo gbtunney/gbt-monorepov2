@@ -9,6 +9,26 @@ import { type VideoAnnotations } from '../../types.ts'
 export const sampleAnnotations: VideoAnnotations = {
     annotation_results: [
         {
+            explicit_annotation: {
+                frames: [
+                    {
+                        pornography_likelihood: 'VERY_UNLIKELY',
+                        time_offset: { seconds: 0 },
+                    },
+                    {
+                        pornography_likelihood: 'UNLIKELY',
+                        time_offset: { seconds: 3 },
+                    },
+                    {
+                        pornography_likelihood: 'POSSIBLE',
+                        time_offset: { seconds: 5 },
+                    },
+                    {
+                        pornography_likelihood: 'VERY_UNLIKELY',
+                        time_offset: { seconds: 7 },
+                    },
+                ],
+            },
             object_annotations: [
                 {
                     confidence: 0.81,
