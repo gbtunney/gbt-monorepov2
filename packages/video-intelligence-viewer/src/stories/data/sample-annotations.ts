@@ -128,6 +128,72 @@ export const sampleAnnotations: VideoAnnotations = {
                     ],
                 },
             ],
+            speech_transcriptions: [
+                {
+                    alternatives: [
+                        {
+                            confidence: 0.94,
+                            transcript: 'the quick brown fox jumps over',
+                            words: [
+                                {
+                                    end_time: {
+                                        nanos: 500_000_000,
+                                        seconds: 1,
+                                    },
+                                    start_time: { seconds: 1 },
+                                    word: 'the',
+                                },
+                                {
+                                    end_time: {
+                                        nanos: 200_000_000,
+                                        seconds: 2,
+                                    },
+                                    start_time: {
+                                        nanos: 500_000_000,
+                                        seconds: 1,
+                                    },
+                                    word: 'quick',
+                                },
+                                {
+                                    end_time: { seconds: 3 },
+                                    start_time: {
+                                        nanos: 200_000_000,
+                                        seconds: 2,
+                                    },
+                                    word: 'brown',
+                                },
+                                {
+                                    end_time: {
+                                        nanos: 800_000_000,
+                                        seconds: 3,
+                                    },
+                                    start_time: { seconds: 3 },
+                                    word: 'fox',
+                                },
+                                {
+                                    end_time: {
+                                        nanos: 600_000_000,
+                                        seconds: 4,
+                                    },
+                                    start_time: { seconds: 4 },
+                                    word: 'jumps',
+                                },
+                                {
+                                    end_time: {
+                                        nanos: 200_000_000,
+                                        seconds: 5,
+                                    },
+                                    start_time: {
+                                        nanos: 600_000_000,
+                                        seconds: 4,
+                                    },
+                                    word: 'over',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
         },
     ],
 }

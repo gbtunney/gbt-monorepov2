@@ -11,8 +11,14 @@ import ConfidenceSlider from './ConfidenceSlider.tsx'
 import FileLoader from './FileLoader.tsx'
 import LabelTimeline from './LabelTimeline.tsx'
 import ShotTimeline from './ShotTimeline.tsx'
+import SpeechTranscription from './SpeechTranscription.tsx'
 import { useVideoCurrentTime, useVideoInfo } from '../hooks/useVideoElement.ts'
-import { selectLabels, selectPersonTracks, selectShots } from '../select.ts'
+import {
+    selectLabels,
+    selectPersonTracks,
+    selectShots,
+    selectSpeech,
+} from '../select.ts'
 import { type VideoAnnotations } from '../types.ts'
 
 export type VideoIntelligenceViewerProps = {
@@ -52,6 +58,7 @@ const VideoIntelligenceViewer = ({
     const tracks = useMemo(() => selectPersonTracks(annotations), [annotations])
     const shots = useMemo(() => selectShots(annotations), [annotations])
     const labels = useMemo(() => selectLabels(annotations), [annotations])
+    const speech = useMemo(() => selectSpeech(annotations), [annotations])
 
     const handleSeek = useCallback(
         (seconds: number): void => {
@@ -120,6 +127,13 @@ const VideoIntelligenceViewer = ({
                 onSeek={handleSeek}
                 threshold={threshold}
                 videoLength={videoLength}
+            />
+
+            <SpeechTranscription
+                currentTime={currentTime}
+                onSeek={handleSeek}
+                segments={speech}
+                threshold={threshold}
             />
         </Stack>
     )
