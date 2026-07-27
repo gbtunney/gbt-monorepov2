@@ -10,6 +10,8 @@ import { type SpeechSegment } from '../select.ts'
 export type SpeechTranscriptionProps = {
     /** Current playback time in seconds. */
     currentTime: number
+    /** Hide the panel's own heading (e.g. when the title is shown by a surrounding accordion). */
+    hideHeading?: boolean
     /** Seek the video to `seconds` (wired to each word). */
     onSeek?: (seconds: number) => void
     /** Transcribed segments (see `selectSpeech`). */
@@ -20,6 +22,7 @@ export type SpeechTranscriptionProps = {
 
 const SpeechTranscription = ({
     currentTime,
+    hideHeading = false,
     onSeek,
     segments,
     threshold,
@@ -28,9 +31,11 @@ const SpeechTranscription = ({
 
     return (
         <Box>
-            <Typography gutterBottom variant="subtitle2">
-                Speech transcription ({visible.length})
-            </Typography>
+            {!hideHeading && (
+                <Typography gutterBottom variant="subtitle2">
+                    Speech transcription ({visible.length})
+                </Typography>
+            )}
             {visible.length === 0 ? (
                 <Typography color="text.secondary" variant="body2">
                     No transcription above the confidence threshold.

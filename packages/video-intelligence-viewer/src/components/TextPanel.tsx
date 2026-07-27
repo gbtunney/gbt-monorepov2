@@ -11,6 +11,8 @@ import { withinSegment } from '../utils/range.ts'
 export type TextPanelProps = {
     /** Current playback time in seconds. */
     currentTime: number
+    /** Hide the panel's own heading (e.g. when the title is shown by a surrounding accordion). */
+    hideHeading?: boolean
     /** Text-detection annotations. */
     textItems: Array<TextAnnotation>
     /** Confidence gate — only segments with `confidence > threshold` count. */
@@ -19,6 +21,7 @@ export type TextPanelProps = {
 
 const TextPanel = ({
     currentTime,
+    hideHeading = false,
     textItems,
     threshold,
 }: TextPanelProps): ReactElement => {
@@ -45,9 +48,11 @@ const TextPanel = ({
 
     return (
         <Box>
-            <Typography gutterBottom variant="subtitle2">
-                Text ({visible.length})
-            </Typography>
+            {!hideHeading && (
+                <Typography gutterBottom variant="subtitle2">
+                    Text ({visible.length})
+                </Typography>
+            )}
             <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap' }}>
                 <Typography sx={{ mr: 1 }} variant="body2">
                     Current:

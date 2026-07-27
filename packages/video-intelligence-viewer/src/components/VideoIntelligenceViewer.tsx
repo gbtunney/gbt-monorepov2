@@ -4,8 +4,22 @@
  * buttons, or seed `initialAnnotations` / `videoSrc` up front (as the Storybook stories do).
  */
 
-import { Box, Divider, Stack, Typography } from '@mui/material'
-import { type ReactElement, useCallback, useMemo, useState } from 'react'
+import {
+    Accordion,
+    AccordionDetails,
+    AccordionSummary,
+    Box,
+    Divider,
+    Stack,
+    Typography,
+} from '@mui/material'
+import {
+    type ReactElement,
+    type ReactNode,
+    useCallback,
+    useMemo,
+    useState,
+} from 'react'
 import AnnotatedVideo from './AnnotatedVideo.tsx'
 import ConfidenceSlider from './ConfidenceSlider.tsx'
 import ExplicitContentPanel from './ExplicitContentPanel.tsx'
@@ -44,6 +58,25 @@ export const defaultVideoIntelligenceViewerProps = {
 } satisfies VideoIntelligenceViewerProps
 
 const emptyAnnotations: VideoAnnotations = { annotation_results: [] }
+
+/**
+ * One collapsible feature section. Each is an independent (non-exclusive) accordion, so any combination can be open at
+ * once — collapse the panels you're not comparing. Starts expanded.
+ */
+const Section = ({
+    children,
+    title,
+}: {
+    children: ReactNode
+    title: string
+}): ReactElement => (
+    <Accordion defaultExpanded disableGutters>
+        <AccordionSummary expandIcon={<Box component="span">▾</Box>}>
+            <Typography variant="subtitle2">{title}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>{children}</AccordionDetails>
+    </Accordion>
+)
 
 const VideoIntelligenceViewer = ({
     defaultThreshold = defaultVideoIntelligenceViewerProps.defaultThreshold,
@@ -120,46 +153,66 @@ const VideoIntelligenceViewer = ({
 
             <Divider />
 
-            <ShotTimeline
-                currentTime={currentTime}
-                onSeek={handleSeek}
-                shots={shots}
-                videoLength={videoLength}
-            />
+            <Box>
+                <Section title="Shots">
+                    <ShotTimeline
+                        currentTime={currentTime}
+                        hideHeading
+                        onSeek={handleSeek}
+                        shots={shots}
+                        videoLength={videoLength}
+                    />
+                </Section>
 
-            <LabelTimeline
-                currentTime={currentTime}
-                labels={labels}
-                onSeek={handleSeek}
-                threshold={threshold}
-                videoLength={videoLength}
-            />
+                <Section title="Labels">
+                    <LabelTimeline
+                        currentTime={currentTime}
+                        hideHeading
+                        labels={labels}
+                        onSeek={handleSeek}
+                        threshold={threshold}
+                        videoLength={videoLength}
+                    />
+                </Section>
 
-            <ObjectPanel
-                currentTime={currentTime}
-                objectTracks={objects}
-                threshold={threshold}
-            />
+                <Section title="Objects">
+                    <ObjectPanel
+                        currentTime={currentTime}
+                        hideHeading
+                        objectTracks={objects}
+                        threshold={threshold}
+                    />
+                </Section>
 
-            <TextPanel
-                currentTime={currentTime}
-                textItems={texts}
-                threshold={threshold}
-            />
+                <Section title="Text">
+                    <TextPanel
+                        currentTime={currentTime}
+                        hideHeading
+                        textItems={texts}
+                        threshold={threshold}
+                    />
+                </Section>
 
-            <ExplicitContentPanel
-                currentTime={currentTime}
-                frames={explicit}
-                onSeek={handleSeek}
-                videoLength={videoLength}
-            />
+                <Section title="Explicit content">
+                    <ExplicitContentPanel
+                        currentTime={currentTime}
+                        frames={explicit}
+                        hideHeading
+                        onSeek={handleSeek}
+                        videoLength={videoLength}
+                    />
+                </Section>
 
-            <SpeechTranscription
-                currentTime={currentTime}
-                onSeek={handleSeek}
-                segments={speech}
-                threshold={threshold}
-            />
+                <Section title="Speech transcription">
+                    <SpeechTranscription
+                        currentTime={currentTime}
+                        hideHeading
+                        onSeek={handleSeek}
+                        segments={speech}
+                        threshold={threshold}
+                    />
+                </Section>
+            </Box>
         </Stack>
     )
 }

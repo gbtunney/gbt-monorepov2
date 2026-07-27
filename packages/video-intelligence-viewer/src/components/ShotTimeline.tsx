@@ -8,6 +8,8 @@ import { timeOffsetToSeconds } from '../utils/time.ts'
 export type ShotTimelineProps = {
     /** Current playback time in seconds. */
     currentTime: number
+    /** Hide the panel's own heading (e.g. when the title is shown by a surrounding accordion). */
+    hideHeading?: boolean
     /** Seek the video to `seconds` (wired to the shot blocks). */
     onSeek?: (seconds: number) => void
     /** Detected shots. */
@@ -24,6 +26,7 @@ const formatSeconds = (seconds: number): string => {
 
 const ShotTimeline = ({
     currentTime,
+    hideHeading = false,
     onSeek,
     shots,
     videoLength,
@@ -39,9 +42,11 @@ const ShotTimeline = ({
 
     return (
         <Box>
-            <Typography gutterBottom variant="subtitle2">
-                Shots ({shots.length})
-            </Typography>
+            {!hideHeading && (
+                <Typography gutterBottom variant="subtitle2">
+                    Shots ({shots.length})
+                </Typography>
+            )}
             {shots.length === 0 ? (
                 <Typography color="text.secondary" variant="body2">
                     No shot annotations.
