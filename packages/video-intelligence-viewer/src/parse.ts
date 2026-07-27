@@ -37,3 +37,18 @@ export const parseAnnotations = (text: string): VideoAnnotations => {
 
     return result.data
 }
+
+/**
+ * Fetch a remote annotation JSON and parse it. Convenience wrapper over {@link parseAnnotations} for loading data hosted
+ * elsewhere (e.g. a bucket or the original demo assets). The host must allow cross-origin reads (CORS).
+ */
+export const fetchAnnotations = async (
+    url: string,
+): Promise<VideoAnnotations> => {
+    const response = await fetch(url)
+    if (!response.ok)
+        throw new Error(
+            `Failed to fetch annotations: ${response.status.toString()} ${response.statusText}`,
+        )
+    return parseAnnotations(await response.text())
+}

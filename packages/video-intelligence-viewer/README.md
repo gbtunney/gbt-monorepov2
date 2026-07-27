@@ -22,12 +22,18 @@ Everything runs client-side:
 - **Load annotations (JSON)** — pick a Video Intelligence API output file; it's parsed and validated
   in the browser.
 
-You can also seed data up front:
+You can also seed data up front, from a raw string or a CORS-enabled URL:
 
 ```tsx
-import { parseAnnotations, VideoIntelligenceViewer } from '@snailicid3/video-intelligence-viewer'
+import {
+  fetchAnnotations,
+  parseAnnotations,
+  VideoIntelligenceViewer,
+} from '@snailicid3/video-intelligence-viewer'
 
 const annotations = parseAnnotations(rawJsonString)
+// or, from a remote URL:
+const remote = await fetchAnnotations('https://example.com/annotations.json')
 
 ;<VideoIntelligenceViewer
   defaultThreshold={0.5}
@@ -35,6 +41,13 @@ const annotations = parseAnnotations(rawJsonString)
   videoSrc="/clip.mp4"
 />
 ```
+
+The original project's demo assets work directly (both served with permissive CORS):
+
+- Video: `https://zackakil.github.io/video-intelligence-api-visualiser/assets/test_video.mp4`
+- JSON: `https://zackakil.github.io/video-intelligence-api-visualiser/assets/test_json.json`
+
+See the **Viewer › DemoRemote** story, which fetches both live.
 
 ## Data format
 
