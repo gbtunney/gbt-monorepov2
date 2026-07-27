@@ -115,6 +115,32 @@ export type LabelAnnotation = z.infer<typeof labelAnnotationSchema>
 export const shotAnnotationSchema = segmentSchema
 export type ShotAnnotation = Segment
 
+/** A single transcribed word with its own time range. Note the `start_time`/`end_time` naming (not `_offset`). */
+export const speechWordSchema = z.object({
+    end_time: timeOffsetSchema.optional(),
+    speaker_tag: z.number().optional(),
+    start_time: timeOffsetSchema.optional(),
+    word: z.string(),
+})
+export type SpeechWord = z.infer<typeof speechWordSchema>
+
+/** One transcription hypothesis: the transcript text, its confidence, and per-word timings. */
+export const speechAlternativeSchema = z.object({
+    confidence: z.number().optional(),
+    transcript: z.string().optional(),
+    words: z.array(speechWordSchema).default([]),
+})
+export type SpeechAlternative = z.infer<typeof speechAlternativeSchema>
+
+/** Speech transcription annotation: alternatives for one spoken segment (the first is the best). */
+export const speechTranscriptionSchema = z.object({
+    alternatives: z.array(speechAlternativeSchema).default([]),
+    language_code: z.string().optional(),
+})
+export type SpeechTranscriptionAnnotation = z.infer<
+    typeof speechTranscriptionSchema
+>
+
 /** One `annotation_results` entry. Every feature list is optional; unknown keys are stripped. */
 export const annotationResultSchema = z.object({
     input_uri: z.string().optional(),
@@ -124,6 +150,7 @@ export const annotationResultSchema = z.object({
     segment_label_annotations: z.array(labelAnnotationSchema).optional(),
     shot_annotations: z.array(shotAnnotationSchema).optional(),
     shot_label_annotations: z.array(labelAnnotationSchema).optional(),
+    speech_transcriptions: z.array(speechTranscriptionSchema).optional(),
 })
 export type AnnotationResult = z.infer<typeof annotationResultSchema>
 

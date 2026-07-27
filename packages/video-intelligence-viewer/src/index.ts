@@ -22,6 +22,10 @@ export {
     default as ShotTimeline,
     type ShotTimelineProps,
 } from './components/ShotTimeline.tsx'
+export {
+    default as SpeechTranscription,
+    type SpeechTranscriptionProps,
+} from './components/SpeechTranscription.tsx'
 /** Main viewer */
 export {
     defaultVideoIntelligenceViewerProps,
@@ -34,7 +38,14 @@ export { useVideoCurrentTime, useVideoInfo } from './hooks/useVideoElement.ts'
 
 /** Parsing + selectors */
 export { fetchAnnotations, parseAnnotations } from './parse.ts'
-export { selectLabels, selectPersonTracks, selectShots } from './select.ts'
+export {
+    selectLabels,
+    selectPersonTracks,
+    selectShots,
+    selectSpeech,
+    type SpeechSegment,
+    type SpeechWordTiming,
+} from './select.ts'
 
 /** Types + schemas */
 export {
@@ -62,6 +73,12 @@ export {
     segmentSchema,
     type ShotAnnotation,
     shotAnnotationSchema,
+    type SpeechAlternative,
+    speechAlternativeSchema,
+    type SpeechTranscriptionAnnotation,
+    speechTranscriptionSchema,
+    type SpeechWord,
+    speechWordSchema,
     type TimeOffset,
     timeOffsetSchema,
     type TimestampedObject,
