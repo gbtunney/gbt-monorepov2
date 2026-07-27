@@ -9,6 +9,36 @@ import { type VideoAnnotations } from '../../types.ts'
 export const sampleAnnotations: VideoAnnotations = {
     annotation_results: [
         {
+            object_annotations: [
+                {
+                    confidence: 0.81,
+                    entity: { description: 'car' },
+                    frames: [
+                        {
+                            normalized_bounding_box: {
+                                bottom: 0.7,
+                                left: 0.05,
+                                right: 0.3,
+                                top: 0.5,
+                            },
+                            time_offset: { seconds: 2 },
+                        },
+                        {
+                            normalized_bounding_box: {
+                                bottom: 0.7,
+                                left: 0.4,
+                                right: 0.65,
+                                top: 0.5,
+                            },
+                            time_offset: { seconds: 6 },
+                        },
+                    ],
+                    segment: {
+                        end_time_offset: { seconds: 6 },
+                        start_time_offset: { seconds: 2 },
+                    },
+                },
+            ],
             person_detection_annotations: [
                 {
                     tracks: [
@@ -192,6 +222,44 @@ export const sampleAnnotations: VideoAnnotations = {
                             ],
                         },
                     ],
+                },
+            ],
+            text_annotations: [
+                {
+                    segments: [
+                        {
+                            confidence: 0.79,
+                            frames: [
+                                {
+                                    rotated_bounding_box: {
+                                        vertices: [
+                                            { x: 0.6, y: 0.1 },
+                                            { x: 0.9, y: 0.12 },
+                                            { x: 0.9, y: 0.2 },
+                                            { x: 0.6, y: 0.18 },
+                                        ],
+                                    },
+                                    time_offset: { seconds: 1 },
+                                },
+                                {
+                                    rotated_bounding_box: {
+                                        vertices: [
+                                            { x: 0.6, y: 0.1 },
+                                            { x: 0.9, y: 0.12 },
+                                            { x: 0.9, y: 0.2 },
+                                            { x: 0.6, y: 0.18 },
+                                        ],
+                                    },
+                                    time_offset: { seconds: 8 },
+                                },
+                            ],
+                            segment: {
+                                end_time_offset: { seconds: 8 },
+                                start_time_offset: { seconds: 1 },
+                            },
+                        },
+                    ],
+                    text: 'BAKERY',
                 },
             ],
         },
