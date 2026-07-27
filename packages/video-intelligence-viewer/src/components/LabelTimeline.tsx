@@ -11,6 +11,8 @@ import { timeOffsetToSeconds } from '../utils/time.ts'
 export type LabelTimelineProps = {
     /** Current playback time in seconds. */
     currentTime: number
+    /** Hide the panel's own heading (e.g. when the title is shown by a surrounding accordion). */
+    hideHeading?: boolean
     /** Label annotations (shot- or segment-level). */
     labels: Array<LabelAnnotation>
     /** Seek the video to `seconds` (wired to the segment blocks). */
@@ -33,6 +35,7 @@ const labelName = (label: LabelAnnotation): string => {
 
 const LabelTimeline = ({
     currentTime,
+    hideHeading = false,
     labels,
     onSeek,
     threshold,
@@ -82,9 +85,11 @@ const LabelTimeline = ({
 
     return (
         <Box>
-            <Typography gutterBottom variant="subtitle2">
-                Labels ({resolved.length})
-            </Typography>
+            {!hideHeading && (
+                <Typography gutterBottom variant="subtitle2">
+                    Labels ({resolved.length})
+                </Typography>
+            )}
 
             <Stack
                 direction="row"
