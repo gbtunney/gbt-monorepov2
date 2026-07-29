@@ -11,8 +11,6 @@ import { withinSegment } from '../utils/range.ts'
 export type ObjectPanelProps = {
     /** Current playback time in seconds. */
     currentTime: number
-    /** Hide the panel's own heading (e.g. when the title is shown by a surrounding accordion). */
-    hideHeading?: boolean
     /** Object-tracking annotations. */
     objectTracks: Array<ObjectTrackingAnnotation>
     /** Confidence gate — only tracks with `confidence > threshold` are counted. */
@@ -21,7 +19,6 @@ export type ObjectPanelProps = {
 
 const ObjectPanel = ({
     currentTime,
-    hideHeading = false,
     objectTracks,
     threshold,
 }: ObjectPanelProps): ReactElement => {
@@ -40,11 +37,9 @@ const ObjectPanel = ({
 
     return (
         <Box>
-            {!hideHeading && (
-                <Typography gutterBottom variant="subtitle2">
-                    Objects ({visible.length})
-                </Typography>
-            )}
+            <Typography gutterBottom variant="subtitle2">
+                Objects ({visible.length})
+            </Typography>
             <Stack direction="row" spacing={0.5} sx={{ flexWrap: 'wrap' }}>
                 <Typography sx={{ mr: 1 }} variant="body2">
                     Current:

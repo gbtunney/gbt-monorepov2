@@ -1,11 +1,5 @@
 /** Public API barrel for `@snailicid3/video-intelligence-viewer` */
 
-/** Reusable video + overlay primitive */
-export {
-    default as AnnotatedVideo,
-    type AnnotatedVideoProps,
-} from './components/AnnotatedVideo.tsx'
-
 /** Overlay + panels */
 export {
     default as AnnotationCanvas,

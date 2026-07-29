@@ -14,8 +14,6 @@ export type ExplicitContentPanelProps = {
     currentTime: number
     /** Explicit-content frames, sorted ascending by time (see `selectExplicitFrames`). */
     frames: Array<ExplicitFrameTiming>
-    /** Hide the panel's own heading (e.g. when the title is shown by a surrounding accordion). */
-    hideHeading?: boolean
     /** Seek the video to `seconds` (wired to the segments). */
     onSeek?: (seconds: number) => void
     /** Video duration in seconds (0 falls back to the last frame's time). */
@@ -28,7 +26,6 @@ const prettyLikelihood = (value: string): string =>
 const ExplicitContentPanel = ({
     currentTime,
     frames,
-    hideHeading = false,
     onSeek,
     videoLength,
 }: ExplicitContentPanelProps): ReactElement => {
@@ -46,11 +43,9 @@ const ExplicitContentPanel = ({
 
     return (
         <Box>
-            {!hideHeading && (
-                <Typography gutterBottom variant="subtitle2">
-                    Explicit content ({frames.length})
-                </Typography>
-            )}
+            <Typography gutterBottom variant="subtitle2">
+                Explicit content ({frames.length})
+            </Typography>
 
             <Stack
                 direction="row"
