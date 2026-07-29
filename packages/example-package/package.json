@@ -39,12 +39,12 @@
     },
     "devDependencies": {
         "@snailicid3/build-config": "^0.0.8",
-        "@snailicid3/config": "^0.1.3",
-        "@types/node": "^26.0.1",
+        "@snailicid3/config": "^0.2.0",
+        "@types/node": "^26.1.2",
         "cross-var": "^1.1.0",
-        "tsdown": "^0.22.3",
+        "tsdown": "^0.22.14",
         "typescript": "^6.0.3",
-        "vitest": "^4.1.9"
+        "vitest": "^4.1.10"
     },
     "type": "module",
     "author": {
