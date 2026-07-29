@@ -112,10 +112,10 @@ const LabelTimeline = ({
                 <Stack spacing={0.5}>
                     {resolved.map((label) => (
                         <Stack
-                            alignItems="center"
                             direction="row"
                             key={label.name}
-                            spacing={1}>
+                            spacing={1}
+                            sx={{ alignItems: 'center' }}>
                             <Typography
                                 sx={{ flexShrink: 0, width: 140 }}
                                 variant="body2">

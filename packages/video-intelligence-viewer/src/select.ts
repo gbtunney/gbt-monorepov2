@@ -5,10 +5,19 @@
 
 import {
     type LabelAnnotation,
+    type ObjectTrackingAnnotation,
     type PersonTrack,
     type ShotAnnotation,
+    type TextAnnotation,
     type VideoAnnotations,
 } from './types.ts'
+import { timeOffsetToSeconds } from './utils/time.ts'
+
+/** An explicit-content frame with its time resolved to seconds. */
+export type ExplicitFrameTiming = {
+    likelihood: string
+    time: number
+}
 
 /** Every person track across all annotation results. */
 export const selectPersonTracks = (
@@ -28,6 +37,38 @@ export const selectShots = (
         (result) => result.shot_annotations ?? [],
     )
 
+/** Every object-tracking annotation across all annotation results. */
+export const selectObjectTracks = (
+    annotations: VideoAnnotations,
+): Array<ObjectTrackingAnnotation> =>
+    annotations.annotation_results.flatMap(
+        (result) => result.object_annotations ?? [],
+    )
+
+/** Every text-detection annotation across all annotation results. */
+export const selectText = (
+    annotations: VideoAnnotations,
+): Array<TextAnnotation> =>
+    annotations.annotation_results.flatMap(
+        (result) => result.text_annotations ?? [],
+    )
+
+/**
+ * Explicit-content frames (whole-frame likelihood ratings) across all results, times resolved to seconds and sorted
+ * ascending so consumers can treat them as a step function.
+ */
+export const selectExplicitFrames = (
+    annotations: VideoAnnotations,
+): Array<ExplicitFrameTiming> =>
+    annotations.annotation_results
+        .flatMap((result) => result.explicit_annotation?.frames ?? [])
+        .map((frame) => ({
+            likelihood:
+                frame.pornography_likelihood ?? 'LIKELIHOOD_UNSPECIFIED',
+            time: timeOffsetToSeconds(frame.time_offset),
+        }))
+        .sort((first, second) => first.time - second.time)
+
 /**
  * Label annotations, preferring shot-level labels and falling back to segment-level (matching the original visualiser's
  * label panel).
@@ -41,3 +82,38 @@ export const selectLabels = (
             result.segment_label_annotations ??
             [],
     )
+
+/** One spoken segment: its best-alternative confidence and timed words. */
+export type SpeechSegment = {
+    confidence: number
+    words: Array<SpeechWordTiming>
+}
+
+/** A transcribed word with its time range resolved to seconds. */
+export type SpeechWordTiming = {
+    end: number
+    start: number
+    text: string
+}
+
+/**
+ * Speech transcriptions flattened to their best (first) alternative, with word `start_time`/`end_time` resolved to
+ * seconds. Segments with no timed words are dropped.
+ */
+export const selectSpeech = (
+    annotations: VideoAnnotations,
+): Array<SpeechSegment> =>
+    annotations.annotation_results
+        .flatMap((result) => result.speech_transcriptions ?? [])
+        .map((transcription) => {
+            const alternative = transcription.alternatives[0]
+            return {
+                confidence: alternative?.confidence ?? 0,
+                words: (alternative?.words ?? []).map((word) => ({
+                    end: timeOffsetToSeconds(word.end_time),
+                    start: timeOffsetToSeconds(word.start_time),
+                    text: word.word,
+                })),
+            }
+        })
+        .filter((segment) => segment.words.length > 0)

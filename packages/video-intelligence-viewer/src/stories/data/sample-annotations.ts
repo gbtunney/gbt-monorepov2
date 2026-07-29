@@ -9,6 +9,56 @@ import { type VideoAnnotations } from '../../types.ts'
 export const sampleAnnotations: VideoAnnotations = {
     annotation_results: [
         {
+            explicit_annotation: {
+                frames: [
+                    {
+                        pornography_likelihood: 'VERY_UNLIKELY',
+                        time_offset: { seconds: 0 },
+                    },
+                    {
+                        pornography_likelihood: 'UNLIKELY',
+                        time_offset: { seconds: 3 },
+                    },
+                    {
+                        pornography_likelihood: 'POSSIBLE',
+                        time_offset: { seconds: 5 },
+                    },
+                    {
+                        pornography_likelihood: 'VERY_UNLIKELY',
+                        time_offset: { seconds: 7 },
+                    },
+                ],
+            },
+            object_annotations: [
+                {
+                    confidence: 0.81,
+                    entity: { description: 'car' },
+                    frames: [
+                        {
+                            normalized_bounding_box: {
+                                bottom: 0.7,
+                                left: 0.05,
+                                right: 0.3,
+                                top: 0.5,
+                            },
+                            time_offset: { seconds: 2 },
+                        },
+                        {
+                            normalized_bounding_box: {
+                                bottom: 0.7,
+                                left: 0.4,
+                                right: 0.65,
+                                top: 0.5,
+                            },
+                            time_offset: { seconds: 6 },
+                        },
+                    ],
+                    segment: {
+                        end_time_offset: { seconds: 6 },
+                        start_time_offset: { seconds: 2 },
+                    },
+                },
+            ],
             person_detection_annotations: [
                 {
                     tracks: [
@@ -126,6 +176,110 @@ export const sampleAnnotations: VideoAnnotations = {
                             },
                         },
                     ],
+                },
+            ],
+            speech_transcriptions: [
+                {
+                    alternatives: [
+                        {
+                            confidence: 0.94,
+                            transcript: 'the quick brown fox jumps over',
+                            words: [
+                                {
+                                    end_time: {
+                                        nanos: 500_000_000,
+                                        seconds: 1,
+                                    },
+                                    start_time: { seconds: 1 },
+                                    word: 'the',
+                                },
+                                {
+                                    end_time: {
+                                        nanos: 200_000_000,
+                                        seconds: 2,
+                                    },
+                                    start_time: {
+                                        nanos: 500_000_000,
+                                        seconds: 1,
+                                    },
+                                    word: 'quick',
+                                },
+                                {
+                                    end_time: { seconds: 3 },
+                                    start_time: {
+                                        nanos: 200_000_000,
+                                        seconds: 2,
+                                    },
+                                    word: 'brown',
+                                },
+                                {
+                                    end_time: {
+                                        nanos: 800_000_000,
+                                        seconds: 3,
+                                    },
+                                    start_time: { seconds: 3 },
+                                    word: 'fox',
+                                },
+                                {
+                                    end_time: {
+                                        nanos: 600_000_000,
+                                        seconds: 4,
+                                    },
+                                    start_time: { seconds: 4 },
+                                    word: 'jumps',
+                                },
+                                {
+                                    end_time: {
+                                        nanos: 200_000_000,
+                                        seconds: 5,
+                                    },
+                                    start_time: {
+                                        nanos: 600_000_000,
+                                        seconds: 4,
+                                    },
+                                    word: 'over',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
+            text_annotations: [
+                {
+                    segments: [
+                        {
+                            confidence: 0.79,
+                            frames: [
+                                {
+                                    rotated_bounding_box: {
+                                        vertices: [
+                                            { x: 0.6, y: 0.1 },
+                                            { x: 0.9, y: 0.12 },
+                                            { x: 0.9, y: 0.2 },
+                                            { x: 0.6, y: 0.18 },
+                                        ],
+                                    },
+                                    time_offset: { seconds: 1 },
+                                },
+                                {
+                                    rotated_bounding_box: {
+                                        vertices: [
+                                            { x: 0.6, y: 0.1 },
+                                            { x: 0.9, y: 0.12 },
+                                            { x: 0.9, y: 0.2 },
+                                            { x: 0.6, y: 0.18 },
+                                        ],
+                                    },
+                                    time_offset: { seconds: 8 },
+                                },
+                            ],
+                            segment: {
+                                end_time_offset: { seconds: 8 },
+                                start_time_offset: { seconds: 1 },
+                            },
+                        },
+                    ],
+                    text: 'BAKERY',
                 },
             ],
         },

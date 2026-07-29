@@ -1,0 +1,79 @@
+# Runs Chromatic per Storybook project, each with its own project token.
+# `nx run-many -t chromatic` can't be used here because every project's
+# chromatic target reads a single $CHROMATIC_PROJECT_TOKEN, so a matrix runs
+# one project at a time and injects that project's token.
+#
+# Required repository secrets (one per Chromatic project):
+#   - CHROMATIC_GBT_SCOPE_PROJECT_TOKEN
+#   - CHROMATIC_VIDEO_INTELLIGENCE_PROJECT_TOKEN
+# A leg whose secret is unset is skipped, so this workflow is a safe no-op
+# until the secrets are added.
+name: Chromatic
+
+on:
+    pull_request:
+        branches:
+            - main
+    workflow_dispatch:
+
+concurrency:
+    group: chromatic-${{ github.event.pull_request.number || github.ref_name }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+
+env:
+    HUSKY: 0
+    NX_NO_CLOUD: 'true'
+
+jobs:
+    chromatic:
+        name: chromatic (${{ matrix.project }})
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                include:
+                    - project: '@snailicid3/gbt-scope'
+                      token_var: CHROMATIC_GBT_SCOPE_PROJECT_TOKEN
+                    - project: '@snailicid3/video-intelligence-viewer'
+                      token_var: CHROMATIC_VIDEO_INTELLIGENCE_PROJECT_TOKEN
+        steps:
+            # Chromatic needs full git history to detect baselines.
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+                  ref: ${{ github.event_name == 'pull_request' && format('refs/pull/{0}/merge', github.event.pull_request.number) || github.ref }}
+
+            - uses: pnpm/action-setup@v6
+              with:
+                  run_install: false
+                  cache: false
+
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: lts/*
+                  cache: pnpm
+                  cache-dependency-path: pnpm-lock.yaml
+
+            - name: 📦 Install Frozen Lockfile
+              run: pnpm install --frozen-lockfile
+
+            - name: 🎨 Run Chromatic
+              shell: bash
+              env:
+                  CHROMATIC_GBT_SCOPE_PROJECT_TOKEN: ${{ secrets.CHROMATIC_GBT_SCOPE_PROJECT_TOKEN }}
+                  CHROMATIC_VIDEO_INTELLIGENCE_PROJECT_TOKEN: ${{ secrets.CHROMATIC_VIDEO_INTELLIGENCE_PROJECT_TOKEN }}
+                  TOKEN_VAR: ${{ matrix.token_var }}
+              run: |
+                  set -euo pipefail
+
+                  TOKEN="${!TOKEN_VAR:-}"
+                  if [[ -z "$TOKEN" ]]; then
+                    echo "::warning::Secret $TOKEN_VAR is not set — skipping Chromatic for ${{ matrix.project }}."
+                    exit 0
+                  fi
+
+                  CHROMATIC_PROJECT_TOKEN="$TOKEN" \
+                    pnpm exec nx run '${{ matrix.project }}':chromatic

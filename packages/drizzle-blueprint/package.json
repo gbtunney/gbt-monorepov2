@@ -36,26 +36,26 @@
     "main": "./dist/index.cjs",
     "module": "./dist/index.mjs",
     "dependencies": {
-        "better-sqlite3": "^12.11.1",
+        "better-sqlite3": "^13.0.2",
         "drizzle-orm": "^0.45.2",
         "drizzle-zod": "^0.8.3",
         "express": "^5.2.1",
-        "express-zod-api": "^28.7.1",
+        "express-zod-api": "^28.7.6",
         "http-errors": "^2.0.1",
-        "zod": "^4.3.6"
+        "zod": "^4.4.3"
     },
     "devDependencies": {
         "@snailicid3/build-config": "^0.0.8",
-        "@snailicid3/config": "^0.1.3",
+        "@snailicid3/config": "^0.2.0",
         "@types/better-sqlite3": "^7.6.13",
         "@types/express": "^5.0.6",
         "@types/http-errors": "^2.0.5",
-        "@types/node": "^26.0.1",
+        "@types/node": "^26.1.2",
         "cross-var": "^1.1.0",
         "drizzle-kit": "^0.31.10",
-        "tsdown": "^0.22.3",
+        "tsdown": "^0.22.14",
         "typescript": "^6.0.3",
-        "vitest": "^4.1.9"
+        "vitest": "^4.1.10"
     },
     "type": "module",
     "author": {

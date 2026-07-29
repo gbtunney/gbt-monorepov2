@@ -5,8 +5,20 @@ React components for visualising
 React port of Zack Akil's
 [video-intelligence-api-visualiser](https://github.com/ZackAkil/video-intelligence-api-visualiser).
 
-First pass covers three features: **Shot detection**, **Label detection**, and **Person detection**
-(bounding boxes + landmarks drawn on a canvas overlay, interpolated between sampled frames).
+Supported annotation features:
+
+- **Shot detection** — timeline of shots with current-shot highlighting.
+- **Label detection** — per-label segment timeline + live "current labels" list.
+- **Person detection** — bounding boxes + landmarks on the canvas overlay.
+- **Object tracking** — bounding boxes + entity labels on the canvas overlay.
+- **Text detection** — rotated bounding boxes + the detected string on the canvas overlay.
+- **Speech transcription** — word-by-word transcript with the current word highlighted; click to
+  seek.
+- **Explicit content** — a likelihood timeline (green = very unlikely → red = very likely) with the
+  current rating; click to seek.
+
+All overlay geometry is interpolated between sampled frames and driven by the video's `currentTime`;
+a shared confidence slider gates the box/label features.
 
 ## Usage
 
@@ -52,11 +64,21 @@ See the **Viewer › DemoRemote** story, which fetches both live.
 ## Data format
 
 The parser expects the **snake_case** REST / `gcloud` shape — a top-level `annotation_results` array
-with `shot_annotations`, `shot_label_annotations` / `segment_label_annotations`, and
-`person_detection_annotations`. Time offsets are `{ seconds, nanos }` durations. Generate your own
-with the
+with `shot_annotations`, `shot_label_annotations` / `segment_label_annotations`,
+`person_detection_annotations`, `object_annotations`, `text_annotations`, and
+`speech_transcriptions`. Time offsets are `{ seconds, nanos }` durations. Unknown feature keys are
+ignored, so full API payloads validate. Generate your own with the
 [`run_video_intelligence.py`](https://github.com/ZackAkil/video-intelligence-api-visualiser/blob/master/run_video_intelligence.py)
 script from the original project.
+
+## Future improvements
+
+Not yet implemented (the demo JSON already carries data for all of them, so they can be added on the
+existing canvas-overlay / panel pattern):
+
+- **Face detection** (`face_detection_annotations`) — a possible future improvement; deferred for
+  now.
+- **Logo recognition** (`logo_recognition_annotations`).
 
 ## Development
 

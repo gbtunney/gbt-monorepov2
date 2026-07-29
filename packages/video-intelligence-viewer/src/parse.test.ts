@@ -33,7 +33,7 @@ describe('parseAnnotations', () => {
             JSON.stringify({
                 annotation_results: [
                     {
-                        explicit_annotation: { frames: [] },
+                        logo_recognition_annotations: [{ entity: {} }],
                         shot_label_annotations: [
                             {
                                 entity: { description: 'dog' },
@@ -49,7 +49,7 @@ describe('parseAnnotations', () => {
             'dog',
         )
         expect(
-            (result as Record<string, unknown>).explicit_annotation,
+            (result as Record<string, unknown>).logo_recognition_annotations,
         ).toBeUndefined()
     })
 })

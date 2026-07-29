@@ -96,6 +96,20 @@ export type PersonDetectionAnnotation = z.infer<
     typeof personDetectionAnnotationSchema
 >
 
+/**
+ * Object tracking annotation: an entity tracked across sampled box frames. Structurally a person track without
+ * landmarks, so the frames reuse {@link timestampedObjectSchema}.
+ */
+export const objectTrackingAnnotationSchema = z.object({
+    confidence: z.number().optional(),
+    entity: entitySchema,
+    frames: z.array(timestampedObjectSchema).default([]),
+    segment: segmentSchema.optional(),
+})
+export type ObjectTrackingAnnotation = z.infer<
+    typeof objectTrackingAnnotationSchema
+>
+
 /** A single confidence-scored segment of a label. */
 export const labelSegmentSchema = z.object({
     confidence: z.number().optional(),
@@ -115,15 +129,90 @@ export type LabelAnnotation = z.infer<typeof labelAnnotationSchema>
 export const shotAnnotationSchema = segmentSchema
 export type ShotAnnotation = Segment
 
+/** A single transcribed word with its own time range. Note the `start_time`/`end_time` naming (not `_offset`). */
+export const speechWordSchema = z.object({
+    end_time: timeOffsetSchema.optional(),
+    speaker_tag: z.number().optional(),
+    start_time: timeOffsetSchema.optional(),
+    word: z.string(),
+})
+export type SpeechWord = z.infer<typeof speechWordSchema>
+
+/** One transcription hypothesis: the transcript text, its confidence, and per-word timings. */
+export const speechAlternativeSchema = z.object({
+    confidence: z.number().optional(),
+    transcript: z.string().optional(),
+    words: z.array(speechWordSchema).default([]),
+})
+export type SpeechAlternative = z.infer<typeof speechAlternativeSchema>
+
+/** Speech transcription annotation: alternatives for one spoken segment (the first is the best). */
+export const speechTranscriptionSchema = z.object({
+    alternatives: z.array(speechAlternativeSchema).default([]),
+    language_code: z.string().optional(),
+})
+export type SpeechTranscriptionAnnotation = z.infer<
+    typeof speechTranscriptionSchema
+>
+
+/** A rotated (not necessarily axis-aligned) bounding box: an ordered ring of normalized vertices. */
+export const rotatedBoundingBoxSchema = z.object({
+    vertices: z.array(normalizedVertexSchema).default([]),
+})
+export type RotatedBoundingBox = z.infer<typeof rotatedBoundingBoxSchema>
+
+/** One sampled frame of a text segment: the rotated box at `time_offset`. */
+export const textFrameSchema = z.object({
+    rotated_bounding_box: rotatedBoundingBoxSchema,
+    time_offset: timeOffsetSchema.optional(),
+})
+export type TextFrame = z.infer<typeof textFrameSchema>
+
+/** One appearance of a piece of text: a time range + the sampled rotated-box frames. */
+export const textSegmentSchema = z.object({
+    confidence: z.number().optional(),
+    frames: z.array(textFrameSchema).default([]),
+    segment: segmentSchema.optional(),
+})
+export type TextSegment = z.infer<typeof textSegmentSchema>
+
+/** Text detection annotation: a detected string and every segment where it appears. */
+export const textAnnotationSchema = z.object({
+    segments: z.array(textSegmentSchema).default([]),
+    text: z.string(),
+})
+export type TextAnnotation = z.infer<typeof textAnnotationSchema>
+
+/**
+ * One sampled frame of explicit-content detection: a whole-frame likelihood rating at `time_offset`.
+ * `pornography_likelihood` is one of the `Likelihood` enum strings (kept as a plain string so unknown values
+ * validate).
+ */
+export const explicitFrameSchema = z.object({
+    pornography_likelihood: z.string().optional(),
+    time_offset: timeOffsetSchema.optional(),
+})
+export type ExplicitFrame = z.infer<typeof explicitFrameSchema>
+
+/** Explicit content detection: a single object (not an array) with per-frame likelihood ratings. */
+export const explicitAnnotationSchema = z.object({
+    frames: z.array(explicitFrameSchema).default([]),
+})
+export type ExplicitAnnotation = z.infer<typeof explicitAnnotationSchema>
+
 /** One `annotation_results` entry. Every feature list is optional; unknown keys are stripped. */
 export const annotationResultSchema = z.object({
+    explicit_annotation: explicitAnnotationSchema.optional(),
     input_uri: z.string().optional(),
+    object_annotations: z.array(objectTrackingAnnotationSchema).optional(),
     person_detection_annotations: z
         .array(personDetectionAnnotationSchema)
         .optional(),
     segment_label_annotations: z.array(labelAnnotationSchema).optional(),
     shot_annotations: z.array(shotAnnotationSchema).optional(),
     shot_label_annotations: z.array(labelAnnotationSchema).optional(),
+    speech_transcriptions: z.array(speechTranscriptionSchema).optional(),
+    text_annotations: z.array(textAnnotationSchema).optional(),
 })
 export type AnnotationResult = z.infer<typeof annotationResultSchema>
 
