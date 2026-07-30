@@ -7,6 +7,11 @@ export {
 } from './components/AnnotationCanvas.tsx'
 
 export {
+    default as AnnotationExplorer,
+    type AnnotationExplorerProps,
+} from './components/AnnotationExplorer.tsx'
+
+export {
     default as ConfidenceSlider,
     type ConfidenceSliderProps,
 } from './components/ConfidenceSlider.tsx'
