@@ -1,0 +1,1304 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  />
+
+  <title>Motion Tracking Preview</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 7px;
+      color: #e8eef8;
+      background:
+        radial-gradient(circle at top, #172437 0, #08111c 48%, #04090f 100%);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    .panel {
+      width: min(620px, 100%);
+      margin: auto;
+      overflow: hidden;
+      border: 1px solid #23344a;
+      border-radius: 15px;
+      background: rgba(6, 14, 24, 0.97);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+    }
+
+    .header {
+      padding: 9px 10px 7px;
+      border-bottom: 1px solid #1c2b3c;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .subtitle,
+    .stats,
+    .help {
+      color: #879bb2;
+      font-size: 10px;
+    }
+
+    .subtitle {
+      margin-top: 2px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: auto minmax(76px, 1fr) auto auto auto;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    button,
+    input {
+      min-width: 0;
+      height: 31px;
+      color: #dfe9f6;
+      border: 1px solid #30445d;
+      border-radius: 8px;
+      background: #111f30;
+      font: inherit;
+      font-size: 12px;
+    }
+
+    button {
+      padding: 0 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      border-color: #6f91ff;
+      background: #192b40;
+    }
+
+    input {
+      width: 100%;
+      padding: 0 7px;
+      text-align: center;
+    }
+
+    .stats {
+      margin-top: 6px;
+    }
+
+    .legend {
+      display: flex;
+      gap: 14px;
+      padding: 7px 10px 2px;
+      font-size: 10px;
+      color: #a8b7c9;
+    }
+
+    .legend-item {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .swatch {
+      width: 9px;
+      height: 9px;
+      border: 2px solid;
+      border-radius: 2px;
+    }
+
+    .object-swatch {
+      border-color: #27d3e2;
+    }
+
+    .person-swatch {
+      border-color: #ba73ff;
+    }
+
+    #viewport {
+      width: calc(100% - 16px);
+      max-width: 480px;
+      margin: 4px auto 0;
+      aspect-ratio: 1 / 1;
+    }
+
+    #timeline {
+      width: 100%;
+      height: 130px;
+    }
+
+    .help {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 3px 8px;
+      padding: 3px 10px 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <section class="panel">
+    <header class="header">
+      <h1>Motion Tracking Inspector</h1>
+
+      <div class="subtitle">
+        Normalized frame · object and person tracks · ±5 onion skins
+      </div>
+
+      <div class="controls">
+        <button id="previous" type="button" aria-label="Previous step">◀</button>
+
+        <input
+          id="timeInput"
+          type="number"
+          inputmode="decimal"
+          aria-label="Current time"
+        />
+
+        <button id="next" type="button" aria-label="Next step">▶</button>
+        <button id="play" type="button">Play</button>
+        <button id="fit" type="button">Fit</button>
+      </div>
+
+      <div id="stats" class="stats"></div>
+    </header>
+
+    <div class="legend">
+      <span class="legend-item">
+        <span class="swatch object-swatch"></span>
+        Object
+      </span>
+
+      <span class="legend-item">
+        <span class="swatch person-swatch"></span>
+        Person
+      </span>
+    </div>
+
+    <div id="viewport"></div>
+    <div id="timeline"></div>
+
+    <footer class="help">
+      <span>Bottom handles: select range</span>
+      <span>Middle brush: pan range</span>
+      <span>Step = 2.5% of range</span>
+      <span>Step limits: 0.05–1.00s</span>
+    </footer>
+  </section>
+
+  <script>
+    // Relevant tracking portion of the provided sample payload.
+    const sampleAnnotations = {
+      annotation_results: [
+        {
+          object_annotations: [
+            {
+              confidence: 0.81,
+              entity: { description: "car" },
+              frames: [
+                {
+                  normalized_bounding_box: {
+                    bottom: 0.7,
+                    left: 0.05,
+                    right: 0.3,
+                    top: 0.5
+                  },
+                  time_offset: { seconds: 2 }
+                },
+                {
+                  normalized_bounding_box: {
+                    bottom: 0.7,
+                    left: 0.4,
+                    right: 0.65,
+                    top: 0.5
+                  },
+                  time_offset: { seconds: 6 }
+                }
+              ],
+              segment: {
+                start_time_offset: { seconds: 2 },
+                end_time_offset: { seconds: 6 }
+              }
+            }
+          ],
+
+          person_detection_annotations: [
+            {
+              tracks: [
+                {
+                  confidence: 0.92,
+                  segment: {
+                    start_time_offset: { seconds: 1 },
+                    end_time_offset: { seconds: 9 }
+                  },
+                  timestamped_objects: [
+                    {
+                      landmarks: [
+                        {
+                          name: "nose",
+                          point: { x: 0.15, y: 0.3 }
+                        }
+                      ],
+                      normalized_bounding_box: {
+                        bottom: 0.8,
+                        left: 0.1,
+                        right: 0.3,
+                        top: 0.25
+                      },
+                      time_offset: { seconds: 1 }
+                    },
+                    {
+                      landmarks: [
+                        {
+                          name: "nose",
+                          point: { x: 0.55, y: 0.28 }
+                        }
+                      ],
+                      normalized_bounding_box: {
+                        bottom: 0.82,
+                        left: 0.5,
+                        right: 0.7,
+                        top: 0.22
+                      },
+                      time_offset: { seconds: 5 }
+                    },
+                    {
+                      landmarks: [
+                        {
+                          name: "nose",
+                          point: { x: 0.8, y: 0.3 }
+                        }
+                      ],
+                      normalized_bounding_box: {
+                        bottom: 0.8,
+                        left: 0.72,
+                        right: 0.92,
+                        top: 0.25
+                      },
+                      time_offset: {
+                        seconds: 8,
+                        nanos: 500000000
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const ONION_SKINS_PER_SIDE = 5;
+    const STEP_PERCENT = 0.025;
+    const MIN_STEP = 0.05;
+    const MAX_STEP = 1;
+
+    const COLORS = {
+      object: "#27d3e2",
+      person: "#ba73ff",
+      playhead: "#ff5f72"
+    };
+
+    function read(object, snakeKey, camelKey) {
+      return object?.[snakeKey] ?? object?.[camelKey];
+    }
+
+    function toSeconds(offset = {}) {
+      return (
+        Number(offset.seconds || 0) +
+        Number(offset.nanos || 0) / 1_000_000_000
+      );
+    }
+
+    function clamp(value, minimum, maximum) {
+      return Math.min(maximum, Math.max(minimum, value));
+    }
+
+    function lerp(start, end, ratio) {
+      return start + (end - start) * ratio;
+    }
+
+    function formatTime(value) {
+      const time = Math.max(0, Number(value || 0));
+      const minutes = Math.floor(time / 60);
+      const seconds = time % 60;
+
+      return (
+        `${String(minutes).padStart(2, "0")}:` +
+        `${seconds.toFixed(2).padStart(5, "0")}`
+      );
+    }
+
+    /**
+     * Converts raw Video Intelligence tracking annotations into one
+     * neutral track format for objects and people.
+     */
+    function normalizeMotionTracks(payload) {
+      const results =
+        read(payload, "annotation_results", "annotationResults") ?? [];
+
+      const tracks = [];
+
+      results.forEach((result, resultIndex) => {
+        const objects =
+          read(result, "object_annotations", "objectAnnotations") ?? [];
+
+        objects.forEach((annotation, objectIndex) => {
+          const segment = annotation.segment ?? {};
+
+          const frames = (annotation.frames ?? [])
+            .map((frame) => ({
+              time: toSeconds(
+                read(frame, "time_offset", "timeOffset")
+              ),
+              box: read(
+                frame,
+                "normalized_bounding_box",
+                "normalizedBoundingBox"
+              ),
+              landmarks: []
+            }))
+            .filter((frame) => frame.box)
+            .sort((a, b) => a.time - b.time);
+
+          if (!frames.length) return;
+
+          tracks.push({
+            id: `object-${resultIndex}-${objectIndex}`,
+            kind: "object",
+            label:
+              annotation.entity?.description ||
+              `object ${objectIndex + 1}`,
+            confidence: Number(annotation.confidence || 0),
+            start: toSeconds(
+              read(
+                segment,
+                "start_time_offset",
+                "startTimeOffset"
+              )
+            ),
+            end: toSeconds(
+              read(
+                segment,
+                "end_time_offset",
+                "endTimeOffset"
+              )
+            ),
+            frames
+          });
+        });
+
+        const personGroups =
+          read(
+            result,
+            "person_detection_annotations",
+            "personDetectionAnnotations"
+          ) ?? [];
+
+        let personNumber = 0;
+
+        personGroups.forEach((group) => {
+          (group.tracks ?? []).forEach((personTrack) => {
+            personNumber += 1;
+
+            const segment = personTrack.segment ?? {};
+
+            const timestampedObjects =
+              read(
+                personTrack,
+                "timestamped_objects",
+                "timestampedObjects"
+              ) ?? [];
+
+            const frames = timestampedObjects
+              .map((frame) => ({
+                time: toSeconds(
+                  read(frame, "time_offset", "timeOffset")
+                ),
+                box: read(
+                  frame,
+                  "normalized_bounding_box",
+                  "normalizedBoundingBox"
+                ),
+                landmarks: (frame.landmarks ?? []).map((landmark) => ({
+                  name: landmark.name || "point",
+                  x: Number(landmark.point?.x || 0),
+                  y: Number(landmark.point?.y || 0)
+                }))
+              }))
+              .filter((frame) => frame.box)
+              .sort((a, b) => a.time - b.time);
+
+            if (!frames.length) return;
+
+            tracks.push({
+              id: `person-${resultIndex}-${personNumber}`,
+              kind: "person",
+              label: `person ${personNumber}`,
+              confidence: Number(personTrack.confidence || 0),
+              start: toSeconds(
+                read(
+                  segment,
+                  "start_time_offset",
+                  "startTimeOffset"
+                )
+              ),
+              end: toSeconds(
+                read(
+                  segment,
+                  "end_time_offset",
+                  "endTimeOffset"
+                )
+              ),
+              frames
+            });
+          });
+        });
+      });
+
+      return tracks;
+    }
+
+    const tracks = normalizeMotionTracks(sampleAnnotations);
+
+    const duration = Math.max(
+      1,
+      ...tracks.map((track) => track.end),
+      ...tracks.flatMap((track) =>
+        track.frames.map((frame) => frame.time)
+      )
+    );
+
+    let selectedStart = 0;
+    let selectedEnd = duration;
+    let currentTime = selectedStart;
+    let stepSize = calculateStep();
+    let playTimer = null;
+
+    function calculateStep() {
+      const rangeLength = Math.max(0, selectedEnd - selectedStart);
+
+      return clamp(
+        rangeLength * STEP_PERCENT,
+        MIN_STEP,
+        MAX_STEP
+      );
+    }
+
+    function interpolateLandmarks(first = [], second = [], ratio) {
+      const secondByName = new Map(
+        second.map((landmark) => [landmark.name, landmark])
+      );
+
+      return first.map((landmark) => {
+        const match = secondByName.get(landmark.name);
+
+        if (!match) return landmark;
+
+        return {
+          name: landmark.name,
+          x: lerp(landmark.x, match.x, ratio),
+          y: lerp(landmark.y, match.y, ratio)
+        };
+      });
+    }
+
+    /**
+     * Samples a track at any fixed time.
+     * Sparse source frames are interpolated.
+     */
+    function sampleTrack(track, time) {
+      if (time < track.start || time > track.end) return null;
+
+      const frames = track.frames;
+
+      if (time <= frames[0].time) {
+        return frames[0];
+      }
+
+      if (time >= frames[frames.length - 1].time) {
+        return frames[frames.length - 1];
+      }
+
+      for (let index = 0; index < frames.length - 1; index += 1) {
+        const first = frames[index];
+        const second = frames[index + 1];
+
+        if (time >= first.time && time <= second.time) {
+          const span = second.time - first.time;
+          const ratio = span > 0 ? (time - first.time) / span : 0;
+
+          return {
+            time,
+            box: {
+              left: lerp(first.box.left, second.box.left, ratio),
+              top: lerp(first.box.top, second.box.top, ratio),
+              right: lerp(first.box.right, second.box.right, ratio),
+              bottom: lerp(
+                first.box.bottom,
+                second.box.bottom,
+                ratio
+              )
+            },
+            landmarks: interpolateLandmarks(
+              first.landmarks,
+              second.landmarks,
+              ratio
+            )
+          };
+        }
+      }
+
+      return null;
+    }
+
+    function onionOpacity(offset) {
+      if (offset === 0) return 1;
+
+      const distance = Math.abs(offset);
+
+      return Math.max(
+        0.1,
+        0.48 * (1 - distance / (ONION_SKINS_PER_SIDE + 1))
+      );
+    }
+
+    function buildViewportData() {
+      const boxes = [];
+      const landmarks = [];
+
+      const offsets = Array.from(
+        { length: ONION_SKINS_PER_SIDE * 2 + 1 },
+        (_, index) => index - ONION_SKINS_PER_SIDE
+      ).sort((a, b) => Math.abs(b) - Math.abs(a));
+
+      tracks.forEach((track) => {
+        offsets.forEach((offset) => {
+          const sampleTime = currentTime + offset * stepSize;
+
+          if (
+            sampleTime < selectedStart ||
+            sampleTime > selectedEnd
+          ) {
+            return;
+          }
+
+          const frame = sampleTrack(track, sampleTime);
+
+          if (!frame) return;
+
+          const opacity = onionOpacity(offset);
+
+          boxes.push({
+            value: [
+              frame.box.left,
+              frame.box.top,
+              frame.box.right,
+              frame.box.bottom,
+              opacity,
+              offset
+            ],
+            label: track.label,
+            kind: track.kind,
+            confidence: track.confidence,
+            sampleTime,
+            color: COLORS[track.kind]
+          });
+
+          (frame.landmarks ?? []).forEach((landmark) => {
+            landmarks.push({
+              value: [
+                landmark.x,
+                landmark.y,
+                opacity,
+                offset
+              ],
+              label: landmark.name,
+              kind: track.kind,
+              color: COLORS[track.kind]
+            });
+          });
+        });
+      });
+
+      return { boxes, landmarks };
+    }
+
+    const viewportElement = document.getElementById("viewport");
+    const timelineElement = document.getElementById("timeline");
+
+    const viewportChart = echarts.init(viewportElement);
+    const timelineChart = echarts.init(timelineElement);
+
+    let viewportBoxes = [];
+
+    function renderTrackingBox(params, api) {
+      const item = viewportBoxes[params.dataIndex];
+
+      if (!item) return null;
+
+      const topLeft = api.coord([api.value(0), api.value(1)]);
+      const bottomRight = api.coord([api.value(2), api.value(3)]);
+      const opacity = api.value(4);
+      const offset = api.value(5);
+      const isCurrent = offset === 0;
+
+      const rectangle = echarts.graphic.clipRectByRect(
+        {
+          x: topLeft[0],
+          y: topLeft[1],
+          width: Math.max(2, bottomRight[0] - topLeft[0]),
+          height: Math.max(2, bottomRight[1] - topLeft[1])
+        },
+        {
+          x: params.coordSys.x,
+          y: params.coordSys.y,
+          width: params.coordSys.width,
+          height: params.coordSys.height
+        }
+      );
+
+      if (!rectangle) return null;
+
+      const children = [
+        {
+          type: "rect",
+          shape: {
+            ...rectangle,
+            r: 2
+          },
+          style: {
+            fill: isCurrent
+              ? `${item.color}18`
+              : "rgba(0,0,0,0)",
+            stroke: item.color,
+            opacity,
+            lineWidth: isCurrent ? 2.5 : 1.25,
+            lineDash: isCurrent ? null : [4, 4]
+          }
+        }
+      ];
+
+      if (isCurrent) {
+        children.push({
+          type: "text",
+          silent: true,
+          style: {
+            x: rectangle.x + 5,
+            y: rectangle.y + 5,
+            text:
+              `${item.label} ` +
+              `${Math.round(item.confidence * 100)}%`,
+            fill: "#ffffff",
+            font: "600 10px sans-serif",
+            backgroundColor: "rgba(5,11,19,0.72)",
+            padding: [3, 4],
+            borderRadius: 3,
+            verticalAlign: "top"
+          }
+        });
+      }
+
+      return {
+        type: "group",
+        children
+      };
+    }
+
+    const viewportOption = {
+      backgroundColor: "transparent",
+
+      grid: {
+        top: 10,
+        left: 26,
+        right: 10,
+        bottom: 24
+      },
+
+      tooltip: {
+        trigger: "item",
+        confine: true,
+        backgroundColor: "rgba(7,14,23,0.96)",
+        borderColor: "#34465d",
+        textStyle: {
+          color: "#e8f0fa",
+          fontSize: 11
+        },
+        formatter(params) {
+          const item = viewportBoxes[params.dataIndex];
+
+          if (!item) return "";
+
+          const offset = Number(item.value[5]);
+
+          return [
+            `<strong>${item.label}</strong>`,
+            `Type: ${item.kind}`,
+            `Time: ${formatTime(item.sampleTime)}`,
+            offset === 0
+              ? "Current frame"
+              : `Onion offset: ${offset > 0 ? "+" : ""}${offset}`
+          ].join("<br>");
+        }
+      },
+
+      xAxis: {
+        type: "value",
+        min: 0,
+        max: 1,
+        interval: 0.25,
+
+        axisLine: {
+          lineStyle: {
+            color: "#53677e"
+          }
+        },
+
+        axisTick: {
+          show: false
+        },
+
+        axisLabel: {
+          color: "#70859c",
+          fontSize: 8,
+          formatter(value) {
+            return Number(value).toFixed(2);
+          }
+        },
+
+        splitLine: {
+          lineStyle: {
+            color: "rgba(125,151,179,0.13)"
+          }
+        }
+      },
+
+      yAxis: {
+        type: "value",
+        inverse: true,
+        min: 0,
+        max: 1,
+        interval: 0.25,
+
+        axisLine: {
+          lineStyle: {
+            color: "#53677e"
+          }
+        },
+
+        axisTick: {
+          show: false
+        },
+
+        axisLabel: {
+          color: "#70859c",
+          fontSize: 8,
+          formatter(value) {
+            return Number(value).toFixed(2);
+          }
+        },
+
+        splitLine: {
+          lineStyle: {
+            color: "rgba(125,151,179,0.13)"
+          }
+        }
+      },
+
+      series: [
+        {
+          id: "tracking-boxes",
+          type: "custom",
+          renderItem: renderTrackingBox,
+          encode: {
+            x: [0, 2],
+            y: [1, 3]
+          },
+          data: [],
+          clip: true,
+          silent: false
+        },
+
+        {
+          id: "tracking-landmarks",
+          type: "scatter",
+          encode: {
+            x: 0,
+            y: 1
+          },
+          symbol: "circle",
+          symbolSize(value) {
+            return value[3] === 0 ? 7 : 4;
+          },
+          itemStyle: {
+            color(params) {
+              return params.data.color;
+            },
+            opacity(params) {
+              return params.value[2];
+            },
+            borderColor: "#ffffff",
+            borderWidth: 1
+          },
+          data: [],
+          tooltip: {
+            formatter(params) {
+              return `<strong>${params.data.label}</strong>`;
+            }
+          },
+          z: 20
+        }
+      ]
+    };
+
+    viewportChart.setOption(viewportOption);
+
+    const timelineSegments = tracks.map((track, rowIndex) => ({
+      value: [rowIndex, track.start, track.end],
+      label: track.label,
+      kind: track.kind,
+      color: COLORS[track.kind],
+      confidence: track.confidence
+    }));
+
+    function renderTimelineBar(params, api) {
+      const item = timelineSegments[params.dataIndex];
+
+      const row = api.value(0);
+      const start = api.coord([api.value(1), row]);
+      const end = api.coord([api.value(2), row]);
+      const rowHeight = api.size([0, 1])[1];
+
+      const rectangle = echarts.graphic.clipRectByRect(
+        {
+          x: start[0],
+          y: start[1] - Math.min(8, rowHeight * 0.22),
+          width: Math.max(2, end[0] - start[0]),
+          height: Math.min(16, rowHeight * 0.44)
+        },
+        {
+          x: params.coordSys.x,
+          y: params.coordSys.y,
+          width: params.coordSys.width,
+          height: params.coordSys.height
+        }
+      );
+
+      if (!rectangle) return null;
+
+      return {
+        type: "rect",
+        shape: {
+          ...rectangle,
+          r: 4
+        },
+        style: {
+          fill: item.color,
+          stroke: item.color,
+          opacity: 0.78,
+          lineWidth: 1
+        }
+      };
+    }
+
+    function renderPlayhead(params, api) {
+      const time = api.value(0);
+      const x = api.coord([time, 0])[0];
+
+      return {
+        type: "line",
+        shape: {
+          x1: x,
+          y1: params.coordSys.y,
+          x2: x,
+          y2: params.coordSys.y + params.coordSys.height
+        },
+        style: {
+          stroke: COLORS.playhead,
+          lineWidth: 2
+        },
+        silent: true
+      };
+    }
+
+    const timelineOption = {
+      backgroundColor: "transparent",
+
+      grid: {
+        top: 12,
+        left: 8,
+        right: 8,
+        bottom: 48
+      },
+
+      tooltip: {
+        trigger: "item",
+        confine: true,
+        backgroundColor: "rgba(7,14,23,0.96)",
+        borderColor: "#34465d",
+        textStyle: {
+          color: "#e8f0fa",
+          fontSize: 11
+        },
+        formatter(params) {
+          const item = timelineSegments[params.dataIndex];
+
+          if (!item) return "";
+
+          return [
+            `<strong>${item.label}</strong>`,
+            `Type: ${item.kind}`,
+            `Start: ${formatTime(item.value[1])}`,
+            `End: ${formatTime(item.value[2])}`,
+            `Confidence: ${Math.round(item.confidence * 100)}%`
+          ].join("<br>");
+        }
+      },
+
+      xAxis: {
+        type: "value",
+        min: 0,
+        max: duration,
+        position: "top",
+        splitNumber: 5,
+
+        axisLine: {
+          lineStyle: {
+            color: "#4d6076"
+          }
+        },
+
+        axisTick: {
+          show: false
+        },
+
+        axisLabel: {
+          color: "#91a6bd",
+          fontSize: 9,
+          margin: 5,
+          formatter: formatTime
+        },
+
+        splitLine: {
+          lineStyle: {
+            color: "rgba(120,145,170,0.11)"
+          }
+        }
+      },
+
+      yAxis: {
+        type: "category",
+        inverse: true,
+        data: tracks.map((track) => track.label),
+
+        axisLine: {
+          show: false
+        },
+
+        axisTick: {
+          show: false
+        },
+
+        // Hidden to save mobile horizontal space.
+        axisLabel: {
+          show: false
+        },
+
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: "rgba(120,145,170,0.09)"
+          }
+        }
+      },
+
+      dataZoom: [
+        {
+          id: "range-inside",
+          type: "inside",
+          xAxisIndex: 0,
+          filterMode: "none",
+          startValue: 0,
+          endValue: duration,
+          zoomOnMouseWheel: true,
+          moveOnMouseMove: true,
+          moveOnMouseWheel: false,
+          preventDefaultMouseMove: true
+        },
+
+        {
+          id: "range-brush",
+          type: "slider",
+          xAxisIndex: 0,
+          filterMode: "none",
+          left: 8,
+          right: 8,
+          bottom: 8,
+          height: 25,
+          startValue: 0,
+          endValue: duration,
+          brushSelect: false,
+          realtime: true,
+          showDetail: false,
+          handleSize: 16,
+
+          backgroundColor: "#0c1624",
+          borderColor: "#30445c",
+          fillerColor: "rgba(87,122,181,0.3)",
+
+          handleStyle: {
+            color: "#d9e7f6",
+            borderColor: "#738aa6"
+          },
+
+          moveHandleStyle: {
+            color: "#7189a5"
+          },
+
+          dataBackground: {
+            lineStyle: {
+              color: "#566c85"
+            },
+            areaStyle: {
+              color: "rgba(89,116,148,0.15)"
+            }
+          },
+
+          selectedDataBackground: {
+            lineStyle: {
+              color: "#79aaff"
+            },
+            areaStyle: {
+              color: "rgba(73,129,221,0.3)"
+            }
+          }
+        }
+      ],
+
+      series: [
+        {
+          id: "motion-segments",
+          type: "custom",
+          renderItem: renderTimelineBar,
+          encode: {
+            x: [1, 2],
+            y: 0
+          },
+          data: timelineSegments,
+          clip: true
+        },
+
+        {
+          id: "playhead",
+          type: "custom",
+          renderItem: renderPlayhead,
+          encode: {
+            x: 0
+          },
+          data: [[currentTime]],
+          silent: true,
+          z: 50
+        }
+      ]
+    };
+
+    timelineChart.setOption(timelineOption);
+
+    const timeInput = document.getElementById("timeInput");
+    const statsElement = document.getElementById("stats");
+    const playButton = document.getElementById("play");
+
+    function updateInterface() {
+      stepSize = calculateStep();
+
+      currentTime = clamp(
+        currentTime,
+        selectedStart,
+        selectedEnd
+      );
+
+      const viewportData = buildViewportData();
+      viewportBoxes = viewportData.boxes;
+
+      viewportChart.setOption({
+        series: [
+          {
+            id: "tracking-boxes",
+            data: viewportData.boxes
+          },
+          {
+            id: "tracking-landmarks",
+            data: viewportData.landmarks
+          }
+        ]
+      });
+
+      timelineChart.setOption({
+        series: [
+          {
+            id: "playhead",
+            data: [[currentTime]]
+          }
+        ]
+      });
+
+      timeInput.min = selectedStart.toFixed(3);
+      timeInput.max = selectedEnd.toFixed(3);
+      timeInput.step = stepSize.toFixed(3);
+      timeInput.value = currentTime.toFixed(3);
+
+      statsElement.textContent =
+        `Time ${formatTime(currentTime)} · ` +
+        `range ${formatTime(selectedStart)}–${formatTime(selectedEnd)} · ` +
+        `step ${stepSize.toFixed(3)}s`;
+    }
+
+    function setCurrentTime(value) {
+      currentTime = clamp(
+        Number(value),
+        selectedStart,
+        selectedEnd
+      );
+
+      updateInterface();
+    }
+
+    function moveOneStep(direction) {
+      const nextTime =
+        currentTime + direction * stepSize;
+
+      setCurrentTime(nextTime);
+    }
+
+    function stopPlayback() {
+      if (playTimer !== null) {
+        clearInterval(playTimer);
+        playTimer = null;
+      }
+
+      playButton.textContent = "Play";
+    }
+
+    function startPlayback() {
+      stopPlayback();
+      playButton.textContent = "Pause";
+
+      playTimer = window.setInterval(() => {
+        const nextTime = currentTime + stepSize;
+
+        if (nextTime > selectedEnd + 0.0001) {
+          stopPlayback();
+          return;
+        }
+
+        setCurrentTime(nextTime);
+      }, 280);
+    }
+
+    document
+      .getElementById("previous")
+      .addEventListener("click", () => moveOneStep(-1));
+
+    document
+      .getElementById("next")
+      .addEventListener("click", () => moveOneStep(1));
+
+    timeInput.addEventListener("change", () => {
+      setCurrentTime(timeInput.value);
+    });
+
+    playButton.addEventListener("click", () => {
+      if (playTimer === null) {
+        startPlayback();
+      } else {
+        stopPlayback();
+      }
+    });
+
+    document
+      .getElementById("fit")
+      .addEventListener("click", () => {
+        stopPlayback();
+
+        selectedStart = 0;
+        selectedEnd = duration;
+        currentTime = selectedStart;
+
+        timelineChart.dispatchAction({
+          type: "dataZoom",
+          batch: [
+            {
+              dataZoomId: "range-inside",
+              startValue: 0,
+              endValue: duration
+            },
+            {
+              dataZoomId: "range-brush",
+              startValue: 0,
+              endValue: duration
+            }
+          ]
+        });
+
+        updateInterface();
+      });
+
+    timelineChart.on("datazoom", (event) => {
+      stopPlayback();
+
+      const update = event.batch?.[0] ?? event;
+
+      if (
+        Number.isFinite(update.startValue) &&
+        Number.isFinite(update.endValue)
+      ) {
+        selectedStart = Number(update.startValue);
+        selectedEnd = Number(update.endValue);
+      } else {
+        const startPercent = Number(update.start ?? 0);
+        const endPercent = Number(update.end ?? 100);
+
+        selectedStart = duration * startPercent / 100;
+        selectedEnd = duration * endPercent / 100;
+      }
+
+      if (selectedEnd < selectedStart) {
+        [selectedStart, selectedEnd] = [
+          selectedEnd,
+          selectedStart
+        ];
+      }
+
+      currentTime = clamp(
+        currentTime,
+        selectedStart,
+        selectedEnd
+      );
+
+      updateInterface();
+    });
+
+    new ResizeObserver(() => {
+      viewportChart.resize();
+    }).observe(viewportElement);
+
+    new ResizeObserver(() => {
+      timelineChart.resize();
+    }).observe(timelineElement);
+
+    updateInterface();
+  </script>
+</body>
+</html>
