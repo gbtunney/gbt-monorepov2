@@ -50,6 +50,8 @@
         "@emotion/react": "^11.14.0",
         "@emotion/styled": "^11.14.1",
         "@mui/material": "^9.2.0",
+        "@snailicid3/annotation-adapter-google-vi": "workspace:*",
+        "@snailicid3/annotation-core": "workspace:*",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
         "type-fest": "^5.8.0",
