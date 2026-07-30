@@ -5,7 +5,7 @@
         "jsxFactory": null,
         "jsxFragmentFactory": null,
         "jsx": "react-jsx",
-        "lib": ["ES2022", "DOM", "DOM.Iterable"],
+        "lib": ["ES2023", "DOM", "DOM.Iterable"],
         "types": ["node"],
         "allowImportingTsExtensions": true,
         "emitDeclarationOnly": true

@@ -166,7 +166,7 @@ const AnnotationExplorer = ({
                 {items.length.toString()} shown
             </Typography>
 
-            {kinds.map((kind) => {
+            {kinds.map((kind: string) => {
                 const rows = byKind.get(kind) ?? []
                 return (
                     <Accordion defaultExpanded={rows.length > 0} key={kind}>
