@@ -1,0 +1,86 @@
+{
+    "name": "@snailicid3/annotation-cli",
+    "version": "0.0.0",
+    "private": true,
+    "description": "CLI for normalising Google Video Intelligence output into the @snailicid3/annotation-core model.",
+    "scripts": {
+        "build:nx": "nx run $npm_package_name:build",
+        "dev:nx": "nx run $npm_package_name:dev",
+        "test:nx": "nx run $npm_package_name:test",
+        "clean:nx": "nx run $npm_package_name:clean"
+    },
+    "nx": {
+        "targets": {
+            "dev": {},
+            "dev:ts": {},
+            "dev:tsdown": {},
+            "check:ts": {},
+            "build:tsdown": {},
+            "build:ts": {},
+            "build": {
+                "dependsOn": [
+                    "build:ts",
+                    "build:tsdown"
+                ]
+            },
+            "test": {},
+            "test:watch": {},
+            "lint": {},
+            "fix": {},
+            "clean": {},
+            "clean:ts": {},
+            "clean:build": {}
+        }
+    },
+    "dependencies": {
+        "@snailicid3/annotation-adapter-google-vi": "workspace:*",
+        "@snailicid3/annotation-core": "workspace:*",
+        "@snailicid3/cli-app": "^0.1.0",
+        "zod": "^4.4.3"
+    },
+    "devDependencies": {
+        "@snailicid3/build-config": "^0.0.8",
+        "@snailicid3/config": "^0.2.0",
+        "@types/node": "^26.1.2",
+        "@vitest/coverage-v8": "^4.1.10",
+        "tsdown": "^0.22.14",
+        "typescript": "~6.0.3",
+        "vitest": "^4.1.10"
+    },
+    "type": "module",
+    "bin": {
+        "annotation-cli": "./bin/annotation-cli.mjs"
+    },
+    "exports": {
+        ".": "./dist/index.mjs",
+        "./package.json": "./package.json"
+    },
+    "types": "./dist/index.d.mts",
+    "author": {
+        "name": "Gillian Tunney",
+        "email": "gbtunney@mac.com"
+    },
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gbtunney/snailicid3-monorepo",
+        "directory": "packages/annotation-cli"
+    },
+    "homepage": "https://github.com/gbtunney/snailicid3-monorepo",
+    "packageManager": "pnpm@10.30.2",
+    "engines": {
+        "node": ">=20.x"
+    },
+    "files": [
+        "CHANGELOG.md",
+        "bin",
+        "dist",
+        "types"
+    ],
+    "keywords": [
+        "annotation",
+        "cli",
+        "google-cloud",
+        "video-intelligence"
+    ]
+}
