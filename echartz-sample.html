@@ -1,0 +1,543 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1"
+  />
+  <title>Annotation Timeline</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      padding: 24px;
+      color: #e5edf7;
+      background:
+        radial-gradient(circle at top, #172334 0, #09111c 48%, #050a11 100%);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", sans-serif;
+    }
+
+    .panel {
+      width: min(1200px, 100%);
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid #263448;
+      border-radius: 14px;
+      background: rgba(9, 17, 28, 0.94);
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.35);
+    }
+
+    .header {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-bottom: 1px solid #1f2c3d;
+    }
+
+    .title {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .subtitle {
+      margin-top: 5px;
+      color: #7f93aa;
+      font-size: 13px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 8px 12px;
+      color: #dce8f6;
+      cursor: pointer;
+      border: 1px solid #34465d;
+      border-radius: 8px;
+      background: #111d2b;
+    }
+
+    button:hover {
+      border-color: #6c8cff;
+      background: #18283b;
+    }
+
+    #chart {
+      width: 100%;
+      height: 520px;
+    }
+
+    .help {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      padding: 12px 20px 16px;
+      color: #8194aa;
+      border-top: 1px solid #1f2c3d;
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+      body {
+        padding: 10px;
+      }
+
+      .header {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      #chart {
+        height: 460px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="panel">
+    <header class="header">
+      <div>
+        <h1 class="title">Label Annotation Timeline</h1>
+        <div class="subtitle">One row per detected label · Duration 00:10</div>
+      </div>
+
+      <div class="controls">
+        <button id="zoomIn" type="button">Zoom in</button>
+        <button id="zoomOut" type="button">Zoom out</button>
+        <button id="reset" type="button">Fit to data</button>
+      </div>
+    </header>
+
+    <div id="chart"></div>
+
+    <footer class="help">
+      <span>Mouse wheel: zoom</span>
+      <span>Drag chart: pan</span>
+      <span>Drag slider handles: resize window</span>
+      <span>Double-click: reset</span>
+    </footer>
+  </section>
+
+  <script>
+    // Embedded from the provided sample annotation payload.
+    const sampleAnnotations = {
+      annotation_results: [
+        {
+          shot_label_annotations: [
+            {
+              entity: { description: "person" },
+              segments: [
+                {
+                  confidence: 0.88,
+                  segment: {
+                    start_time_offset: { seconds: 1 },
+                    end_time_offset: { seconds: 9 }
+                  }
+                }
+              ]
+            },
+            {
+              category_entities: [{ description: "outdoor" }],
+              entity: { description: "walking" },
+              segments: [
+                {
+                  confidence: 0.72,
+                  segment: {
+                    start_time_offset: {
+                      seconds: 3,
+                      nanos: 500000000
+                    },
+                    end_time_offset: { seconds: 7 }
+                  }
+                }
+              ]
+            },
+            {
+              entity: { description: "sky" },
+              segments: [
+                {
+                  confidence: 0.34,
+                  segment: {
+                    start_time_offset: { seconds: 0 },
+                    end_time_offset: { seconds: 10 }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const chartElement = document.getElementById("chart");
+    const chart = echarts.init(chartElement);
+
+    function toSeconds(offset = {}) {
+      return Number(offset.seconds || 0) + Number(offset.nanos || 0) / 1e9;
+    }
+
+    function formatTime(value) {
+      const minutes = Math.floor(value / 60);
+      const seconds = Math.floor(value % 60);
+      const milliseconds = Math.round((value % 1) * 1000);
+
+      return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}${
+        milliseconds ? `.${String(milliseconds).padStart(3, "0")}` : ""
+      }`;
+    }
+
+    const annotations =
+      sampleAnnotations.annotation_results?.[0]?.shot_label_annotations ?? [];
+
+    const labels = annotations.map(
+      (annotation, index) =>
+        annotation.entity?.description || `Label ${index + 1}`
+    );
+
+    const palette = [
+      ["#9146d8", "#bd6cff"],
+      ["#087f8c", "#20c5d4"],
+      ["#db641f", "#ff8a47"],
+      ["#2675d8", "#5ba2ff"],
+      ["#4a9c52", "#73d57c"]
+    ];
+
+    const ranges = annotations.flatMap((annotation, rowIndex) => {
+      const label =
+        annotation.entity?.description || `Label ${rowIndex + 1}`;
+
+      const category =
+        annotation.category_entities
+          ?.map((item) => item.description)
+          .filter(Boolean)
+          .join(", ") || "";
+
+      return (annotation.segments || []).map((item) => ({
+        value: [
+          rowIndex,
+          toSeconds(item.segment?.start_time_offset),
+          toSeconds(item.segment?.end_time_offset),
+          Number(item.confidence || 0)
+        ],
+        label,
+        category,
+        itemStyle: {
+          color: palette[rowIndex % palette.length][0],
+          borderColor: palette[rowIndex % palette.length][1]
+        }
+      }));
+    });
+
+    const duration = Math.max(
+      10,
+      ...ranges.map((item) => Number(item.value[2]))
+    );
+
+    function renderRange(params, api) {
+      const rowIndex = api.value(0);
+      const start = api.coord([api.value(1), rowIndex]);
+      const end = api.coord([api.value(2), rowIndex]);
+
+      const rowHeight = api.size([0, 1])[1];
+      const barHeight = Math.min(34, rowHeight * 0.55);
+
+      const clipped = echarts.graphic.clipRectByRect(
+        {
+          x: start[0],
+          y: start[1] - barHeight / 2,
+          width: Math.max(end[0] - start[0], 2),
+          height: barHeight
+        },
+        {
+          x: params.coordSys.x,
+          y: params.coordSys.y,
+          width: params.coordSys.width,
+          height: params.coordSys.height
+        }
+      );
+
+      if (!clipped) return null;
+
+      const dataItem = ranges[params.dataIndex];
+      const showText = clipped.width > 70;
+
+      const children = [
+        {
+          type: "rect",
+          shape: {
+            ...clipped,
+            r: 5
+          },
+          style: api.style({
+            lineWidth: 1
+          })
+        }
+      ];
+
+      if (showText) {
+        children.push({
+          type: "text",
+          style: {
+            x: clipped.x + clipped.width / 2,
+            y: clipped.y + clipped.height / 2,
+            text: dataItem.label,
+            fill: "#ffffff",
+            font: "600 12px sans-serif",
+            align: "center",
+            verticalAlign: "middle"
+          },
+          silent: true
+        });
+      }
+
+      return {
+        type: "group",
+        children
+      };
+    }
+
+    const option = {
+      backgroundColor: "transparent",
+      animationDuration: 350,
+
+      grid: {
+        top: 62,
+        left: 130,
+        right: 32,
+        bottom: 118,
+        containLabel: false
+      },
+
+      tooltip: {
+        trigger: "item",
+        borderWidth: 1,
+        borderColor: "#34465d",
+        backgroundColor: "rgba(7, 13, 22, 0.96)",
+        textStyle: {
+          color: "#e8f0fa"
+        },
+        formatter(params) {
+          const item = ranges[params.dataIndex];
+          const [row, start, end, confidence] = item.value;
+
+          return [
+            `<strong>${item.label}</strong>`,
+            item.category ? `Category: ${item.category}` : "",
+            `Start: ${formatTime(start)}`,
+            `End: ${formatTime(end)}`,
+            `Duration: ${(end - start).toFixed(2)}s`,
+            `Confidence: ${(confidence * 100).toFixed(0)}%`
+          ]
+            .filter(Boolean)
+            .join("<br>");
+        }
+      },
+
+      xAxis: {
+        type: "value",
+        min: 0,
+        max: duration,
+        position: "top",
+        axisLine: {
+          lineStyle: {
+            color: "#4a5b70"
+          }
+        },
+        axisTick: {
+          lineStyle: {
+            color: "#4a5b70"
+          }
+        },
+        axisLabel: {
+          color: "#9eb0c4",
+          formatter: formatTime
+        },
+        splitLine: {
+          lineStyle: {
+            color: "rgba(116, 139, 164, 0.14)"
+          }
+        }
+      },
+
+      yAxis: {
+        type: "category",
+        inverse: true,
+        data: labels,
+        axisLine: {
+          show: false
+        },
+        axisTick: {
+          show: false
+        },
+        axisLabel: {
+          color: "#dbe7f4",
+          width: 105,
+          overflow: "truncate",
+          margin: 18,
+          fontSize: 13
+        },
+        splitLine: {
+          show: true,
+          lineStyle: {
+            color: "rgba(116, 139, 164, 0.12)"
+          }
+        },
+        splitArea: {
+          show: true,
+          areaStyle: {
+            color: [
+              "rgba(255,255,255,0.018)",
+              "rgba(255,255,255,0.04)"
+            ]
+          }
+        }
+      },
+
+      dataZoom: [
+        {
+          type: "inside",
+          xAxisIndex: 0,
+          filterMode: "none",
+          zoomOnMouseWheel: true,
+          moveOnMouseMove: true,
+          moveOnMouseWheel: false,
+          preventDefaultMouseMove: true,
+          startValue: 0,
+          endValue: duration
+        },
+        {
+          type: "slider",
+          xAxisIndex: 0,
+          filterMode: "none",
+          bottom: 30,
+          height: 48,
+          startValue: 0,
+          endValue: duration,
+          showDetail: true,
+          realtime: true,
+          brushSelect: false,
+          backgroundColor: "#0b1522",
+          borderColor: "#304158",
+          fillerColor: "rgba(83, 122, 177, 0.25)",
+          handleStyle: {
+            color: "#dce9f8",
+            borderColor: "#6f86a2"
+          },
+          moveHandleStyle: {
+            color: "#6f86a2"
+          },
+          dataBackground: {
+            lineStyle: {
+              color: "#546a85"
+            },
+            areaStyle: {
+              color: "rgba(80, 111, 150, 0.18)"
+            }
+          },
+          selectedDataBackground: {
+            lineStyle: {
+              color: "#72a5ff"
+            },
+            areaStyle: {
+              color: "rgba(74, 131, 224, 0.32)"
+            }
+          },
+          textStyle: {
+            color: "#9eb0c4"
+          },
+          labelFormatter(value) {
+            return formatTime(Number(value));
+          }
+        }
+      ],
+
+      series: [
+        {
+          name: "Labels",
+          type: "custom",
+          renderItem: renderRange,
+          encode: {
+            x: [1, 2],
+            y: 0
+          },
+          data: ranges,
+          clip: true
+        }
+      ]
+    };
+
+    chart.setOption(option);
+
+    function getWindow() {
+      const zoom = chart.getOption().dataZoom[0];
+
+      return {
+        start: Number(zoom.startValue ?? 0),
+        end: Number(zoom.endValue ?? duration)
+      };
+    }
+
+    function setWindow(start, end) {
+      const minimumWidth = 0.25;
+      const width = Math.max(end - start, minimumWidth);
+
+      let nextStart = Math.max(0, start);
+      let nextEnd = nextStart + width;
+
+      if (nextEnd > duration) {
+        nextEnd = duration;
+        nextStart = Math.max(0, duration - width);
+      }
+
+      chart.dispatchAction({
+        type: "dataZoom",
+        dataZoomIndex: 0,
+        startValue: nextStart,
+        endValue: nextEnd
+      });
+    }
+
+    function zoomBy(factor) {
+      const current = getWindow();
+      const center = (current.start + current.end) / 2;
+      const halfWidth = ((current.end - current.start) * factor) / 2;
+
+      setWindow(center - halfWidth, center + halfWidth);
+    }
+
+    document.getElementById("zoomIn").addEventListener("click", () => {
+      zoomBy(0.7);
+    });
+
+    document.getElementById("zoomOut").addEventListener("click", () => {
+      zoomBy(1.4);
+    });
+
+    document.getElementById("reset").addEventListener("click", () => {
+      setWindow(0, duration);
+    });
+
+    chart.getZr().on("dblclick", () => {
+      setWindow(0, duration);
+    });
+
+    new ResizeObserver(() => chart.resize()).observe(chartElement);
+  </script>
+</body>
+</html>
