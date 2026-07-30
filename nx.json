@@ -1,5 +1,6 @@
 {
     "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "extends": "@snailicid3/config/nx-preset.json",
-    "analytics": true
+    "analytics": true,
+    "nxCloudId": "6a6afecffcc496f4d92e95ca"
 }
