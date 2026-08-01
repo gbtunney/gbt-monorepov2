@@ -20,6 +20,33 @@ export {
     type GbtScopeMeshViewerProps,
 } from './components/GbtScopeMeshViewer.tsx'
 
+/** Local bitmap input helper. */
+export {
+    default as GbtScopeBitmapLoader,
+    type GbtScopeBitmapLoaderProps,
+} from './components/GbtScopeBitmapLoader.tsx'
+
+/** Wallpaper-group bitmap material and flat viewer. */
+export {
+    defaultGbtScopeWallpaperMaterialProps,
+    default as GbtScopeWallpaperMaterial,
+    type GbtScopeWallpaperMaterialComponentProps,
+    type GbtScopeWallpaperMaterialProps,
+} from './components/GbtScopeWallpaperMaterial.tsx'
+export {
+    defaultGbtScopeWallpaperViewerProps,
+    default as GbtScopeWallpaperViewer,
+    type GbtScopeWallpaperViewerProps,
+} from './components/GbtScopeWallpaperViewer.tsx'
+export {
+    type GbtScopeWallpaperGroup,
+    type GbtScopeWallpaperGroupDefinition,
+    type GbtScopeWallpaperGroupFamily,
+    wallpaperGroupDefinitions,
+    wallpaperGroups,
+    wallpaperGroupToFloat,
+} from './wallpaper/groups.ts'
+
 /** Helpers */
 export { type Dimensions, type Point, type XY } from './helpers.ts'
 
