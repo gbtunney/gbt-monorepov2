@@ -13,7 +13,7 @@ const meta = {
     argTypes: {
         aspect_ratio: {
             control: { type: 'select' },
-            options: { '1:1': 1, '3:2': 1.5, '16:9': 1.7777778 },
+            options: [1, 1.5, 1.7777778],
             table: { category: 'Viewer' },
         },
         bg_color: {
