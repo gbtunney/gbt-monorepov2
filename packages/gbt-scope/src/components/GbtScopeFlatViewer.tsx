@@ -79,6 +79,9 @@ const GbtScopeFlatViewer = ({
             ? parseColorToHexStrict(bg_color)
             : 'initial',
         border: '2px solid green',
+        margin: 0,
+        padding: 0,
+        position: 'relative',
         ...(aspect_ratio !== 'parent' ? { aspectRatio: aspect_ratio } : {}),
     }
 
