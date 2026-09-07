@@ -37,8 +37,6 @@ jobs:
                 include:
                     - project: '@snailicid3/gbt-scope'
                       token_var: CHROMATIC_GBT_SCOPE_PROJECT_TOKEN
-                    - project: '@snailicid3/video-intelligence-viewer'
-                      token_var: CHROMATIC_VIDEO_INTELLIGENCE_PROJECT_TOKEN
         steps:
             # Chromatic needs full git history to detect baselines.
             - uses: actions/checkout@v4
