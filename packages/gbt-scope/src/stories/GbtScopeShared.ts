@@ -1,4 +1,4 @@
-import type { Meta } from '@storybook/react'
+import type { Meta } from '@storybook/react-vite'
 import {
     defaultGbtScopeFlatViewerProps,
     type GbtScopeFlatViewerProps,
@@ -230,15 +230,17 @@ export const argTypes: Meta['argTypes'] = {
         table: { category: 'Motion' },
     },
     aspect_ratio: {
-        control: { type: 'select' },
-        options: {
-            // @ts-expect-error: storybook option map values
-            '1:1': 1,
-            '1:2': 0.5,
-            '3:2': 1.5,
-            '4:3': 1.33333333,
-            '16:9': 1.7777778,
+        control: {
+            labels: {
+                0.5: '1:2',
+                1: '1:1',
+                1.33333333: '4:3',
+                1.5: '3:2',
+                1.7777778: '16:9',
+            },
+            type: 'select',
         },
+        options: [1, 0.5, 1.5, 1.33333333, 1.7777778],
         table: { category: 'General Settings' },
     },
 

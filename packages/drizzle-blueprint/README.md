@@ -190,10 +190,10 @@ const config = createConfig({
 })
 ```
 
-`createServer()` is async and returns `{ app, servers, logger }`:
+`createServer()` returns `{ app, servers, logger }`:
 
 ```ts
-const { app, servers, logger } = await createServer(config, routing)
+const { app, servers, logger } = createServer(config, routing)
 ```
 
 Use `DependsOnMethod` to handle multiple HTTP verbs at one path:
