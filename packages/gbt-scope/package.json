@@ -1,6 +1,6 @@
 {
     "name": "@snailicid3/gbt-scope",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "private": false,
     "description": "React components and hooks for the operator user interface.",
     "scripts": {
