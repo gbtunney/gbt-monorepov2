@@ -8,6 +8,16 @@ React components for rendering GBT Scope kaleidoscope viewers.
   [`@snailicid3/gbt-scope`](https://github.com/gbtunney/gbt-monorepov2/tree/main/packages/gbt-scope)
   in [`gbt-monorepov2`](https://github.com/gbtunney/gbt-monorepov2)
 
+### Shader attribution
+
+The radial-symmetry / kaleidoscope shader in
+[`src/materials/shader-radial-symmetry.ts`](./src/materials/shader-radial-symmetry.ts) was originally
+based on [`the-lazy-god/tlg-kaleidoscope`](https://github.com/the-lazy-god/tlg-kaleidoscope), which is
+licensed under the MIT License.
+
+The implementation in this package has since been modified and extended, including changes to the
+shader logic and controls. Preserve this attribution when reusing or publishing derived versions.
+
 ### Usage
 
 Run from the repository root:
