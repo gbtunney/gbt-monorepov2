@@ -70,10 +70,9 @@ const routing: Routing = {
 // ============================================================
 // Start
 // ============================================================
-// createServer() is async — the returned promise resolves to { app, servers, logger }.
-// Top-level await is valid in ESM; wrap in an IIFE if targeting CJS.
+// createServer() returns { app, servers, logger }.
 
-const result = await createServer(config, routing)
+const result = createServer(config, routing)
 const app: Express = result.app
 // eslint-disable-next-line @typescript-eslint/naming-convention
 const { logger, servers } = result

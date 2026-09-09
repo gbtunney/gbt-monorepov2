@@ -1,14 +1,16 @@
-import type { StorybookConfig } from '@storybook/react-vite'
+import { defineStorybookMain } from '@snailicid3/storybook-config'
 
-const config: StorybookConfig = {
+/*
+ * The framework and story globs come from the shared config. Only the addon
+ * list is stated here: the shared default still names `@storybook/addon-essentials`,
+ * which was removed in Storybook 9 and does not exist on the Storybook 10 line
+ * this package builds against.
+ */
+export default defineStorybookMain({
     addons: [
         '@chromatic-com/storybook',
         '@storybook/addon-vitest',
         '@storybook/addon-a11y',
         '@storybook/addon-docs',
-        //  '@storybook/addon-onboarding',
     ],
-    framework: '@storybook/react-vite',
-    stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-}
-export default config
+})

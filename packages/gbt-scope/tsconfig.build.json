@@ -1,15 +1,6 @@
 {
-    "extends": "@snailicid3/config/tsconfig.library",
-    "compilerOptions": {
-        //   "noEmit": true
-        "jsxFactory": null,
-        "jsxFragmentFactory": null,
-        "jsx": "react-jsx",
-        "lib": ["ES2022", "DOM", "DOM.Iterable"],
-        "types": ["node"],
-        "allowImportingTsExtensions": true,
-        "emitDeclarationOnly": true
-    },
+    "extends": "@snailicid3/config/tsconfig.react",
+    "compilerOptions": {},
     "include": [
         "./src/**/*.ts",
         "./src/**/*.cts",
@@ -17,6 +8,7 @@
         "./src/**/*.tsx"
     ],
     "exclude": [
+        "**/*.test.tsx",
         "**/*.test.ts",
         "**/*.test.mts",
         "**/*.test.cts",

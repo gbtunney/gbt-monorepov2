@@ -7,7 +7,6 @@ const plan = defineBuildPlan(pkg, {
         {
             banner: true,
             key: '*',
-            lint: false,
             output_formats: ['esm', 'cjs', 'iife', 'ts'],
             runtime: 'node',
         },
