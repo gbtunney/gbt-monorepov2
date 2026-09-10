@@ -14,7 +14,9 @@ _React components for rendering configurable kaleidoscope viewers._
 
 ### Repository
 
-- **GitHub:** [`@snailicid3/gbt-scope`](https://github.com/gbtunney/gbt-monorepov2/tree/HEAD/packages/gbt-scope) • [`gbt-monorepov2`](https://github.com/gbtunney/gbt-monorepov2)
+- **GitHub:**
+  [`@snailicid3/gbt-scope`](https://github.com/gbtunney/gbt-monorepov2/tree/HEAD/packages/gbt-scope)
+  • [`gbt-monorepov2`](https://github.com/gbtunney/gbt-monorepov2)
 
 ### Author
 
@@ -31,8 +33,8 @@ _React components for rendering configurable kaleidoscope viewers._
 
 ---
 
-`@snailicid3/gbt-scope` provides React components and supporting utilities for rendering configurable
-kaleidoscope imagery.
+`@snailicid3/gbt-scope` provides React components and supporting utilities for rendering
+configurable kaleidoscope imagery.
 
 The package includes:
 
@@ -56,10 +58,7 @@ React and React DOM are peer dependencies and remain owned by the consuming appl
 Import components directly from the package root:
 
 ```tsx
-import {
-    GbtScopeFlatViewer,
-    GbtScopeMeshViewer,
-} from '@snailicid3/gbt-scope'
+import { GbtScopeFlatViewer, GbtScopeMeshViewer } from '@snailicid3/gbt-scope'
 ```
 
 Render a flat kaleidoscope viewer:
@@ -68,15 +67,15 @@ Render a flat kaleidoscope viewer:
 import { GbtScopeFlatViewer } from '@snailicid3/gbt-scope'
 
 export function Kaleidoscope(): React.JSX.Element {
-    return (
-        <GbtScopeFlatViewer
-            src="/images/source-artwork.jpg"
-            segments={8}
-            scaleFactor={1.25}
-            tileMode="mirror"
-            tiling={2}
-        />
-    )
+  return (
+    <GbtScopeFlatViewer
+      src="/images/source-artwork.jpg"
+      segments={8}
+      scaleFactor={1.25}
+      tileMode="mirror"
+      tiling={2}
+    />
+  )
 }
 ```
 
@@ -110,8 +109,7 @@ from the `@snailicid3/gbt-scope` npm package entry point.
 ## Origin and attribution
 
 The original radial-folding shader and interactive kaleidoscope concept were adapted from
-[`the-lazy-god/tlg-kaleidoscope`](https://github.com/the-lazy-god/tlg-kaleidoscope) by The Lazy
-God.
+[`the-lazy-god/tlg-kaleidoscope`](https://github.com/the-lazy-god/tlg-kaleidoscope) by The Lazy God.
 
 This package substantially modifies and extends that starting point. Its additions include:
 
@@ -123,8 +121,7 @@ This package substantially modifies and extends that starting point. Its additio
 - configurable tiling and opacity
 - a WGSL port with Figma-native Effect controls
 
-Preserve this attribution when publishing or reusing implementations derived from the original
-work.
+Preserve this attribution when publishing or reusing implementations derived from the original work.
 
 > **Upstream license note:** No license file was found in the upstream repository during this
 > review. Do not describe the upstream project as MIT-licensed unless its author or repository
