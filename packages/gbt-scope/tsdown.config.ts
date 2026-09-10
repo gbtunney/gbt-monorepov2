@@ -18,4 +18,21 @@ const plan = defineBuildPlan(pkg, {
 
 const tsdownConfigs = toTsdownConfigs(plan)
 
-export default defineConfig(tsdownConfigs)
+/**
+ * Figma shader entry point.
+ *
+ * Strips TypeScript and emits a single ESM file that the Figma shader runtime can consume directly. `figma:shaders` is
+ * kept as an external — the Figma host provides it at runtime.
+ */
+const figmaShaderConfig = {
+    clean: false,
+    dts: false,
+    entry: {
+        'figma/kaleidoscope': 'src/figma/shader-radial-symmetry.ts',
+    },
+    external: ['figma:shaders'],
+    format: 'esm' as const,
+    outDir: 'dist',
+}
+
+export default defineConfig([...tsdownConfigs, figmaShaderConfig])

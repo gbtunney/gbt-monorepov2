@@ -90,6 +90,9 @@
             "require": "./dist/index.cjs",
             "default": "./dist/index.js"
         },
+        "./figma/kaleidoscope": {
+            "import": "./dist/figma/kaleidoscope.js"
+        },
         "./package.json": "./package.json"
     },
     "author": {
