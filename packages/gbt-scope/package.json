@@ -1,6 +1,6 @@
 {
     "name": "@snailicid3/gbt-scope",
-    "version": "0.0.2",
+    "version": "0.0.1",
     "private": false,
     "description": "React components and hooks for the operator user interface.",
     "scripts": {
@@ -89,6 +89,9 @@
             "import": "./dist/index.js",
             "require": "./dist/index.cjs",
             "default": "./dist/index.js"
+        },
+        "./figma/kaleidoscope": {
+            "import": "./dist/figma/kaleidoscope.js"
         },
         "./package.json": "./package.json"
     },
