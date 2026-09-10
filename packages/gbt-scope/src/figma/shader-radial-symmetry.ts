@@ -1,7 +1,134 @@
+import type { ShaderPropertyDefinition } from 'figma:shaders'
 import { defineProperties } from 'figma:shaders'
+
 export default function Effect() {}
 
-export function render(device, frame) {
+// ═══════════════════════════════════════════════════════════════════════
+// SHADER PROPERTIES
+//
+// Each property is defined as a named const below. To disable a
+// parameter (hardcode it to its defaultValue and hide the UI control),
+// comment out its line in the `defineProperties` call at the bottom.
+//
+// The render function already falls back to defaults for missing
+// params, so commenting out a property here is all you need to do.
+// ═══════════════════════════════════════════════════════════════════════
+
+/** Segments — number of kaleidoscope mirror segments. */
+const PROP_SEGMENTS: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 6,
+    label: 'Segments',
+    max: 20,
+    min: 2,
+    step: 1,
+    type: 'number',
+}
+
+/** Scale — zoom level into the kaleidoscope pattern. */
+const PROP_SCALE_FACTOR: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 1,
+    label: 'Scale',
+    max: 5,
+    min: 0.1,
+    step: 0.05,
+    type: 'number',
+}
+
+/** Tiling — tile repetition count. */
+const PROP_TILING: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 1,
+    label: 'Tiling',
+    max: 10,
+    min: 0.5,
+    step: 0.1,
+    type: 'number',
+}
+
+/** Tile Mode — 0 = none, 1 = repeat, 2 = mirror. */
+const PROP_TILE_MODE: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 0,
+    label: 'Tile Mode (0=none, 1=repeat, 2=mirror)',
+    max: 2,
+    min: 0,
+    step: 1,
+    type: 'number',
+}
+
+/** Offset X — horizontal shift of the pattern center. */
+const PROP_OFFSET_X: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 0,
+    label: 'Offset X',
+    max: 1,
+    min: -1,
+    step: 0.01,
+    type: 'number',
+}
+
+/** Offset Y — vertical shift of the pattern center. */
+const PROP_OFFSET_Y: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 0,
+    label: 'Offset Y',
+    max: 1,
+    min: -1,
+    step: 0.01,
+    type: 'number',
+}
+
+/** Rotation — angle of the kaleidoscope pattern in radians. */
+const PROP_ROTATION: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 0,
+    label: 'Rotation',
+    max: 6.283,
+    min: 0,
+    step: 0.01,
+    type: 'number',
+}
+
+/** Opacity — overall effect opacity. */
+const PROP_OPACITY: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 1,
+    label: 'Opacity',
+    max: 1,
+    min: 0,
+    step: 0.01,
+    type: 'number',
+}
+
+/** Offset Amount — multiplier for the offset intensity. */
+const PROP_OFFSET_AMOUNT: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 1,
+    label: 'Offset Amount',
+    max: 5,
+    min: 0,
+    step: 0.05,
+    type: 'number',
+}
+
+/** Rotation Amount — multiplier for the rotation intensity. */
+const PROP_ROTATION_AMOUNT: ShaderPropertyDefinition = {
+    control: 'slider',
+    defaultValue: 1,
+    label: 'Rotation Amount',
+    max: 5,
+    min: 0,
+    step: 0.05,
+    type: 'number',
+}
+
+// ═══════════════════════════════════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════════════════════════════════
+
+export function render(device: GPUDevice, frame: ShaderFrame) {
     const segments = Number(frame.params.segments) || 6
     const scaleFactor = Number(frame.params.scaleFactor) || 1
     const tiling = Number(frame.params.tiling) || 1
@@ -19,7 +146,7 @@ export function render(device, frame) {
         : rotationAmountValue
 
     device.queue.writeBuffer(
-        frame.state.uniform,
+        frame.state.uniform as GPUBuffer,
         0,
         new Float32Array([
             segments,
@@ -41,11 +168,26 @@ export function render(device, frame) {
         frame.input != null ? frame.input : frame.state.placeholder
     const bindGroup = device.createBindGroup({
         entries: [
-            { binding: 0, resource: { buffer: frame.state.uniform } },
-            { binding: 1, resource: frame.state.sampler },
-            { binding: 2, resource: inputTexture.createView() },
+            {
+                binding: 0,
+                resource: {
+                    buffer: frame.state.uniform as GPUBuffer,
+                },
+            },
+            {
+                binding: 1,
+                resource: frame.state.sampler as GPUSampler,
+            },
+            {
+                binding: 2,
+                resource: (
+                    inputTexture as GPUTexture
+                ).createView(),
+            },
         ],
-        layout: frame.state.pipeline.getBindGroupLayout(0),
+        layout: (
+            frame.state.pipeline as GPURenderPipeline
+        ).getBindGroupLayout(0),
     })
 
     const encoder = device.createCommandEncoder()
@@ -60,16 +202,20 @@ export function render(device, frame) {
         ],
     })
 
-    pass.setPipeline(frame.state.pipeline)
+    pass.setPipeline(frame.state.pipeline as GPURenderPipeline)
     pass.setBindGroup(0, bindGroup)
-    pass.setVertexBuffer(0, frame.state.quad)
+    pass.setVertexBuffer(0, frame.state.quad as GPUBuffer)
     pass.draw(6)
     pass.end()
 
     device.queue.submit([encoder.finish()])
 }
 
-export function setup(device, frame) {
+// ═══════════════════════════════════════════════════════════════════════
+// SETUP
+// ═══════════════════════════════════════════════════════════════════════
+
+export function setup(device: GPUDevice, frame: ShaderFrame) {
     const WGSL = `diagnostic(off,derivative_uniformity);
 struct Uniforms {
   p0: vec4f,
@@ -167,9 +313,8 @@ fn adjust_uv(uv: vec2f, offset: vec2f, rotation: f32, rotation_amount: f32, offs
   return color;
 }
 `
-    G
     const module = device.createShaderModule({ code: WGSL })
-    const vertexBuffers = [
+    const vertexBuffers: Array<GPUVertexBufferLayout> = [
         {
             arrayStride: 16,
             attributes: [
@@ -193,13 +338,15 @@ fn adjust_uv(uv: vec2f, offset: vec2f, rotation: f32, rotation_amount: f32, offs
     frame.state.quad = device.createBuffer({
         mappedAtCreation: true,
         size: 6 * 4 * 4,
-        usage: git.VERTEX,
+        usage: GPUBufferUsage.VERTEX,
     })
-    new Float32Array(frame.state.quad.getMappedRange()).set([
+    new Float32Array(
+        (frame.state.quad as GPUBuffer).getMappedRange(),
+    ).set([
         -1, -1, 0, 1, 1, -1, 1, 1, -1, 1, 0, 0, -1, 1, 0, 0, 1, -1, 1, 1, 1, 1,
         1, 0,
     ])
-    frame.state.quad.unmap()
+    ;(frame.state.quad as GPUBuffer).unmap()
 
     frame.state.uniform = device.createBuffer({
         size: 48,
@@ -219,102 +366,30 @@ fn adjust_uv(uv: vec2f, offset: vec2f, rotation: f32, rotation_amount: f32, offs
         usage: GPUTextureUsage.TEXTURE_BINDING | GPUTextureUsage.COPY_DST,
     })
     device.queue.writeTexture(
-        { texture: frame.state.placeholder },
+        { texture: frame.state.placeholder as GPUTexture },
         new Uint8Array([0, 0, 0, 0]),
         { bytesPerRow: 4 },
         { depthOrArrayLayers: 1, height: 1, width: 1 },
     )
 }
 
+// ═══════════════════════════════════════════════════════════════════════
+// REGISTER PROPERTIES
+//
+// Comment out any line below to hide that control and hardcode
+// its value to the defaultValue defined in the const above.
+// Reorder lines to change the order controls appear in the UI.
+// ═══════════════════════════════════════════════════════════════════════
+
 defineProperties(Effect, {
-    offsetAmount: {
-        control: 'slider',
-        defaultValue: 1,
-        label: 'Offset Amount',
-        max: 5,
-        min: 0,
-        step: 0.05,
-        type: 'number',
-    },
-    offsetX: {
-        control: 'slider',
-        defaultValue: 0,
-        label: 'Offset X',
-        max: 1,
-        min: -1,
-        step: 0.01,
-        type: 'number',
-    },
-    offsetY: {
-        control: 'slider',
-        defaultValue: 0,
-        label: 'Offset Y',
-        max: 1,
-        min: -1,
-        step: 0.01,
-        type: 'number',
-    },
-    opacity: {
-        control: 'slider',
-        defaultValue: 1,
-        label: 'Opacity',
-        max: 1,
-        min: 0,
-        step: 0.01,
-        type: 'number',
-    },
-    rotation: {
-        control: 'slider',
-        defaultValue: 0,
-        label: 'Rotation',
-        max: 6.283,
-        min: 0,
-        step: 0.01,
-        type: 'number',
-    },
-    rotationAmount: {
-        control: 'slider',
-        defaultValue: 1,
-        label: 'Rotation Amount',
-        max: 5,
-        min: 0,
-        step: 0.05,
-        type: 'number',
-    },
-    scaleFactor: {
-        control: 'slider',
-        defaultValue: 1,
-        label: 'Scale',
-        max: 5,
-        min: 0.1,
-        step: 0.05,
-        type: 'number',
-    },
-    segments: {
-        control: 'slider',
-        defaultValue: 6,
-        label: 'Segments',
-        max: 20,
-        min: 2,
-        step: 1,
-        type: 'number',
-    },
-    tileMode: {
-        control: 'slider',
-        defaultValue: 0,
-        label: 'Tile Mode (0=none, 1=repeat, 2=mirror)',
-        max: 2,
-        min: 0,
-        step: 1,
-        type: 'number',
-    },
-    tiling: {
-        control: 'slider',
-        defaultValue: 1,
-        label: 'Tiling',
-        max: 10,
-        min: 0.5,
-        step: 0.1,
-        type: 'number',
-    },
+    segments: PROP_SEGMENTS,
+    scaleFactor: PROP_SCALE_FACTOR,
+    tiling: PROP_TILING,
+    tileMode: PROP_TILE_MODE,
+    offsetX: PROP_OFFSET_X,
+    offsetY: PROP_OFFSET_Y,
+    rotation: PROP_ROTATION,
+    opacity: PROP_OPACITY,
+    offsetAmount: PROP_OFFSET_AMOUNT,
+    rotationAmount: PROP_ROTATION_AMOUNT,
 })
