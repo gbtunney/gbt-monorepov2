@@ -17,112 +17,112 @@ export default function Effect(): void {}
 
 /** Segments — number of kaleidoscope mirror segments. */
 const PROP_SEGMENTS: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Segments',
-    defaultValue: 6,
     control: 'slider',
-    min: 2,
+    defaultValue: 6,
+    label: 'Segments',
     max: 20,
+    min: 2,
     step: 1,
+    type: 'number',
 }
 
 /** Scale — zoom level into the kaleidoscope pattern. */
 const PROP_SCALE_FACTOR: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Scale',
-    defaultValue: 1,
     control: 'slider',
-    min: 0.1,
+    defaultValue: 1,
+    label: 'Scale',
     max: 5,
+    min: 0.1,
     step: 0.05,
+    type: 'number',
 }
 
 /** Tiling — tile repetition count. */
 const PROP_TILING: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Tiling',
-    defaultValue: 1,
     control: 'slider',
-    min: 0.5,
+    defaultValue: 1,
+    label: 'Tiling',
     max: 10,
+    min: 0.5,
     step: 0.1,
+    type: 'number',
 }
 
 /** Tile Mode — 0 = none, 1 = repeat, 2 = mirror. */
 const PROP_TILE_MODE: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Tile Mode (0=none, 1=repeat, 2=mirror)',
-    defaultValue: 0,
     control: 'slider',
-    min: 0,
+    defaultValue: 0,
+    label: 'Tile Mode (0=none, 1=repeat, 2=mirror)',
     max: 2,
+    min: 0,
     step: 1,
+    type: 'number',
 }
 
 /** Offset X — horizontal shift of the pattern center. */
 const PROP_OFFSET_X: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Offset X',
-    defaultValue: 0,
     control: 'slider',
-    min: -1,
+    defaultValue: 0,
+    label: 'Offset X',
     max: 1,
+    min: -1,
     step: 0.01,
+    type: 'number',
 }
 
 /** Offset Y — vertical shift of the pattern center. */
 const PROP_OFFSET_Y: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Offset Y',
-    defaultValue: 0,
     control: 'slider',
-    min: -1,
+    defaultValue: 0,
+    label: 'Offset Y',
     max: 1,
+    min: -1,
     step: 0.01,
+    type: 'number',
 }
 
 /** Rotation — angle of the kaleidoscope pattern in radians. */
 const PROP_ROTATION: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Rotation',
-    defaultValue: 0,
     control: 'slider',
-    min: 0,
+    defaultValue: 0,
+    label: 'Rotation',
     max: 6.283,
+    min: 0,
     step: 0.01,
+    type: 'number',
 }
 
 /** Opacity — overall effect opacity. */
 const PROP_OPACITY: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Opacity',
-    defaultValue: 1,
     control: 'slider',
-    min: 0,
+    defaultValue: 1,
+    label: 'Opacity',
     max: 1,
+    min: 0,
     step: 0.01,
+    type: 'number',
 }
 
 /** Offset Amount — multiplier for the offset intensity. */
 const PROP_OFFSET_AMOUNT: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Offset Amount',
-    defaultValue: 1,
     control: 'slider',
-    min: 0,
+    defaultValue: 1,
+    label: 'Offset Amount',
     max: 5,
+    min: 0,
     step: 0.05,
+    type: 'number',
 }
 
 /** Rotation Amount — multiplier for the rotation intensity. */
 const PROP_ROTATION_AMOUNT: ShaderPropertyDefinition = {
-    type: 'number',
-    label: 'Rotation Amount',
-    defaultValue: 1,
     control: 'slider',
-    min: 0,
+    defaultValue: 1,
+    label: 'Rotation Amount',
     max: 5,
+    min: 0,
     step: 0.05,
+    type: 'number',
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -181,14 +181,12 @@ export function render(device: GPUDevice, frame: ShaderFrame): void {
             },
             {
                 binding: 2,
-                resource: (
-                    inputTexture as GPUTexture
-                ).createView(),
+                resource: (inputTexture as GPUTexture).createView(),
             },
         ],
-        layout: (
-            frame.state.pipeline as GPURenderPipeline
-        ).getBindGroupLayout(0),
+        layout: (frame.state.pipeline as GPURenderPipeline).getBindGroupLayout(
+            0,
+        ),
     })
 
     const encoder = device.createCommandEncoder()
@@ -341,9 +339,7 @@ fn adjust_uv(uv: vec2f, offset: vec2f, rotation: f32, rotation_amount: f32, offs
         size: 6 * 4 * 4,
         usage: GPUBufferUsage.VERTEX,
     })
-    new Float32Array(
-        (frame.state.quad as GPUBuffer).getMappedRange(),
-    ).set([
+    new Float32Array((frame.state.quad as GPUBuffer).getMappedRange()).set([
         -1, -1, 0, 1, 1, -1, 1, 1, -1, 1, 0, 0, -1, 1, 0, 0, 1, -1, 1, 1, 1, 1,
         1, 0,
     ])
@@ -382,17 +378,16 @@ fn adjust_uv(uv: vec2f, offset: vec2f, rotation: f32, rotation_amount: f32, offs
 // Reorder lines to change the order controls appear in the UI.
 // ═══════════════════════════════════════════════════════════════════════
 
-/* eslint-disable sort/object-properties */
 defineProperties(Effect, {
-    segments: PROP_SEGMENTS,
-    scaleFactor: PROP_SCALE_FACTOR,
-    tiling: PROP_TILING,
-    tileMode: PROP_TILE_MODE,
+    offsetAmount: PROP_OFFSET_AMOUNT,
     offsetX: PROP_OFFSET_X,
     offsetY: PROP_OFFSET_Y,
-    rotation: PROP_ROTATION,
     opacity: PROP_OPACITY,
-    offsetAmount: PROP_OFFSET_AMOUNT,
+    rotation: PROP_ROTATION,
     rotationAmount: PROP_ROTATION_AMOUNT,
+    scaleFactor: PROP_SCALE_FACTOR,
+    segments: PROP_SEGMENTS,
+    tileMode: PROP_TILE_MODE,
+    tiling: PROP_TILING,
 })
-/* eslint-enable sort/object-properties */
+/** This is a thing we tried to turn off. eslint-enable sort/object-properties */
