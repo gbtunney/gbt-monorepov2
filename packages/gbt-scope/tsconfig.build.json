@@ -1,6 +1,8 @@
 {
     "extends": "@snailicid3/config/tsconfig.react",
-    "compilerOptions": {},
+    "compilerOptions": {
+        "types": ["@webgpu/types", "@figma/plugin-typings"]
+    },
     "include": [
         "./src/**/*.ts",
         "./src/**/*.cts",

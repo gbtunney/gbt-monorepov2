@@ -40,9 +40,9 @@
         "drizzle-orm": "^0.45.2",
         "drizzle-zod": "^0.8.3",
         "express": "^5.2.1",
-        "express-zod-api": "^29.6.0",
+        "express-zod-api": "^29.6.1",
         "http-errors": "^2.0.1",
-        "zod": "^4.4.3"
+        "zod": "^4.6.1"
     },
     "devDependencies": {
         "@snailicid3/build-config": "^0.2.0",

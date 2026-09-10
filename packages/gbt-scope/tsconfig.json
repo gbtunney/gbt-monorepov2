@@ -3,6 +3,7 @@
     "compilerOptions": {
         //otherwise .storybook will error
         "rootDir": ".",
+        "types": ["@webgpu/types", "@figma/plugin-typings"],
         "noEmit": true
     },
     "exclude": ["./node_modules"],
