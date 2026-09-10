@@ -1,7 +1,8 @@
 import type { ShaderPropertyDefinition } from 'figma:shaders'
 import { defineProperties } from 'figma:shaders'
 
-export default function Effect() {}
+// eslint-disable-next-line @typescript-eslint/naming-convention -- Figma shader runtime requires PascalCase `Effect` as the default export
+export default function Effect(): void {}
 
 // ═══════════════════════════════════════════════════════════════════════
 // SHADER PROPERTIES
@@ -16,119 +17,119 @@ export default function Effect() {}
 
 /** Segments — number of kaleidoscope mirror segments. */
 const PROP_SEGMENTS: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 6,
-    label: 'Segments',
-    max: 20,
-    min: 2,
-    step: 1,
     type: 'number',
+    label: 'Segments',
+    defaultValue: 6,
+    control: 'slider',
+    min: 2,
+    max: 20,
+    step: 1,
 }
 
 /** Scale — zoom level into the kaleidoscope pattern. */
 const PROP_SCALE_FACTOR: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 1,
-    label: 'Scale',
-    max: 5,
-    min: 0.1,
-    step: 0.05,
     type: 'number',
+    label: 'Scale',
+    defaultValue: 1,
+    control: 'slider',
+    min: 0.1,
+    max: 5,
+    step: 0.05,
 }
 
 /** Tiling — tile repetition count. */
 const PROP_TILING: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 1,
-    label: 'Tiling',
-    max: 10,
-    min: 0.5,
-    step: 0.1,
     type: 'number',
+    label: 'Tiling',
+    defaultValue: 1,
+    control: 'slider',
+    min: 0.5,
+    max: 10,
+    step: 0.1,
 }
 
 /** Tile Mode — 0 = none, 1 = repeat, 2 = mirror. */
 const PROP_TILE_MODE: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 0,
-    label: 'Tile Mode (0=none, 1=repeat, 2=mirror)',
-    max: 2,
-    min: 0,
-    step: 1,
     type: 'number',
+    label: 'Tile Mode (0=none, 1=repeat, 2=mirror)',
+    defaultValue: 0,
+    control: 'slider',
+    min: 0,
+    max: 2,
+    step: 1,
 }
 
 /** Offset X — horizontal shift of the pattern center. */
 const PROP_OFFSET_X: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 0,
-    label: 'Offset X',
-    max: 1,
-    min: -1,
-    step: 0.01,
     type: 'number',
+    label: 'Offset X',
+    defaultValue: 0,
+    control: 'slider',
+    min: -1,
+    max: 1,
+    step: 0.01,
 }
 
 /** Offset Y — vertical shift of the pattern center. */
 const PROP_OFFSET_Y: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 0,
-    label: 'Offset Y',
-    max: 1,
-    min: -1,
-    step: 0.01,
     type: 'number',
+    label: 'Offset Y',
+    defaultValue: 0,
+    control: 'slider',
+    min: -1,
+    max: 1,
+    step: 0.01,
 }
 
 /** Rotation — angle of the kaleidoscope pattern in radians. */
 const PROP_ROTATION: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 0,
-    label: 'Rotation',
-    max: 6.283,
-    min: 0,
-    step: 0.01,
     type: 'number',
+    label: 'Rotation',
+    defaultValue: 0,
+    control: 'slider',
+    min: 0,
+    max: 6.283,
+    step: 0.01,
 }
 
 /** Opacity — overall effect opacity. */
 const PROP_OPACITY: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 1,
-    label: 'Opacity',
-    max: 1,
-    min: 0,
-    step: 0.01,
     type: 'number',
+    label: 'Opacity',
+    defaultValue: 1,
+    control: 'slider',
+    min: 0,
+    max: 1,
+    step: 0.01,
 }
 
 /** Offset Amount — multiplier for the offset intensity. */
 const PROP_OFFSET_AMOUNT: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 1,
-    label: 'Offset Amount',
-    max: 5,
-    min: 0,
-    step: 0.05,
     type: 'number',
+    label: 'Offset Amount',
+    defaultValue: 1,
+    control: 'slider',
+    min: 0,
+    max: 5,
+    step: 0.05,
 }
 
 /** Rotation Amount — multiplier for the rotation intensity. */
 const PROP_ROTATION_AMOUNT: ShaderPropertyDefinition = {
-    control: 'slider',
-    defaultValue: 1,
-    label: 'Rotation Amount',
-    max: 5,
-    min: 0,
-    step: 0.05,
     type: 'number',
+    label: 'Rotation Amount',
+    defaultValue: 1,
+    control: 'slider',
+    min: 0,
+    max: 5,
+    step: 0.05,
 }
 
 // ═══════════════════════════════════════════════════════════════════════
 // RENDER
 // ═══════════════════════════════════════════════════════════════════════
 
-export function render(device: GPUDevice, frame: ShaderFrame) {
+export function render(device: GPUDevice, frame: ShaderFrame): void {
     const segments = Number(frame.params.segments) || 6
     const scaleFactor = Number(frame.params.scaleFactor) || 1
     const tiling = Number(frame.params.tiling) || 1
@@ -215,7 +216,7 @@ export function render(device: GPUDevice, frame: ShaderFrame) {
 // SETUP
 // ═══════════════════════════════════════════════════════════════════════
 
-export function setup(device: GPUDevice, frame: ShaderFrame) {
+export function setup(device: GPUDevice, frame: ShaderFrame): void {
     const WGSL = `diagnostic(off,derivative_uniformity);
 struct Uniforms {
   p0: vec4f,
@@ -381,6 +382,7 @@ fn adjust_uv(uv: vec2f, offset: vec2f, rotation: f32, rotation_amount: f32, offs
 // Reorder lines to change the order controls appear in the UI.
 // ═══════════════════════════════════════════════════════════════════════
 
+/* eslint-disable sort/object-properties */
 defineProperties(Effect, {
     segments: PROP_SEGMENTS,
     scaleFactor: PROP_SCALE_FACTOR,
@@ -393,3 +395,4 @@ defineProperties(Effect, {
     offsetAmount: PROP_OFFSET_AMOUNT,
     rotationAmount: PROP_ROTATION_AMOUNT,
 })
+/* eslint-enable sort/object-properties */
