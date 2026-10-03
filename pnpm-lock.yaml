@@ -18,7 +18,7 @@ importers:
                 version: 3.4.0(eslint@10.10.0(jiti@2.7.0))(srvx@1.0.4)
             '@snailicid3/build-config':
                 specifier: ^0.2.0
-                version: 0.2.0(@arethetypeswrong/core@0.18.5)(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(publint@0.3.24)(ramda@0.32.0)(rolldown@1.2.7)(rollup@4.63.1)(terser@5.51.2)(tsx@4.23.13)(typescript@6.0.3)(unplugin-unused@0.5.7(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)))(vitest@5.0.0)(yaml@2.9.0)
+                version: 0.2.0(@arethetypeswrong/core@0.18.5)(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(publint@0.3.24)(rolldown@1.2.7)(rollup@4.63.1)(terser@5.51.2)(tsx@4.23.13)(typescript@6.0.3)(unplugin-unused@0.5.7(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)))(vitest@5.0.0)(yaml@2.9.0)
             '@snailicid3/config':
                 specifier: ^0.3.2
                 version: 0.3.2(@types/node@26.5.1)(@typescript-eslint/eslint-plugin@8.69.0(@typescript-eslint/parser@8.69.0(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(@typescript-eslint/utils@8.69.0(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(jiti@2.7.0)(nx@23.2.1)(ramda@0.32.0)(typescript@6.0.3)(vitest@5.0.0)
@@ -112,7 +112,7 @@ importers:
         devDependencies:
             '@snailicid3/build-config':
                 specifier: ^0.2.0
-                version: 0.2.0(@arethetypeswrong/core@0.18.5)(@types/node@26.5.0)(@volar/typescript@2.4.28)(esbuild@0.28.2)(jiti@2.7.0)(oxc-resolver@11.24.2)(publint@0.3.24)(ramda@0.32.0)(rolldown@1.2.7)(rollup@4.63.1)(terser@5.51.2)(tsx@4.23.13)(typescript@6.0.3)(unplugin-unused@0.5.7(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)))(vitest@5.0.0)(yaml@2.9.0)
+                version: 0.2.0(@arethetypeswrong/core@0.18.5)(@types/node@26.5.0)(@volar/typescript@2.4.28)(esbuild@0.28.2)(jiti@2.7.0)(oxc-resolver@11.24.2)(publint@0.3.24)(rolldown@1.2.7)(rollup@4.63.1)(terser@5.51.2)(tsx@4.23.13)(typescript@6.0.3)(unplugin-unused@0.5.7(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)))(vitest@5.0.0)(yaml@2.9.0)
             '@snailicid3/config':
                 specifier: ^0.3.2
                 version: 0.3.2(@types/node@26.5.0)(@typescript-eslint/eslint-plugin@8.69.0(@typescript-eslint/parser@8.69.0(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(@typescript-eslint/utils@8.69.0(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(jiti@2.7.0)(nx@23.2.1)(ramda@0.32.0)(typescript@6.0.3)(vitest@5.0.0)
@@ -173,7 +173,7 @@ importers:
         devDependencies:
             '@snailicid3/build-config':
                 specifier: ^0.2.0
-                version: 0.2.0(@arethetypeswrong/core@0.18.5)(@types/node@26.5.0)(@volar/typescript@2.4.28)(esbuild@0.28.2)(jiti@2.7.0)(oxc-resolver@11.24.2)(publint@0.3.24)(ramda@0.32.0)(rolldown@1.2.7)(rollup@4.63.1)(terser@5.51.2)(tsx@4.23.13)(typescript@6.0.3)(unplugin-unused@0.5.7(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)))(vitest@5.0.0)(yaml@2.9.0)
+                version: 0.2.0(@arethetypeswrong/core@0.18.5)(@types/node@26.5.0)(@volar/typescript@2.4.28)(esbuild@0.28.2)(jiti@2.7.0)(oxc-resolver@11.24.2)(publint@0.3.24)(rolldown@1.2.7)(rollup@4.63.1)(terser@5.51.2)(tsx@4.23.13)(typescript@6.0.3)(unplugin-unused@0.5.7(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)))(vitest@5.0.0)(yaml@2.9.0)
             '@snailicid3/config':
                 specifier: ^0.3.2
                 version: 0.3.2(@types/node@26.5.0)(@typescript-eslint/eslint-plugin@8.69.0(@typescript-eslint/parser@8.69.0(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(@typescript-eslint/utils@8.69.0(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(jiti@2.7.0)(nx@23.2.1)(ramda@0.32.0)(typescript@6.0.3)(vitest@5.0.0)
@@ -252,7 +252,7 @@ importers:
                 version: 10.6.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))
             '@storybook/addon-vitest':
                 specifier: ^10.6.0
-                version: 10.6.0(@vitest/browser-playwright@5.0.0)(@vitest/browser@5.0.0)(@vitest/runner@4.1.11)(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))(vitest@5.0.0)
+                version: 10.6.0(@vitest/browser-playwright@5.0.0(playwright@1.63.0)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0))(@vitest/browser@5.0.0(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0))(@vitest/runner@4.1.11)(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))(vitest@5.0.0)
             '@storybook/react-vite':
                 specifier: ^10.6.0
                 version: 10.6.0(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(rollup@4.63.1)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))(typescript@6.0.3)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
@@ -276,7 +276,7 @@ importers:
                 version: 6.1.1(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
             '@vitest/coverage-v8':
                 specifier: 5.0.0
-                version: 5.0.0(@vitest/browser@5.0.0)(vitest@5.0.0)
+                version: 5.0.0(@vitest/browser@5.0.0(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0))(vitest@5.0.0)
             '@webgpu/types':
                 specifier: ^0.1.72
                 version: 0.1.72
@@ -309,7 +309,7 @@ importers:
                 version: 6.0.3
             vitest:
                 specifier: ^5.0.0
-                version: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+                version: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0(playwright@1.63.0)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0))(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
 packages:
     '@adobe/css-tools@4.5.0':
@@ -4448,6 +4448,7 @@ packages:
             }
         cpu: [arm64]
         os: [android]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-darwin-arm64@0.8.7':
         resolution:
@@ -4456,6 +4457,7 @@ packages:
             }
         cpu: [arm64]
         os: [darwin]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-darwin-x64@0.8.7':
         resolution:
@@ -4464,6 +4466,7 @@ packages:
             }
         cpu: [x64]
         os: [darwin]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-freebsd-x64@0.8.7':
         resolution:
@@ -4472,6 +4475,7 @@ packages:
             }
         cpu: [x64]
         os: [freebsd]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-linux-arm-gnu@0.8.7':
         resolution:
@@ -4481,6 +4485,7 @@ packages:
         cpu: [arm]
         os: [linux]
         libc: [glibc]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-linux-arm-musl@0.8.7':
         resolution:
@@ -4490,6 +4495,7 @@ packages:
         cpu: [arm]
         os: [linux]
         libc: [musl]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-linux-arm64-gnu@0.8.7':
         resolution:
@@ -4499,6 +4505,7 @@ packages:
         cpu: [arm64]
         os: [linux]
         libc: [glibc]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-linux-arm64-musl@0.8.7':
         resolution:
@@ -4508,6 +4515,7 @@ packages:
         cpu: [arm64]
         os: [linux]
         libc: [musl]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-linux-x64-gnu@0.8.7':
         resolution:
@@ -4517,6 +4525,7 @@ packages:
         cpu: [x64]
         os: [linux]
         libc: [glibc]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-linux-x64-musl@0.8.7':
         resolution:
@@ -4526,6 +4535,7 @@ packages:
         cpu: [x64]
         os: [linux]
         libc: [musl]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-win32-arm64@0.8.7':
         resolution:
@@ -4534,6 +4544,7 @@ packages:
             }
         cpu: [arm64]
         os: [win32]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-codegen/binding-win32-x64@0.8.7':
         resolution:
@@ -4542,6 +4553,7 @@ packages:
             }
         cpu: [x64]
         os: [win32]
+        deprecated: yuku-codegen is pure JavaScript since 0.14
 
     '@yuku-parser/binding-android-arm64@0.8.7':
         resolution:
@@ -4550,6 +4562,7 @@ packages:
             }
         cpu: [arm64]
         os: [android]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-darwin-arm64@0.8.7':
         resolution:
@@ -4558,6 +4571,7 @@ packages:
             }
         cpu: [arm64]
         os: [darwin]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-darwin-x64@0.8.7':
         resolution:
@@ -4566,6 +4580,7 @@ packages:
             }
         cpu: [x64]
         os: [darwin]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-freebsd-x64@0.8.7':
         resolution:
@@ -4574,6 +4589,7 @@ packages:
             }
         cpu: [x64]
         os: [freebsd]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-linux-arm-gnu@0.8.7':
         resolution:
@@ -4583,6 +4599,7 @@ packages:
         cpu: [arm]
         os: [linux]
         libc: [glibc]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-linux-arm-musl@0.8.7':
         resolution:
@@ -4592,6 +4609,7 @@ packages:
         cpu: [arm]
         os: [linux]
         libc: [musl]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-linux-arm64-gnu@0.8.7':
         resolution:
@@ -4601,6 +4619,7 @@ packages:
         cpu: [arm64]
         os: [linux]
         libc: [glibc]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-linux-arm64-musl@0.8.7':
         resolution:
@@ -4610,6 +4629,7 @@ packages:
         cpu: [arm64]
         os: [linux]
         libc: [musl]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-linux-x64-gnu@0.8.7':
         resolution:
@@ -4619,6 +4639,7 @@ packages:
         cpu: [x64]
         os: [linux]
         libc: [glibc]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-linux-x64-musl@0.8.7':
         resolution:
@@ -4628,6 +4649,7 @@ packages:
         cpu: [x64]
         os: [linux]
         libc: [musl]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-win32-arm64@0.8.7':
         resolution:
@@ -4636,6 +4658,7 @@ packages:
             }
         cpu: [arm64]
         os: [win32]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-parser/binding-win32-x64@0.8.7':
         resolution:
@@ -4644,6 +4667,7 @@ packages:
             }
         cpu: [x64]
         os: [win32]
+        deprecated: yuku-parser runs on yuku-core since 0.14
 
     '@yuku-toolchain/types@0.8.7':
         resolution:
@@ -12646,6 +12670,8 @@ packages:
             }
 
 snapshots:
+    '@adobe/css-tools@4.5.0': {}
+
     '@andrewbranch/untar.js@1.0.4':
         optional: true
 
@@ -14163,7 +14189,7 @@ snapshots:
             vite-plugin-dts: 5.1.0(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(typescript@6.0.3)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
             zod: 4.5.4
         optionalDependencies:
-            vitest: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+            vitest: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0(playwright@1.63.0)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0))(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
         transitivePeerDependencies:
             - '@arethetypeswrong/core'
             - '@microsoft/api-extractor'
@@ -14209,51 +14235,6 @@ snapshots:
             zod: 4.5.4
         optionalDependencies:
             vitest: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
-        transitivePeerDependencies:
-            - '@arethetypeswrong/core'
-            - '@microsoft/api-extractor'
-            - '@rspack/core'
-            - '@tsdown/css'
-            - '@tsdown/exe'
-            - '@types/node'
-            - '@typescript/native-preview'
-            - '@vitejs/devtools'
-            - '@volar/typescript'
-            - '@vue/language-core'
-            - esbuild
-            - jiti
-            - less
-            - oxc-resolver
-            - publint
-            - ramda
-            - rolldown
-            - rollup
-            - sass
-            - sass-embedded
-            - stylus
-            - sugarss
-            - supports-color
-            - terser
-            - tsx
-            - typescript
-            - unplugin-unused
-            - unrun
-            - vue-tsc
-            - webpack
-            - yaml
-
-    '@snailicid3/build-config@0.2.0(@arethetypeswrong/core@0.18.5)(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(publint@0.3.24)(ramda@0.32.0)(rolldown@1.2.7)(rollup@4.63.1)(terser@5.51.2)(tsx@4.23.13)(typescript@6.0.3)(unplugin-unused@0.5.7(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)))(vitest@5.0.0)(yaml@2.9.0)':
-        dependencies:
-            '@snailicid3/node-utils': 0.2.0(ramda@0.32.0)
-            ts-deepmerge: 8.0.0
-            ts-extras: 1.3.0
-            tsdown: 0.22.14(@arethetypeswrong/core@0.18.5)(publint@0.3.24)(tsx@4.23.13)(typescript@6.0.3)(unplugin-unused@0.5.7(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)))
-            type-fest: 5.9.0
-            vite: 8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0)
-            vite-plugin-dts: 5.1.0(esbuild@0.28.2)(rolldown@1.2.7)(rollup@4.63.1)(typescript@6.0.3)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
-            zod: 4.5.4
-        optionalDependencies:
-            vitest: 5.0.0(@types/node@26.5.1)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
         transitivePeerDependencies:
             - '@arethetypeswrong/core'
             - '@microsoft/api-extractor'
@@ -14612,19 +14593,6 @@ snapshots:
         transitivePeerDependencies:
             - react
 
-    '@storybook/addon-vitest@10.6.0(@vitest/browser-playwright@5.0.0)(@vitest/browser@5.0.0)(@vitest/runner@4.1.11)(react@19.3.0)(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))(vitest@5.0.0)':
-        dependencies:
-            '@storybook/global': 5.0.0
-            '@storybook/icons': 2.1.0(react@19.3.0)
-            storybook: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
-        optionalDependencies:
-            '@vitest/browser': 5.0.0(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0)
-            '@vitest/browser-playwright': 5.0.0(playwright@1.63.0)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0)
-            '@vitest/runner': 4.1.11
-            vitest: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
-        transitivePeerDependencies:
-            - react
-
     '@storybook/builder-vite@10.6.0(storybook@10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0))(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))':
         dependencies:
             storybook: 10.6.0(@types/react@19.3.0)(prettier@3.9.6)(react@19.3.0)
@@ -14715,7 +14683,7 @@ snapshots:
             picocolors: 1.1.1
             redent: 3.0.0
         optionalDependencies:
-            vitest: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+            vitest: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0(playwright@1.63.0)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0))(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
     '@testing-library/react@16.3.3(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
         dependencies:
@@ -14730,6 +14698,8 @@ snapshots:
     '@testing-library/user-event@14.6.7(@testing-library/dom@10.4.1)':
         dependencies:
             '@testing-library/dom': 10.4.1
+
+    '@tryretool/cli@0.1.10': {}
 
     '@tybys/wasm-util@0.10.3':
         dependencies:
@@ -15311,7 +15281,7 @@ snapshots:
         optionalDependencies:
             '@typescript-eslint/eslint-plugin': 8.69.0(@typescript-eslint/parser@8.69.0(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3))(eslint@10.10.0(jiti@2.7.0))(typescript@6.0.3)
             typescript: 6.0.3
-            vitest: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+            vitest: 5.0.0(@types/node@26.5.1)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
         transitivePeerDependencies:
             - supports-color
 
@@ -15380,7 +15350,7 @@ snapshots:
             pathe: 2.0.3
             sirv: 3.0.2
             tinyrainbow: 3.1.1
-            vitest: 5.0.0(@types/node@26.5.0)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
+            vitest: 5.0.0(@types/node@26.5.1)(@vitest/browser-playwright@5.0.0)(@vitest/coverage-v8@5.0.0)(@vitest/ui@5.0.0)(jsdom@30.0.1)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))
 
     '@vitest/utils@3.2.4':
         dependencies:
@@ -21016,7 +20986,7 @@ snapshots:
             why-is-node-running: 2.3.0
         optionalDependencies:
             '@types/node': 26.5.0
-            '@vitest/browser-playwright': 5.0.0(playwright@1.63.0)(vite@8.2.2(@types/node@26.5.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0)
+            '@vitest/browser-playwright': 5.0.0(playwright@1.63.0)(vite@8.2.2(@types/node@26.5.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(tsx@4.23.13)(yaml@2.9.0))(vitest@5.0.0)
             '@vitest/coverage-v8': 5.0.0(@vitest/browser@5.0.0)(vitest@5.0.0)
             '@vitest/ui': 5.0.0(vitest@5.0.0)
             jsdom: 30.0.1
