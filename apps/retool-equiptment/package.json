@@ -1,0 +1,58 @@
+{
+    "name": "@gbt/retool-equiptment",
+    "version": "0.0.0",
+    "private": true,
+    "description": "Retool equipment app development commands",
+    "type": "module",
+    "scripts": {
+        "build:nx": "nx run $npm_package_name:build",
+        "retool:login": "tsx retool.mts login",
+        "retool:logout": "tsx retool.mts logout",
+        "retool:status": "tsx retool.mts status",
+        "retool:apps": "tsx retool.mts apps",
+        "retool:branches": "tsx retool.mts branches",
+        "retool:clone": "tsx retool.mts clone",
+        "retool:pull": "tsx retool.mts pull",
+        "retool:check": "tsx retool.mts check",
+        "retool:watch": "tsx retool.mts start",
+        "retool:push": "tsx retool.mts push --wait",
+        "retool:preview": "tsx retool.mts preview --wait",
+        "retool:publish": "tsx retool.mts publish",
+        "retool:workspace": "tsx retool.mts workspace",
+        "retool:install": "tsx retool.mts install"
+    },
+    "config": {
+        "retool": {
+            "host": "snailicid3.retool.com",
+            "appId": "80fdd7c4-be38-11f1-af70-9b5fc4bf3748",
+            "directory": "/workspaces/retool-equiptment"
+        }
+    },
+    "nx": {
+        "includedScripts": [],
+        "targets": {
+            "check:ts": {},
+            "build": {
+                "dependsOn": [
+                    "check:ts"
+                ]
+            }
+        }
+    },
+    "devDependencies": {
+        "@snailicid3/config": "^0.3.2",
+        "@snailicid3/node-utils": "^0.2.0",
+        "@tryretool/cli": "^0.1.10",
+        "@types/node": "^26.5.1",
+        "tsx": "^4.23.13",
+        "typescript": "6.0.3"
+    },
+    "engines": {
+        "node": ">=22"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/gbtunney/gbt-monorepov2",
+        "directory": "apps/retool-equiptment"
+    }
+}
