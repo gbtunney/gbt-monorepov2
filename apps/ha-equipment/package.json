@@ -1,0 +1,241 @@
+{
+  "private": true,
+  "retool": {
+    "app": {
+      "uuid": "80fdd7c4-be38-11f1-af70-9b5fc4bf3748",
+      "name": null,
+      "resourceReferencesByFile": {
+        "/backend/inventory/completenessFields.ts": [],
+        "/backend/inventory/createEquipment.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/ddlCore.ts": [],
+        "/backend/inventory/exportInventory.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getAuditInbox.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getBinDetail.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getBins.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getEquipmentDetail.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getEquipmentList.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getHaDiscovery.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getHaLinkSuggestions.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getHaRegistryExports.ts": [
+          {
+            "name": "5320de97-47e0-42b0-8dc0-105b5e939fdc",
+            "displayName": "Home Assistant Registry Exports",
+            "type": "restapi"
+          }
+        ],
+        "/backend/inventory/getHaSnapshotStatus.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getIntakeDetail.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getIntakeIdSuggestion.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getIntakeQueue.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getLookupData.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getNeedsChecking.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getNextPhysicalId.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/getSettings.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/haPlacementPlan.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/haSnapshotShared.ts": [],
+        "/backend/inventory/ingestAuditSnapshot.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/ingestHaRegistryDump.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/ingestHaSnapshot.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/intakeShared.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/locationReadModel.ts": [],
+        "/backend/inventory/registerPhysicalItem.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/requestAudit.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/runAuditFromHaSnapshot.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/runBinCommand.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/runCompletenessAudit.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/runEquipmentCommand.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/runIntakeCommand.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/runSettingsCommand.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/inventory/shared.ts": [],
+        "/backend/inventory/updateFindingStatus.ts": [
+          {
+            "name": "bbe0a647-c75c-4073-97f0-4f64019f5872",
+            "displayName": "retool_db",
+            "type": "retoolDb"
+          }
+        ],
+        "/backend/user.d.ts": []
+      }
+    }
+  }
+}
